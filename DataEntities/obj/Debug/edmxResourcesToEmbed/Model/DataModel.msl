@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="bugtrackerModelStoreContainer" CdmEntityContainer="DataEntities">
+    <EntitySetMapping Name="Bugs">
+      <EntityTypeMapping TypeName="bugtrackerModel.Bug">
+        <MappingFragment StoreEntitySet="bugs">
+          <ScalarProperty Name="Fixed" ColumnName="Fixed" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="DateFound" ColumnName="DateFound" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="bugtrackerModel.User">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="bugs_ibfk_1" TypeName="bugtrackerModel.bugs_ibfk_1" StoreEntitySet="bugs">
+      <EndProperty Name="bug">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="user">
+        <ScalarProperty Name="Id" ColumnName="CreatedBy" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="bugtrackerModel.Project">
+        <MappingFragment StoreEntitySet="projects">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="fkey_project" TypeName="bugtrackerModel.fkey_project" StoreEntitySet="bugs">
+      <EndProperty Name="Bug">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="project">
+        <ScalarProperty Name="Id" ColumnName="ProjectId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="user_projects" TypeName="bugtrackerModel.user_projects" StoreEntitySet="user_projects">
+      <EndProperty Name="Project">
+        <ScalarProperty Name="Id" ColumnName="ProjectId" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Roles1">
+      <EntityTypeMapping TypeName="bugtrackerModel.Role">
+        <MappingFragment StoreEntitySet="roles">
+          <ScalarProperty Name="RoleName" ColumnName="Role" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="user_roles" TypeName="bugtrackerModel.user_roles" StoreEntitySet="user_roles">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

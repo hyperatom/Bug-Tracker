@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="bugtrackerModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="bugtrackerModelStoreContainer">
+          <EntitySet Name="bugs" EntityType="bugtrackerModel.Store.bugs" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="projects" EntityType="bugtrackerModel.Store.projects" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="roles" EntityType="bugtrackerModel.Store.roles" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="user_projects" EntityType="bugtrackerModel.Store.user_projects" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="user_roles" EntityType="bugtrackerModel.Store.user_roles" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="users" EntityType="bugtrackerModel.Store.users" store:Type="Tables" Schema="bugtracker" />
+          <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.Store.bugs_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="bugs" EntitySet="bugs" />
+          </AssociationSet>
+          <AssociationSet Name="fkey_project" Association="bugtrackerModel.Store.fkey_project">
+            <End Role="projects" EntitySet="projects" />
+            <End Role="bugs" EntitySet="bugs" />
+          </AssociationSet>
+          <AssociationSet Name="user_projects_ibfk_1" Association="bugtrackerModel.Store.user_projects_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_projects" EntitySet="user_projects" />
+          </AssociationSet>
+          <AssociationSet Name="user_projects_ibfk_2" Association="bugtrackerModel.Store.user_projects_ibfk_2">
+            <End Role="projects" EntitySet="projects" />
+            <End Role="user_projects" EntitySet="user_projects" />
+          </AssociationSet>
+          <AssociationSet Name="user_roles_ibfk_1" Association="bugtrackerModel.Store.user_roles_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+          <AssociationSet Name="user_roles_ibfk_2" Association="bugtrackerModel.Store.user_roles_ibfk_2">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="user_roles" EntitySet="user_roles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="bugs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+          <Property Name="Priority" Type="varchar" Nullable="false" MaxLength="6" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="11" />
+          <Property Name="DateFound" Type="timestamp" Nullable="false" Precision="0" />
+          <Property Name="LastModified" Type="timestamp" Nullable="false" Precision="0" />
+          <Property Name="Fixed" Type="bool" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="projects">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Role" Type="varchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="user_projects">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ProjectId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user_roles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Surname" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="60" />
+        </EntityType>
+        <Association Name="bugs_ibfk_1">
+          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1" />
+          <End Role="bugs" Type="bugtrackerModel.Store.bugs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="bugs">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkey_project">
+          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="bugs" Type="bugtrackerModel.Store.bugs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="bugs">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_projects_ibfk_1">
+          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1" />
+          <End Role="user_projects" Type="bugtrackerModel.Store.user_projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_projects">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_projects_ibfk_2">
+          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1" />
+          <End Role="user_projects" Type="bugtrackerModel.Store.user_projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_projects">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_roles_ibfk_1">
+          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user_roles" Type="bugtrackerModel.Store.user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_roles_ibfk_2">
+          <End Role="roles" Type="bugtrackerModel.Store.roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user_roles" Type="bugtrackerModel.Store.user_roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_roles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bugtrackerModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="Bugs" EntityType="bugtrackerModel.Bug" />
+          <EntitySet Name="Users" EntityType="bugtrackerModel.User" />
+          <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.bugs_ibfk_1">
+            <End Role="user" EntitySet="Users" />
+            <End Role="bug" EntitySet="Bugs" />
+          </AssociationSet>
+          <EntitySet Name="Projects" EntityType="bugtrackerModel.Project" />
+          <AssociationSet Name="fkey_project" Association="bugtrackerModel.fkey_project">
+            <End Role="project" EntitySet="Projects" />
+            <End Role="Bug" EntitySet="Bugs" />
+          </AssociationSet>
+          <AssociationSet Name="user_projects" Association="bugtrackerModel.user_projects">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <EntitySet Name="Roles1" EntityType="bugtrackerModel.Role" />
+          <AssociationSet Name="user_roles" Association="bugtrackerModel.user_roles">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Role" EntitySet="Roles1" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Bug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Description" />
+          <Property Type="String" Name="Priority" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="false" />
+          <Property Type="DateTime" Name="DateFound" Nullable="false" />
+          <Property Type="DateTime" Name="LastModified" Nullable="false" />
+          <Property Type="Boolean" Name="Fixed" />
+          <NavigationProperty Name="CreatedBy" Relationship="bugtrackerModel.bugs_ibfk_1" FromRole="bug" ToRole="user" />
+          <NavigationProperty Name="Project" Relationship="bugtrackerModel.fkey_project" FromRole="Bug" ToRole="project" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FirstName" Nullable="false" />
+          <Property Type="String" Name="Surname" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="bugtrackerModel.user_projects" FromRole="User" ToRole="Project" />
+          <NavigationProperty Name="Roles" Relationship="bugtrackerModel.user_roles" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="bugs_ibfk_1">
+          <End Type="bugtrackerModel.User" Role="user" Multiplicity="1" />
+          <End Type="bugtrackerModel.Bug" Role="bug" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Description" />
+        </EntityType>
+        <Association Name="fkey_project">
+          <End Type="bugtrackerModel.Project" Role="project" Multiplicity="1" >
+          </End>
+          <End Type="bugtrackerModel.Bug" Role="Bug" Multiplicity="*" >
+          </End>
+        </Association>
+        <Association Name="user_projects">
+          <End Type="bugtrackerModel.User" Role="User" Multiplicity="*" />
+          <End Type="bugtrackerModel.Project" Role="Project" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="RoleName" Nullable="false" />
+        </EntityType>
+        <Association Name="user_roles">
+          <End Type="bugtrackerModel.User" Role="User" Multiplicity="*" />
+          <End Type="bugtrackerModel.Role" Role="Role" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bugtrackerModelStoreContainer" CdmEntityContainer="DataEntities">
+          <EntitySetMapping Name="Bugs">
+            <EntityTypeMapping TypeName="bugtrackerModel.Bug">
+              <MappingFragment StoreEntitySet="bugs">
+                <ScalarProperty Name="Fixed" ColumnName="Fixed" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="DateFound" ColumnName="DateFound" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="bugtrackerModel.User">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="bugs_ibfk_1" TypeName="bugtrackerModel.bugs_ibfk_1" StoreEntitySet="bugs">
+            <EndProperty Name="bug">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="user">
+              <ScalarProperty Name="Id" ColumnName="CreatedBy" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="bugtrackerModel.Project">
+              <MappingFragment StoreEntitySet="projects">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="fkey_project" TypeName="bugtrackerModel.fkey_project" StoreEntitySet="bugs">
+            <EndProperty Name="Bug">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="project">
+              <ScalarProperty Name="Id" ColumnName="ProjectId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="user_projects" TypeName="bugtrackerModel.user_projects" StoreEntitySet="user_projects">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="Id" ColumnName="ProjectId" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Roles1">
+            <EntityTypeMapping TypeName="bugtrackerModel.Role">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="RoleName" ColumnName="Role" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="user_roles" TypeName="bugtrackerModel.user_roles" StoreEntitySet="user_roles">
+            <EndProperty Name="Role">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="DataModel">
+        <EntityTypeShape EntityType="bugtrackerModel.Bug" Width="1.5" PointX="5.125" PointY="1.125" Height="2.9417936197916656" />
+        <EntityTypeShape EntityType="bugtrackerModel.User" Width="1.5" PointX="2.875" PointY="1.375" Height="2.3648893229166661" />
+        <AssociationConnector Association="bugtrackerModel.bugs_ibfk_1" >
+          <ConnectorPoint PointX="4.375" PointY="2.5574446614583328" />
+          <ConnectorPoint PointX="5.125" PointY="2.5574446614583328" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="bugtrackerModel.Project" Width="1.5" PointX="5.125" PointY="4.875" Height="1.5956835937499996" />
+        <AssociationConnector Association="bugtrackerModel.fkey_project" >
+          <ConnectorPoint PointX="5.875" PointY="4.875" />
+          <ConnectorPoint PointX="5.875" PointY="4.0667936197916656" />
+        </AssociationConnector>
+        <AssociationConnector Association="bugtrackerModel.user_projects" >
+          <ConnectorPoint PointX="3.625" PointY="3.7398893229166661" />
+          <ConnectorPoint PointX="3.625" PointY="5.672841796875" />
+          <ConnectorPoint PointX="5.125" PointY="5.672841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="bugtrackerModel.Role" Width="1.5" PointX="0.5" PointY="1.25" Height="1.4033821614583331" />
+        <AssociationConnector Association="bugtrackerModel.user_roles" >
+          <ConnectorPoint PointX="2.875" PointY="2.0141910807291667" />
+          <ConnectorPoint PointX="2" PointY="2.0141910807291667" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,16 @@
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\bin\Debug\Client.exe.config
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\bin\Debug\Client.exe
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\bin\Debug\Client.pdb
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\LoginWindow.g.cs
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\App.g.cs
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client_MarkupCompile.cache
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client_MarkupCompile.lref
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\LoginWindow.baml
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\MainWindow.baml
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.g.resources
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.Properties.Resources.resources
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.exe
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.pdb

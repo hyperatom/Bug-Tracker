@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EntityModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="ModelEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bugs" EntityType="EntityModel.Bug" />
+    <EntitySet Name="users" EntityType="EntityModel.user" />
+    <AssociationSet Name="bugs_ibfk_1" Association="EntityModel.bugs_ibfk_1">
+      <End Role="users" EntitySet="users" />
+      <End Role="bugs" EntitySet="Bugs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Bug">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" />
+    <Property Name="Priority" Type="String" Nullable="false" />
+    <Property Name="Status" Type="String" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="DateFound" Type="DateTime" Nullable="false" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" />
+    <Property Name="Fixed" Type="Boolean" />
+    <NavigationProperty Name="User" Relationship="EntityModel.bugs_ibfk_1" FromRole="bugs" ToRole="users" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" />
+    <Property Name="Surname" Type="String" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+  </EntityType>
+  <Association Name="bugs_ibfk_1">
+    <End Role="users" Type="EntityModel.user" Multiplicity="1" />
+    <End Role="bugs" Type="EntityModel.Bug" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bugs">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

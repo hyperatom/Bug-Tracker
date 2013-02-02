@@ -1,0 +1,6 @@
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\DataEntities.dll.config
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\DataEntities.dll
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\DataEntities.pdb
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\obj\Debug\DataEntities.dll
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\obj\Debug\DataEntities.pdb
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\obj\Debug\DataEntities.csprojResolveAssemblyReference.cache

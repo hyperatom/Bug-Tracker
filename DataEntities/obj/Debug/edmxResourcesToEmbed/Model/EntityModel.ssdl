@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EntityModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="EntityModelStoreContainer">
+    <EntitySet Name="bugs" EntityType="EntityModel.Store.bugs" store:Type="Tables" Schema="bugtracker" />
+    <EntitySet Name="users" EntityType="EntityModel.Store.users" store:Type="Tables" Schema="bugtracker" />
+    <AssociationSet Name="bugs_ibfk_1" Association="EntityModel.Store.bugs_ibfk_1">
+      <End Role="users" EntitySet="users" />
+      <End Role="bugs" EntitySet="bugs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="bugs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="15" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Priority" Type="varchar" Nullable="false" MaxLength="6" />
+    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="11" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="DateFound" Type="timestamp" Nullable="false" Precision="0" />
+    <Property Name="LastModified" Type="timestamp" Nullable="false" Precision="0" />
+    <Property Name="Fixed" Type="bool" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="Surname" Type="varchar" Nullable="false" MaxLength="40" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="15" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="60" />
+  </EntityType>
+  <Association Name="bugs_ibfk_1">
+    <End Role="users" Type="EntityModel.Store.users" Multiplicity="1" />
+    <End Role="bugs" Type="EntityModel.Store.bugs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bugs">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
