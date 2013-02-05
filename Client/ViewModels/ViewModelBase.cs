@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.ComponentModel;
+using Client.ServiceReference;
 
 namespace Client.ViewModels
 {
@@ -17,9 +18,10 @@ namespace Client.ViewModels
     public abstract class ViewModelBase<T> where T : Window, new() 
     {
 
-        protected WindowController _controller;
         // Reference to the view
-        protected T _view;
+        protected T _View;
+        protected TrackerServiceClient _Service;
+        protected IWindowController _Controller;
 
 
         public ViewModelBase() { }
@@ -29,9 +31,10 @@ namespace Client.ViewModels
         /// Copies reference of window controller to global variable.
         /// </summary>
         /// <param name="controller">Reference to window controller.</param>
-        public ViewModelBase(WindowController controller)
+        public ViewModelBase(IWindowController controller, TrackerServiceClient service)
         {
-            _controller = controller;
+            _Controller = controller;
+            _Service = service;
         }
 
 
@@ -42,9 +45,9 @@ namespace Client.ViewModels
         /// </summary>
         public void ShowView()
         {
-            _view = new T();
-            _view.Show();
-            _view.DataContext = this;
+            _View = new T();
+            _View.Show();
+            _View.DataContext = this;
         }
 
 
@@ -54,7 +57,7 @@ namespace Client.ViewModels
         /// </summary>
         public void CloseView()
         {
-            if (_view != null) _view.Close();
+            if (_View != null) _View.Close();
         }
     
     }

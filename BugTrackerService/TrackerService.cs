@@ -90,5 +90,13 @@ namespace BugTrackerService
 
             return bugRepo.Create(bug);
         }
+
+
+        public User GetMyUser()
+        {
+            UserRepository repo = new UserRepository();
+
+            return (User)repo.GetAll().Where(p => p.Username == CustomPrincipal.Current.Identity.Name).SingleOrDefault();
+        }
     }
 }

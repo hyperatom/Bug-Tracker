@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Collections.Specialized;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Client.ViewModels
 {
@@ -29,7 +31,8 @@ namespace Client.ViewModels
         /// Stores reference to window controller as global variable.
         /// </summary>
         /// <param name="controller">Reference to window controller object.</param>
-        public MainWindowViewModel(WindowController controller) : base(controller) { }
+        public MainWindowViewModel(IWindowController controller, TrackerServiceClient service)
+            : base(controller, service) { }
 
 
         /// <summary>
@@ -121,32 +124,73 @@ namespace Client.ViewModels
         {
             if (!IsBugViewVisible()) ToggleBugView();
 
-            _view.buttonSave.Visibility = Visibility.Hidden;
-            _view.buttonAdd.Visibility = Visibility.Visible;
+            _View.buttonSave.Visibility = Visibility.Hidden;
+            _View.buttonAdd.Visibility = Visibility.Visible;
 
             if (SelectedBug == null)
             {
-                BugViewModel vm = new BugViewModel(new Bug { Id = 5, Name = "boobs" });
-                SelectedBug = vm;
+                SelectedBug = new BugViewModel(new Bug());
             }
+            else
+            {
+                ResetTextBoxesContent();
+            }
+            
 
-            //SelectedBug.Name = "dddddddddd";
-            //ResetTextBoxes();
+            ResetTextBoxBindings();
+            User myUser = (User) _Service.GetMyUser();
+            SelectedBug.CreatedBy = myUser;
+            SelectedBug.CreatedBy.Username = myUser.Username;
+            SelectedBug.Priority = "meep";
+        }
+
+
+        /// <summary>
+        /// Resets the text box bindings to allow the content to become
+        /// rebound with the selected bug.
+        /// </summary>
+        private void ResetTextBoxBindings()
+        {
+            Binding nameTextBinding = new Binding("Name");
+            Binding descTextBinding = new Binding("Description");
+            Binding statusTextBinding = new Binding("Status");
+            Binding foundTextBinding = new Binding("DateFound");
+            Binding modifiedTextBinding = new Binding("LastModified");
+            Binding fixedTextBinding = new Binding("Fixed");
+            Binding createdByTextBinding = new Binding("CreatedBy");
+            Binding priorityTextBinding = new Binding("Priority");
+
+            nameTextBinding.Source = SelectedBug;
+            descTextBinding.Source = SelectedBug;
+            statusTextBinding.Source = SelectedBug;
+            foundTextBinding.Source = SelectedBug;
+            modifiedTextBinding.Source = SelectedBug;
+            fixedTextBinding.Source = SelectedBug;
+            priorityTextBinding.Source = SelectedBug;
+
+            _View.textBoxName.SetBinding(TextBox.TextProperty, nameTextBinding);
+            _View.textBoxDesc.SetBinding(TextBox.TextProperty, descTextBinding);
+            _View.textBoxStatus.SetBinding(TextBox.TextProperty, statusTextBinding);
+            _View.textBoxFound.SetBinding(TextBox.TextProperty, foundTextBinding);
+            _View.textBoxModified.SetBinding(TextBox.TextProperty, modifiedTextBinding);
+            _View.checkBoxFixed.SetBinding(TextBox.TextProperty, fixedTextBinding);
+            _View.textBoxCreatedBy.SetBinding(TextBox.TextProperty, createdByTextBinding);
+            _View.textBoxPriority.SetBinding(TextBox.TextProperty, priorityTextBinding);
         }
 
 
         /// <summary>
         /// Resets the content in south view panel text boxes.
         /// </summary>
-        private void ResetTextBoxes()
+        private void ResetTextBoxesContent()
         {
-            _view.textBoxCreatedBy.Text = "";
-            _view.textBoxDesc.Text = "";
-            _view.textBoxFound.Text = "";
-            _view.textBoxModified.Text = "";
-            _view.textBoxName.Text = "";
-            _view.textBoxPriority.Text = "";
-            _view.textBoxStatus.Text = "";
+            _View.textBoxCreatedBy.Text = "";
+            _View.textBoxDesc.Text = "";
+            _View.textBoxFound.Text = "";
+            _View.textBoxModified.Text = "";
+            _View.textBoxName.Text = "";
+            _View.textBoxPriority.Text = "";
+            _View.textBoxStatus.Text = "";
         }
 
 
@@ -174,7 +218,7 @@ namespace Client.ViewModels
             if (bug is BugViewModel)
             {
                 BugViewModel vm = (BugViewModel)bug;
-                _controller.svc.SaveBug(vm.ToBugModel());
+                _Service.SaveBug(vm.ToBugModel());
             }
         }
 
@@ -196,7 +240,7 @@ namespace Client.ViewModels
 
         private void AddBug()
         {
-            _controller.svc.AddBug(SelectedBug.ToBugModel());
+            _Service.AddBug(SelectedBug.ToBugModel());
             BugList.Add(SelectedBug);
         }
 
@@ -209,7 +253,7 @@ namespace Client.ViewModels
             }
             else
             {
-                MessageBox.Show(SelectedBug.Name);
+                MessageBox.Show(SelectedBug.Name+SelectedBug.Priority+SelectedBug.Status+SelectedBug.Description);
             }
         }
 
@@ -222,7 +266,7 @@ namespace Client.ViewModels
             if (SelectedActiveProject != null)
             {
                 BugList.Clear();
-                List<Bug> bugList = _controller.svc.GetBugsByProject(SelectedActiveProject.ToProjectModel());
+                List<Bug> bugList = _Service.GetBugsByProject(SelectedActiveProject.ToProjectModel());
 
                 foreach (Bug bug in bugList)
                 {
@@ -241,7 +285,7 @@ namespace Client.ViewModels
             get {
                 if (_ProjectComboBox == null)
                 {
-                    _ProjectComboBox = ProjectModelToViewModel(_controller.svc.GetMyProjects().ToList());
+                    _ProjectComboBox = ProjectModelToViewModel(_Service.GetMyProjects().ToList());
                 }
 
                 return _ProjectComboBox;
@@ -290,7 +334,7 @@ namespace Client.ViewModels
         /// <returns>Returns true if visible.</returns>
         private bool IsBugViewVisible()
         {
-            if (_view.BugView.Visibility == System.Windows.Visibility.Hidden)
+            if (_View.BugView.Visibility == System.Windows.Visibility.Hidden)
             {
                 return false;
             }
@@ -308,11 +352,11 @@ namespace Client.ViewModels
         {
             if (IsBugViewVisible() == false)
             {
-                _view.BugView.Visibility = System.Windows.Visibility.Visible;
+                _View.BugView.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
-                _view.BugView.Visibility = System.Windows.Visibility.Hidden;
+                _View.BugView.Visibility = System.Windows.Visibility.Hidden;
             }
         }
 
@@ -343,7 +387,7 @@ namespace Client.ViewModels
         {
             get 
             {
-                if (_view != null && _view.dataGrid1.SelectedItems.Count == 0)
+                if (_View != null && _View.dataGrid1.SelectedItems.Count == 0)
                 {
                     return false;
                 }
@@ -361,13 +405,13 @@ namespace Client.ViewModels
         private void DeleteSelectedBugs()
         {
             // Copy and cast selected bugs into a list of bug view models
-            List<BugViewModel> bugVmList = _view.dataGrid1.SelectedItems.Cast<BugViewModel>().ToList();
+            List<BugViewModel> bugVmList = _View.dataGrid1.SelectedItems.Cast<BugViewModel>().ToList();
 
             // For each selected bug, remove it from the service and view
             foreach (BugViewModel bug in bugVmList)
             {
                 // Delete using web service
-                _controller.svc.DeleteBug(bug.ToBugModel());
+                _Service.DeleteBug(bug.ToBugModel());
                 // Delete from local bug view
                 BugList.Remove(bug);
             }

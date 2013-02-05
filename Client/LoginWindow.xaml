@@ -5,26 +5,18 @@
         xmlns:local="clr-namespace:Client"
         xmlns:loginspace="clr-namespace:Client.Params.Login"
         xmlns:viewmodels="clr-namespace:Client.ViewModels">
+    <Window.DataContext>
+        <viewmodels:LoginViewModel />
+    </Window.DataContext>
 
     <Grid>
-        <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding LoginCommand}">
-        <Button.Resources>
-            <loginspace:LoginParametersConverter x:Key="loginParametersConverter" />
-        </Button.Resources>
-        <Button.CommandParameter>
-            <MultiBinding Converter="{StaticResource loginParametersConverter}">
-                <MultiBinding.Bindings>
-                    <Binding ElementName="textBox1" Path="Text" />
-                    <Binding ElementName="textBox2" Path="Text" />
-                </MultiBinding.Bindings>
-            </MultiBinding>
-        </Button.CommandParameter>
-        </Button>
+        <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoginCommand}" />
 
         <Label Content="Username:" Height="28" HorizontalAlignment="Left" Margin="34,80,0,0" Name="label1" VerticalAlignment="Top" />
         <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="34,128,0,0" Name="label2" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="114,84,0,0" Name="textBox1" VerticalAlignment="Top" Width="120" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="114,128,0,0" Name="textBox2" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="114,80,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="120" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label Content="Login" Height="28" HorizontalAlignment="Left" Margin="34,30,0,0" Name="label3" VerticalAlignment="Top" />
+        <CheckBox Content="Remember me" Height="16" HorizontalAlignment="Left" Margin="136,194,0,0" Name="checkBoxRememberMe" VerticalAlignment="Top" IsChecked="{Binding Path=IsRememberMeChecked}" />
+        <PasswordBox x:Name="PasswordBox" loginspace:PasswordHelper.BindPassword="True" loginspace:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="114,128,61,104" />
     </Grid>
 </Window>

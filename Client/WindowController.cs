@@ -13,22 +13,50 @@ namespace Client
     /// passed to each child view model. This allows all view models to
     /// control any other window in the client using this reference.
     /// </summary>
-    public class WindowController
+    public class WindowController : Client.IWindowController
     {
+
+        private TrackerServiceClient _Service;
+        private LoginViewModel _LoginVM;
+        private MainWindowViewModel _MainVM;
+
 
         /// <summary>
         /// Field to reference service. This is the only instance of the service
         /// in the entire client. All view models will access the service through
         /// this field by using a reference through this object.
         /// </summary>
-        public TrackerServiceClient svc { get; set; }
+        private TrackerServiceClient Service 
+        {
+            get
+            {
+                if (_Service == null)
+                    _Service = new TrackerServiceClient();
+
+                return _Service;
+            }
+            set
+            {
+                _Service = value;
+            }
+        }
 
 
         /// <summary>
         /// All view models will have access to each other (public).
         /// </summary>
-        public LoginViewModel      loginVM;
-        public MainWindowViewModel mainVM;
+        private LoginViewModel LoginVM
+        {
+            get { return _LoginVM; }
+            set { _LoginVM = value; }
+        }
+
+
+        private MainWindowViewModel MainVM
+        {
+            get { return _MainVM; }
+            set { _MainVM = value; }
+        }
 
 
         /// <summary>
@@ -37,20 +65,35 @@ namespace Client
         /// </summary>
         public WindowController()
         {
-            InitialiseViewModels();
-            loginVM.ShowView();
+            ShowLoginWindow();
         }
 
 
-        /// <summary>
-        /// All view models are initialised here while passing
-        /// a reference to this object to allow access to all
-        /// view models.
-        /// </summary>
-        private void InitialiseViewModels()
+        public void ShowLoginWindow()
         {
-            loginVM = new LoginViewModel(this);
-            mainVM = new MainWindowViewModel(this);
+            LoginVM = new LoginViewModel(this, Service);
+            LoginVM.ShowView();
+        }
+
+
+        public void CloseLoginWindow()
+        {
+            LoginVM.CloseView();
+            LoginVM = null;
+        }
+
+
+        public void ShowMainWindow()
+        {
+            MainVM = new MainWindowViewModel(this, Service);
+            MainVM.ShowView();
+        }
+
+
+        public void CloseMainWindow()
+        {
+            MainVM.CloseView();
+            MainVM = null;
         }
 
     }

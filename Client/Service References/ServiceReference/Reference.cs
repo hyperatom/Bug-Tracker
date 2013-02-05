@@ -508,6 +508,9 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/AddBug", ReplyAction="http://tempuri.org/ITrackerService/AddBugResponse")]
         Client.ServiceReference.Bug AddBug(Client.ServiceReference.Bug bug);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetMyUser", ReplyAction="http://tempuri.org/ITrackerService/GetMyUserResponse")]
+        Client.ServiceReference.User GetMyUser();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -567,6 +570,10 @@ namespace Client.ServiceReference {
         
         public Client.ServiceReference.Bug AddBug(Client.ServiceReference.Bug bug) {
             return base.Channel.AddBug(bug);
+        }
+        
+        public Client.ServiceReference.User GetMyUser() {
+            return base.Channel.GetMyUser();
         }
     }
 }

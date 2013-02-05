@@ -37,5 +37,8 @@ namespace BugTrackerService
 
         [OperationContract]
         Bug AddBug(Bug bug);
+
+        [OperationContract]
+        User GetMyUser();
     }
 }
