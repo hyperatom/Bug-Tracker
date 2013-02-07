@@ -19,6 +19,7 @@ namespace Client
         private TrackerServiceClient _Service;
         private LoginViewModel _LoginVM;
         private MainWindowViewModel _MainVM;
+        private RegistrationViewModel _RegistrationVM;
 
 
         /// <summary>
@@ -59,6 +60,13 @@ namespace Client
         }
 
 
+        private RegistrationViewModel RegistrationVM
+        {
+            get { return _RegistrationVM; }
+            set { _RegistrationVM = value; }
+        }
+
+
         /// <summary>
         /// Default constructor initialises all view models and displays
         /// the first window as the login screen.
@@ -66,6 +74,20 @@ namespace Client
         public WindowController()
         {
             ShowLoginWindow();
+        }
+
+
+        public void ShowRegistrationWindow()
+        {
+            RegistrationVM = new RegistrationViewModel(this, Service);
+            RegistrationVM.ShowView();
+        }
+
+
+        public void CloseRegistrationWindow()
+        {
+            RegistrationVM.CloseView();
+            RegistrationVM = null;
         }
 
 

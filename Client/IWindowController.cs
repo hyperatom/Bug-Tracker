@@ -5,6 +5,8 @@ namespace Client
     {
         void CloseLoginWindow();
         void CloseMainWindow();
+        void CloseRegistrationWindow();
+        void ShowRegistrationWindow();
         void ShowLoginWindow();
         void ShowMainWindow();
     }

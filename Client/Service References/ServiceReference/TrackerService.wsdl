@@ -447,6 +447,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_Register_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_Register_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd0" namespace="http://tempuri.org/" />
@@ -508,6 +546,12 @@
   <wsdl:message name="ITrackerService_GetMyUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMyUserResponse" />
   </wsdl:message>
+  <wsdl:message name="ITrackerService_Register_InputMessage">
+    <wsdl:part name="parameters" element="tns:Register" />
+  </wsdl:message>
+  <wsdl:message name="ITrackerService_Register_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
   <wsdl:portType name="ITrackerService">
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/Login" message="tns:ITrackerService_Login_InputMessage" />
@@ -544,6 +588,10 @@
     <wsdl:operation name="GetMyUser">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/GetMyUser" message="tns:ITrackerService_GetMyUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/GetMyUserResponse" message="tns:ITrackerService_GetMyUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/Register" message="tns:ITrackerService_Register_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/RegisterResponse" message="tns:ITrackerService_Register_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Service" type="tns:ITrackerService">
@@ -645,6 +693,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#Service_GetMyUser_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap12:operation soapAction="http://tempuri.org/ITrackerService/Register" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#Service_Register_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#Service_Register_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -113,6 +113,28 @@ namespace Client.ViewModels
         }
 
 
+        private RelayCommand _registrationCommand;
+        public ICommand RegistrationCommand
+        {
+            get
+            {
+                if (_registrationCommand == null)
+                {
+                    _registrationCommand = new RelayCommand(param => this.ShowRegistrationWindow());
+                }
+
+                return _registrationCommand;
+            }
+        }
+
+
+        private void ShowRegistrationWindow()
+        {
+            _Controller.ShowRegistrationWindow();
+            _Controller.CloseLoginWindow();
+        }
+
+
         private bool CanLogin()
         {
             if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password))

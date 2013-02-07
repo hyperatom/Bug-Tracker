@@ -8,17 +8,15 @@ using System.ComponentModel.DataAnnotations;
 namespace DataEntities.Entity
 {
     [DataContract]
-    public class Role
+    public class Organisation
     {
-
         [DataMember]
-        [Range(1, 9999)]
+        [Range(1,9999)]
         public Int32 Id { get; set; }
 
         [DataMember]
-        [Required]
-        [StringLength(20)]
-        public string RoleName { get; set; }
-
+        [Required(AllowEmptyStrings=false)]
+        [StringLength(25)]
+        public string Name { get; set; }
     }
 }

@@ -10,10 +10,12 @@ using System.Security.Permissions;
 using BugTrackerService.Security;
 using System.Threading;
 using BugTrackerService.Faults;
+using DevTrends.WCFDataAnnotations;
 
 namespace BugTrackerService
 {
-    
+
+    [ValidateDataAnnotationsBehavior]
     public class TrackerService : ITrackerService
     {
 
@@ -98,5 +100,18 @@ namespace BugTrackerService
 
             return (User)repo.GetAll().Where(p => p.Username == CustomPrincipal.Current.Identity.Name).SingleOrDefault();
         }
+
+
+        
+        public void Register(User user)
+        {
+            UserRepository userRepo = new UserRepository();
+            OrganisationRepository orgRepo = new OrganisationRepository();
+
+            user.Organisation = orgRepo.Create(user.Organisation);
+
+            userRepo.Create(user);
+        }
+
     }
 }

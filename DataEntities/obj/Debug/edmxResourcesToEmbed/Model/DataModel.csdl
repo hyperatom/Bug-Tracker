@@ -21,6 +21,11 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Role" EntitySet="Roles1" />
     </AssociationSet>
+    <EntitySet Name="Organisations" EntityType="bugtrackerModel.Organisation" />
+    <AssociationSet Name="users_ibfk_1" Association="bugtrackerModel.users_ibfk_1">
+      <End Role="organisation" EntitySet="Organisations" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Bug">
     <Key>
@@ -48,6 +53,7 @@
     <Property Type="String" Name="Password" Nullable="false" />
     <NavigationProperty Name="Projects" Relationship="bugtrackerModel.user_projects" FromRole="User" ToRole="Project" />
     <NavigationProperty Name="Roles" Relationship="bugtrackerModel.user_roles" FromRole="User" ToRole="Role" />
+    <NavigationProperty Name="Organisation" Relationship="bugtrackerModel.users_ibfk_1" FromRole="User" ToRole="organisation" />
   </EntityType>
   <Association Name="bugs_ibfk_1">
     <End Type="bugtrackerModel.User" Role="user" Multiplicity="1" />
@@ -79,5 +85,16 @@
   <Association Name="user_roles">
     <End Type="bugtrackerModel.User" Role="User" Multiplicity="*" />
     <End Type="bugtrackerModel.Role" Role="Role" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Organisation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+  </EntityType>
+  <Association Name="users_ibfk_1">
+    <End Type="bugtrackerModel.Organisation" Role="organisation" Multiplicity="1" />
+    <End Type="bugtrackerModel.User" Role="User" Multiplicity="*" />
   </Association>
 </Schema>

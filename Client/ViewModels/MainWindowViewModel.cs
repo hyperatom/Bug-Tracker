@@ -11,6 +11,7 @@ using System.Windows;
 using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.ServiceModel;
 
 namespace Client.ViewModels
 {
@@ -247,13 +248,14 @@ namespace Client.ViewModels
 
         private void Debug()
         {
-            if (SelectedBug == null)
+            try
             {
-                MessageBox.Show("Selected bug is null!");
+                Organisation org = new Organisation { Id = 99999, Name = " " };
+                
             }
-            else
+            catch(FaultException f)
             {
-                MessageBox.Show(SelectedBug.Name+SelectedBug.Priority+SelectedBug.Status+SelectedBug.Description);
+                MessageBox.Show(f.Message);
             }
         }
 

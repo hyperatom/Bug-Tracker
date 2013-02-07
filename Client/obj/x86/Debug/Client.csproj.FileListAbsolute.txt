@@ -14,3 +14,6 @@ C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.csproj.GenerateResource.Cache
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.exe
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\Client.pdb
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\RegistrationWindow.baml
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\RegistrationWindow.g.cs
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\obj\x86\Debug\App.baml

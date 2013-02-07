@@ -40,5 +40,8 @@ namespace BugTrackerService
 
         [OperationContract]
         User GetMyUser();
+
+        [OperationContract]
+        void Register(User user);
     }
 }

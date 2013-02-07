@@ -23,7 +23,7 @@ namespace DataEntities.Repository
 
         public IQueryable<User> GetAll()
         {
-            IQueryable<User> users = Context.Users.Include("Projects").Include("Roles");
+            IQueryable<User> users = Context.Users.Include("Projects").Include("Roles").Include("Organisation");
 
             return users;
         }
