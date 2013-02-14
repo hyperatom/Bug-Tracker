@@ -9,12 +9,12 @@ Client
 none
 false
 DEBUG;TRACE
-C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\App.xaml
-3-556439904
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\Views\App.xaml
+5-1680779909
 
-21-1102264008
+25-2010218921
 14637617180
-LoginWindow.xaml;MainWindow.xaml;RegistrationWindow.xaml;
+Views\Controls\BugViewPanel.xaml;Views\Controls\CommandPanel.xaml;Views\LoginWindow.xaml;Views\MainWindow.xaml;Views\RegistrationWindow.xaml;
 
 False
 

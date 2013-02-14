@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Client.ServiceReference;
 using System.ComponentModel;
 using System.Windows.Controls;
 using Client.Commands;
@@ -11,10 +10,14 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.ServiceModel;
+using Client.ServiceRegistration;
+using Client.ServiceReference;
+using System.Threading.Tasks;
+using Client.Controllers;
 
 namespace Client.ViewModels
 {
-    public class RegistrationViewModel : ViewModelBase<RegistrationWindow>, INotifyPropertyChanged, IDataErrorInfo
+    public class RegistrationViewModel : ViewModel, IWindow, IDataErrorInfo
     {
 
         private string _FirstName;
@@ -24,6 +27,10 @@ namespace Client.ViewModels
         private string _Password;
         private string _Organisation;
         private bool _IsValidating = false;
+        private bool _IsRegisterEnabled = true;
+
+        private RelayCommand _RegisterCommand;
+        private RelayCommand _CancelCommand;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
@@ -31,38 +38,34 @@ namespace Client.ViewModels
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public RegistrationViewModel() : base() { }
-
-
-        /// <summary>
-        /// Inherits from the parent class. Stores a reference to the window
-        /// controller class as a global variable.
-        /// </summary>
-        /// <param name="controller">Reference to window controller object.</param>
-        public RegistrationViewModel(IWindowController controller, TrackerServiceClient service)
-            : base(controller, service)
+        public RegistrationViewModel() : base() 
         {
-            FirstAndLastName = "";
-            Email = "";
-            Password = "";
-            Organisation = "";
+            InitialiseFields();
         }
+
+
+        public EventHandler RequestClose { get; set; }
+        public IWindowLoader WindowLoader { get; set; }
 
 
         private string FirstName
         {
             get { return _FirstName; }
-            set { _FirstName = value; }
+            set { _FirstName = value; OnPropertyChanged("Firstname"); }
         }
 
 
         private string LastName
         {
             get { return _LastName; }
-            set { _LastName = value; }
+            set {_LastName = value; OnPropertyChanged("Lastname"); }
         }
 
 
+        /// <summary>
+        /// Field splits users full name into first
+        /// name and second name.
+        /// </summary>
         public string FirstAndLastName
         {
             get { return _FirstAndLastName; }
@@ -96,14 +99,15 @@ namespace Client.ViewModels
         }
 
 
-        private void SplitFullName(string fullName)
+        public bool IsRegisterButtonEnabled
         {
-            FirstName = Regex.Match(fullName, @"^[A-Za-z]").ToString();
-            LastName = Regex.Match(fullName, @"[A-Za-z]$").ToString();
+            get { return _IsRegisterEnabled; }
+            set { _IsRegisterEnabled = value; OnPropertyChanged("IsRegisterButtonEnabled"); }
         }
 
 
-        private RelayCommand _RegisterCommand;
+        #region Commands
+
         public ICommand RegisterCommand
         {
             get
@@ -118,7 +122,6 @@ namespace Client.ViewModels
         }
 
 
-        private RelayCommand _CancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -132,11 +135,40 @@ namespace Client.ViewModels
             }
         }
 
+        #endregion
 
+
+        /// <summary>
+        /// Initialises the form fields with empty strings to
+        /// ensure validation detects an empty field.
+        /// </summary>
+        private void InitialiseFields()
+        {
+            FirstAndLastName = "";
+            Email = "";
+            Password = "";
+            Organisation = "";
+        }
+
+
+        /// <summary>
+        /// Regex splits full name into first and second names.
+        /// </summary>
+        /// <param name="fullName">The users full name as a single string.</param>
+        private void SplitFullName(string fullName)
+        {
+            FirstName = Regex.Match(fullName, @"^[A-Za-z]+").ToString();
+            LastName = Regex.Match(fullName, @"[A-Za-z]+$").ToString();
+        }
+
+
+        /// <summary>
+        /// Navigates the user back to the login window.
+        /// </summary>
         private void Cancel()
         {
-            _Controller.ShowLoginWindow();
-            _Controller.CloseRegistrationWindow();
+            WindowLoader.ShowView(new LoginViewModel());
+            RequestClose.Invoke(this, null);
         }
 
 
@@ -165,15 +197,22 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Attempts to register a new user and organisation with the service
+        /// using form data.
+        /// </summary>
         private void Register()
         {
             if (CanRegister())
             {
+                IsRegisterButtonEnabled = false;
+
                 try
                 {
-                    Organisation org = new Organisation { Name = Organisation };
+                    Client.ServiceRegistration.Organisation org = 
+                        new Client.ServiceRegistration.Organisation { Name = Organisation };
 
-                    User user = new User
+                    Client.ServiceRegistration.User user = new Client.ServiceRegistration.User
                     {
                         FirstName = this.FirstName,
                         Password = this.Password,
@@ -182,13 +221,23 @@ namespace Client.ViewModels
                         Organisation = org
                     };
 
-                    _Service.Register(user);
+                    Client.ServiceRegistration.RegistrationClient registerClient =
+                        new Client.ServiceRegistration.RegistrationClient();
+
+                    registerClient.RegisterCompleted += new EventHandler<AsyncCompletedEventArgs>(RegistrationComplete);
+                    registerClient.RegisterAsync(user);
                 }
                 catch (FaultException e)
                 {
                     MessageBox.Show(e.Message);
                 }
             }
+        }
+
+
+        public void RegistrationComplete(object sender, AsyncCompletedEventArgs args) 
+        {
+            IsRegisterButtonEnabled = true;
         }
 
 
@@ -282,17 +331,6 @@ namespace Client.ViewModels
 
                 return result;
             }
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

@@ -12,7 +12,7 @@ namespace DataEntities.Entity
     {
 
         [DataMember]
-        [Range(1, 9999)]
+        [Range(0,9999)]
         public Int32 Id { get; set; }
 
         [DataMember]

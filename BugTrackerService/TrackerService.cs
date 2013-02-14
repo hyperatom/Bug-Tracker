@@ -102,15 +102,33 @@ namespace BugTrackerService
         }
 
 
-        
-        public void Register(User user)
+        public List<string> GetBugPriorityList()
         {
-            UserRepository userRepo = new UserRepository();
-            OrganisationRepository orgRepo = new OrganisationRepository();
+            return new List<string>() 
+            {
+                "Low",
+                "Medium",
+                "High"
+            };
+        }
 
-            user.Organisation = orgRepo.Create(user.Organisation);
 
-            userRepo.Create(user);
+        public List<User> GetUsersByProject(Project proj)
+        {
+            UserRepository userRep = new UserRepository();
+
+            return userRep.GetAll().Where(p => p.Projects.Contains(proj)).ToList();
+        }
+
+
+        public List<string> GetBugStatusList()
+        {
+            return new List<string>()
+            {
+                "Open",
+                "In Progress",
+                "Closed"
+            };
         }
 
     }

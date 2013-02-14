@@ -16,10 +16,10 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Project" EntitySet="Projects" />
     </AssociationSet>
-    <EntitySet Name="Roles1" EntityType="bugtrackerModel.Role" />
+    <EntitySet Name="Roles" EntityType="bugtrackerModel.Role" />
     <AssociationSet Name="user_roles" Association="bugtrackerModel.user_roles">
       <End Role="User" EntitySet="Users" />
-      <End Role="Role" EntitySet="Roles1" />
+      <End Role="Role" EntitySet="Roles" />
     </AssociationSet>
     <EntitySet Name="Organisations" EntityType="bugtrackerModel.Organisation" />
     <AssociationSet Name="users_ibfk_1" Association="bugtrackerModel.users_ibfk_1">

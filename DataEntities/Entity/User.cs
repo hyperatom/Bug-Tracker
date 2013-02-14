@@ -11,7 +11,7 @@ namespace DataEntities.Entity
     public class User
     {
         [DataMember]
-        [Range(1, 9999)]
+        [Range(0, 9999)]
         public Int32 Id { get; set; }
 
         [DataMember]
@@ -35,11 +35,9 @@ namespace DataEntities.Entity
         public String Password { get; set; }
 
         [DataMember]
-        [Required]
         public IList<Project> Projects { get; set; }
 
         [DataMember]
-        [Required]
         public IList<Role> Roles { get; set; }
 
         [DataMember]

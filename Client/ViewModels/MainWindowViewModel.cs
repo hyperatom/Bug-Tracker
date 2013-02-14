@@ -12,6 +12,9 @@ using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.ServiceModel;
+using Client.Services;
+using Client.Controllers;
+using Client.ViewModels.Controls;
 
 namespace Client.ViewModels
 {
@@ -19,31 +22,186 @@ namespace Client.ViewModels
     /// This class is the view model which controls the main bug
     /// view window.
     /// </summary>
-    public class MainWindowViewModel : ViewModelBase<MainWindow>
+    public class MainWindowViewModel : ViewModel, IWindow
     {
+
+        private bool _IsBugViewVisible;
+        private String _Username;
+        private String _ProjectTitle;
+
+        private BugViewModel _SelectedBug;
+
+        private List<BugViewModel> _SelectedBugs;
+        private ProjectViewModel _SelectedActiveProject;
+        private BugPanelViewModel _SouthViewPanel;
+        private CommandPanelViewModel _CommandPanel;
+        
+        private ObservableCollection<BugViewModel> _BugList;
+        private ObservableCollection<ProjectViewModel> _ProjectComboBox;
+
+        private RelayCommand _DeBugCommand;
+
 
         /// <summary>
         /// Inherits constructor from base class.
         /// </summary>
-        public MainWindowViewModel() : base() { }
+        public MainWindowViewModel() : base() 
+        {
+            Username = TrackerService.Service.GetMyUser().FirstName;
+        }
 
 
-        /// <summary>
-        /// Stores reference to window controller as global variable.
-        /// </summary>
-        /// <param name="controller">Reference to window controller object.</param>
-        public MainWindowViewModel(IWindowController controller, TrackerServiceClient service)
-            : base(controller, service) { }
+        public EventHandler RequestClose { get; set; }
+        public IWindowLoader WindowLoader { get; set; }
+
+
+        public String Username
+        {
+            get { return _Username; }
+            set { _Username = value; }
+        }
+
+
+        public String ProjectTitle
+        {
+            get { return _ProjectTitle; }
+            set 
+            { 
+                _ProjectTitle = value+" Bugs";
+                OnPropertyChanged("ProjectTitle"); 
+            }
+        }
+
+
+        public BugPanelViewModel SouthViewPanel
+        {
+            get 
+            {
+                if (_SouthViewPanel == null)
+                {
+                    _SouthViewPanel = new BugPanelViewModel();
+                    _SouthViewPanel.Parent = this;
+                }
+
+                return _SouthViewPanel;
+            }
+
+            set { _SouthViewPanel = value; OnPropertyChanged("BugPanelViewModel"); }
+        }
+
+
+        public CommandPanelViewModel CommandPanel
+        {
+            get 
+            {
+                if (_CommandPanel == null)
+                {
+                    _CommandPanel = new CommandPanelViewModel();
+                    _CommandPanel.Parent = this;
+                }
+
+                return _CommandPanel;
+            }
+
+            set { _CommandPanel = value; OnPropertyChanged("CommandPanelViewModel"); }
+        }
 
 
         /// <summary>
         /// Stores the bug view model which the user has currently selected.
         /// </summary>
-        private BugViewModel _SelectedBug;
         public BugViewModel SelectedBug
         {
-            get { return _SelectedBug; }
-            set { _SelectedBug = value; }
+            get 
+            { 
+                return _SelectedBug;
+            }
+
+            set 
+            {
+                _SelectedBug = value;
+                SouthViewPanel.EditedBug = value.ToBugModel();
+                OnPropertyChanged("SelectedBug");
+            }
+        }
+        
+
+        public List<BugViewModel> SelectedBugs
+        {
+            get 
+            {
+                _SelectedBugs = new List<BugViewModel>();
+
+                foreach (BugViewModel bug in BugList)
+                {
+                    if (bug.IsSelected)
+                        _SelectedBugs.Add(bug);
+                }
+
+                return _SelectedBugs;
+            }
+        }
+
+
+        public bool IsBugViewVisible
+        {
+            get { return _IsBugViewVisible; }
+            set
+            {
+                _IsBugViewVisible = value;
+                OnPropertyChanged("IsBugViewVisible");
+            }
+        }
+
+
+        /// <summary>
+        /// The state of row selection. True if more than one rows are selected.
+        /// </summary>
+        public bool IsRowsSelected
+        {
+            get
+            {
+                if (SelectedBugs == null || SelectedBugs.Count <= 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+
+        /// <summary>
+        /// The list of user assigned projects to be displayed in combo box.
+        /// </summary>
+        public ObservableCollection<ProjectViewModel> ProjectComboBox
+        {
+            get
+            {
+                if (_ProjectComboBox == null)
+                {
+                    _ProjectComboBox = ProjectModelToViewModel(TrackerService.Service.GetMyProjects().ToList());
+                }
+
+                return _ProjectComboBox;
+            }
+
+            set { _ProjectComboBox = value; }
+        }
+
+
+        /// <summary>
+        /// Stores the currently selected project from combo box.
+        /// </summary>
+        public ProjectViewModel SelectedActiveProject
+        {
+            get { return _SelectedActiveProject; }
+            set
+            {
+                _SelectedActiveProject = value;
+                PopulateBugTable();
+                ProjectTitle = value.Name;
+            }
         }
 
 
@@ -51,42 +209,29 @@ namespace Client.ViewModels
         /// Observable collection of bug view models contained
         /// within the bug table.
         /// </summary>
-        private ObservableCollection<BugViewModel> _bugList;
         public ObservableCollection<BugViewModel> BugList
         {
             get
             {
-                if (_bugList == null)
+                if (_BugList == null)
                 {
-                    _bugList = new ObservableCollection<BugViewModel>();
+                    _BugList = new ObservableCollection<BugViewModel>();
                 }
 
-                return _bugList;
+                return _BugList;
             }
             
-            set { _bugList = value; }
-        }
-
-
-        /// <summary>
-        /// Displays the south view panel containing details of bug attributes.
-        /// </summary>
-        private RelayCommand _EditBugCommand;
-        public ICommand EditBugCommand
-        {
-            get
-            {
-                if (_EditBugCommand == null)
-                {
-                    _EditBugCommand = new RelayCommand(param => this.ToggleBugView(), param => this.IsRowsSelected);
-                }
-
-                return _EditBugCommand;
+            set 
+            { 
+                _BugList = value;
+                OnPropertyChanged("BugList");
             }
         }
 
 
-        private RelayCommand _DeBugCommand;
+
+        #region Commands
+
         public ICommand DeBugCommand
         {
             get
@@ -100,163 +245,13 @@ namespace Client.ViewModels
             }
         }
 
+        #endregion
 
-        private RelayCommand _NewBugCommand;
-        public ICommand NewBugCommand
-        {
-            get
-            {
-                if (_NewBugCommand == null)
-                {
-                    _NewBugCommand = new RelayCommand(param => this.OpenNewBugView());
-                }
-
-                return _NewBugCommand;
-            }
-        }
-
-
-        /// <summary>
-        /// When add new bug button is clicked, show the south view panel
-        /// and reset the bug currently being viewed. Hide the save button
-        /// and display the add button.
-        /// </summary>
-        private void OpenNewBugView()
-        {
-            if (!IsBugViewVisible()) ToggleBugView();
-
-            _View.buttonSave.Visibility = Visibility.Hidden;
-            _View.buttonAdd.Visibility = Visibility.Visible;
-
-            if (SelectedBug == null)
-            {
-                SelectedBug = new BugViewModel(new Bug());
-            }
-            else
-            {
-                ResetTextBoxesContent();
-            }
-            
-
-            ResetTextBoxBindings();
-            User myUser = (User) _Service.GetMyUser();
-            SelectedBug.CreatedBy = myUser;
-            SelectedBug.CreatedBy.Username = myUser.Username;
-            SelectedBug.Priority = "meep";
-        }
-
-
-        /// <summary>
-        /// Resets the text box bindings to allow the content to become
-        /// rebound with the selected bug.
-        /// </summary>
-        private void ResetTextBoxBindings()
-        {
-            Binding nameTextBinding = new Binding("Name");
-            Binding descTextBinding = new Binding("Description");
-            Binding statusTextBinding = new Binding("Status");
-            Binding foundTextBinding = new Binding("DateFound");
-            Binding modifiedTextBinding = new Binding("LastModified");
-            Binding fixedTextBinding = new Binding("Fixed");
-            Binding createdByTextBinding = new Binding("CreatedBy");
-            Binding priorityTextBinding = new Binding("Priority");
-
-            nameTextBinding.Source = SelectedBug;
-            descTextBinding.Source = SelectedBug;
-            statusTextBinding.Source = SelectedBug;
-            foundTextBinding.Source = SelectedBug;
-            modifiedTextBinding.Source = SelectedBug;
-            fixedTextBinding.Source = SelectedBug;
-            priorityTextBinding.Source = SelectedBug;
-
-            _View.textBoxName.SetBinding(TextBox.TextProperty, nameTextBinding);
-            _View.textBoxDesc.SetBinding(TextBox.TextProperty, descTextBinding);
-            _View.textBoxStatus.SetBinding(TextBox.TextProperty, statusTextBinding);
-            _View.textBoxFound.SetBinding(TextBox.TextProperty, foundTextBinding);
-            _View.textBoxModified.SetBinding(TextBox.TextProperty, modifiedTextBinding);
-            _View.checkBoxFixed.SetBinding(TextBox.TextProperty, fixedTextBinding);
-            _View.textBoxCreatedBy.SetBinding(TextBox.TextProperty, createdByTextBinding);
-            _View.textBoxPriority.SetBinding(TextBox.TextProperty, priorityTextBinding);
-        }
-
-
-        /// <summary>
-        /// Resets the content in south view panel text boxes.
-        /// </summary>
-        private void ResetTextBoxesContent()
-        {
-            _View.textBoxCreatedBy.Text = "";
-            _View.textBoxDesc.Text = "";
-            _View.textBoxFound.Text = "";
-            _View.textBoxModified.Text = "";
-            _View.textBoxName.Text = "";
-            _View.textBoxPriority.Text = "";
-            _View.textBoxStatus.Text = "";
-        }
-
-
-        private RelayCommand _SaveBugCommand;
-        public ICommand SaveBugCommand
-        {
-            get
-            {
-                if (_SaveBugCommand == null)
-                {
-                    _SaveBugCommand = new RelayCommand(param => this.SaveBug(param));
-                }
-
-                return _SaveBugCommand;
-            }
-        }
-
-
-        /// <summary>
-        /// Saves a bug which has been editied.
-        /// </summary>
-        /// <param name="bug">The object which has been edited.</param>
-        private void SaveBug(object bug)
-        {
-            if (bug is BugViewModel)
-            {
-                BugViewModel vm = (BugViewModel)bug;
-                _Service.SaveBug(vm.ToBugModel());
-            }
-        }
-
-
-        private RelayCommand _AddBugCommand;
-        public ICommand AddBugCommand
-        {
-            get
-            {
-                if (_AddBugCommand == null)
-                {
-                    _AddBugCommand = new RelayCommand(param => this.AddBug());
-                }
-
-                return _AddBugCommand;
-            }
-        }
-
-
-        private void AddBug()
-        {
-            _Service.AddBug(SelectedBug.ToBugModel());
-            BugList.Add(SelectedBug);
-        }
 
 
         private void Debug()
         {
-            try
-            {
-                Organisation org = new Organisation { Id = 99999, Name = " " };
-                
-            }
-            catch(FaultException f)
-            {
-                MessageBox.Show(f.Message);
-            }
+            BugList.Add(new BugViewModel(new Bug { Id = 5, Name = "joe" }));
         }
 
 
@@ -268,7 +263,7 @@ namespace Client.ViewModels
             if (SelectedActiveProject != null)
             {
                 BugList.Clear();
-                List<Bug> bugList = _Service.GetBugsByProject(SelectedActiveProject.ToProjectModel());
+                List<Bug> bugList = TrackerService.Service.GetBugsByProject(SelectedActiveProject.ToProjectModel());
 
                 foreach (Bug bug in bugList)
                 {
@@ -277,39 +272,6 @@ namespace Client.ViewModels
             }
         }
 
-
-        /// <summary>
-        /// The list of user assigned projects to be displayed in combo box.
-        /// </summary>
-        private ObservableCollection<ProjectViewModel> _ProjectComboBox;
-        public ObservableCollection<ProjectViewModel> ProjectComboBox
-        {
-            get {
-                if (_ProjectComboBox == null)
-                {
-                    _ProjectComboBox = ProjectModelToViewModel(_Service.GetMyProjects().ToList());
-                }
-
-                return _ProjectComboBox;
-            }
-
-            set { _ProjectComboBox = value; }
-        }
-
-
-        /// <summary>
-        /// Stores the currently selected project from combo box.
-        /// </summary>
-        private ProjectViewModel _SelectedActiveProject;
-        public ProjectViewModel SelectedActiveProject
-        {
-            get { return _SelectedActiveProject; }
-            set 
-            {
-                _SelectedActiveProject = value;
-                PopulateBugTable();
-            }
-        }
 
 
         /// <summary>
@@ -330,96 +292,20 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Checks if the south view panel is currently open or closed.
-        /// </summary>
-        /// <returns>Returns true if visible.</returns>
-        private bool IsBugViewVisible()
-        {
-            if (_View.BugView.Visibility == System.Windows.Visibility.Hidden)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
 
         /// <summary>
         /// Toggles the visibility of the south view panel.
         /// </summary>
-        private void ToggleBugView()
+        public void ToggleBugView()
         {
-            if (IsBugViewVisible() == false)
+            if (!IsBugViewVisible)
             {
-                _View.BugView.Visibility = System.Windows.Visibility.Visible;
+                IsBugViewVisible = true;
             }
             else
             {
-                _View.BugView.Visibility = System.Windows.Visibility.Hidden;
+                IsBugViewVisible = false;
             }
-        }
-
-
-        /// <summary>
-        /// Initialises the command to delete the users selected bugs.
-        /// </summary>
-        private RelayCommand _DeleteSelectedBugsCommand;
-        public ICommand DeleteSelectedBugsCommand
-        {
-            get
-            {
-                if (_DeleteSelectedBugsCommand == null)
-                {
-                    _DeleteSelectedBugsCommand = new RelayCommand(param => this.DeleteSelectedBugs(),
-                                                                  param => this.IsRowsSelected);
-                }
-
-                return _DeleteSelectedBugsCommand;
-            }
-        }
-
-
-        /// <summary>
-        /// The state of row selection. True if more than one rows are selected.
-        /// </summary>
-        private bool IsRowsSelected
-        {
-            get 
-            {
-                if (_View != null && _View.dataGrid1.SelectedItems.Count == 0)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-
-            set { }
-        }
-
-
-        /// <summary>
-        /// Deletes the user selected bugs from the web service and bug table.
-        /// </summary>
-        private void DeleteSelectedBugs()
-        {
-            // Copy and cast selected bugs into a list of bug view models
-            List<BugViewModel> bugVmList = _View.dataGrid1.SelectedItems.Cast<BugViewModel>().ToList();
-
-            // For each selected bug, remove it from the service and view
-            foreach (BugViewModel bug in bugVmList)
-            {
-                // Delete using web service
-                _Service.DeleteBug(bug.ToBugModel());
-                // Delete from local bug view
-                BugList.Remove(bug);
-            }
-
-            // If south view panel open then close it
-            if (IsBugViewVisible() == true) { ToggleBugView(); }
         }
 
     }

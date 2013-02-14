@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Faults\BadLoginFault.cs" />
+    <Compile Include="IRegistration.cs" />
     <Compile Include="ITrackerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registration.cs" />
     <Compile Include="Security\AuthorizationPolicy.cs" />
     <Compile Include="Security\CustomPrincipal.cs" />
     <Compile Include="Security\UserValidator.cs" />

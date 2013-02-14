@@ -11,7 +11,7 @@ namespace DataEntities.Entity
     public class Organisation
     {
         [DataMember]
-        [Range(1,9999)]
+        [Range(0,9999)]
         public Int32 Id { get; set; }
 
         [DataMember]

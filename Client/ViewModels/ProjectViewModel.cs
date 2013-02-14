@@ -12,7 +12,7 @@ namespace Client.ViewModels
     /// This class is a client representation of a project data structure.
     /// It is an observable object and notifies its view of changes.
     /// </summary>
-    public class ProjectViewModel : ObservableObject
+    public class ProjectViewModel : ViewModel
     {
 
         private Int32 _Id;
@@ -98,19 +98,19 @@ namespace Client.ViewModels
         public Int32 Id
         {
             get { return this._Id; }
-            set { this.SetAndNotify(ref this._Id, value, () => this.Id); }
+            set { _Id = value; OnPropertyChanged("Id"); }
         }
 
         public String Name
         {
             get { return this._Name; }
-            set { this.SetAndNotify(ref this._Name, value, () => this.Name); }
+            set { _Name = value; OnPropertyChanged("Name"); }
         }
 
         public String Description
         {
             get { return this._Description; }
-            set { this.SetAndNotify(ref this._Description, value, () => this.Description); }
+            set { Description = value; OnPropertyChanged("Description"); }
         }
 
     }

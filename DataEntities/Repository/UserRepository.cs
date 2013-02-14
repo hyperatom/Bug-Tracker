@@ -14,7 +14,23 @@ namespace DataEntities.Repository
 
         public User Create(User user)
         {
+            Context.AttachTo("Organisations", user.Organisation);
+
+            foreach (Role role in user.Roles)
+            {
+                Context.AttachTo("Roles", role);
+            }
+
+            if (user.Projects != null)
+            {
+                foreach (Project proj in user.Projects)
+                {
+                    Context.AttachTo("Projects", proj);
+                }
+            }
+
             Context.Users.AddObject(user);
+           
             Context.SaveChanges();
 
             return user;

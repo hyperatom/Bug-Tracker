@@ -10,7 +10,7 @@ namespace Client.ViewModels
     /// This class is a client representation of a bug data structure.
     /// It is an observable object and notifies its container of changes.
     /// </summary>
-    public class BugViewModel : ObservableObject
+    public class BugViewModel : ViewModel
     {
 
         private Int32 _Id;
@@ -23,6 +23,9 @@ namespace Client.ViewModels
         private Boolean _Fixed;
         private User _CreatedBy;
         private Project _Project;
+        private bool _IsSelected;
+
+        
 
 
         /// <summary>
@@ -42,6 +45,7 @@ namespace Client.ViewModels
             _Fixed = bug.Fixed;
             _LastModified = bug.LastModified;
             _Project = bug.Project;
+            _IsSelected = false;
         }
 
 
@@ -77,61 +81,67 @@ namespace Client.ViewModels
         public Int32 Id
         {
             get { return this._Id; }
-            set { this.SetAndNotify(ref this._Id, value, () => this.Id); }
+            set { _Id = value;  OnPropertyChanged("Id"); }
         }
 
         public String Name
         {
             get { return this._Name; }
-            set { this.SetAndNotify(ref this._Name, value, () => this.Name); }
+            set { _Name = value; OnPropertyChanged("Name"); }
         }
 
         public String Description
         {
             get { return this._Description; }
-            set { this.SetAndNotify(ref this._Description, value, () => this.Description); }
+            set { _Description = value; OnPropertyChanged("Description"); }
         }
 
         public String Priority
         {
             get { return this._Priority; }
-            set { this.SetAndNotify(ref this._Priority, value, () => this.Priority); }
+            set { _Priority = value; OnPropertyChanged("Priority"); }
         }
 
         public String Status
         {
             get { return this._Status; }
-            set { this.SetAndNotify(ref this._Status, value, () => this.Status); }
+            set { _Status = value; OnPropertyChanged("Status"); }
         }
 
         public DateTime DateFound
         {
             get { return this._DateFound; }
-            set { this.SetAndNotify(ref this._DateFound, value, () => this.DateFound); }
+            set { DateFound = value; OnPropertyChanged("DateFound"); }
         }
 
         public DateTime LastModified
         {
             get { return this._LastModified; }
-            set { this.SetAndNotify(ref this._LastModified, value, () => this.LastModified); }
+            set { _LastModified = value; OnPropertyChanged("LastModified"); }
         }
 
         public Boolean Fixed
         {
             get { return this._Fixed; }
-            set { this.SetAndNotify(ref this._Fixed, value, () => this.Fixed); }
+            set { _Fixed = value; OnPropertyChanged("Fixed"); }
         }
 
         public User CreatedBy
         {
             get { return this._CreatedBy; }
-            set { this.SetAndNotify(ref this._CreatedBy, value, () => this.CreatedBy); }
+            set { _CreatedBy = value; OnPropertyChanged("CreatedBy"); }
         }
 
         public Project Project
         {
             get { return this._Project; }
-            set { this.SetAndNotify(ref this._Project, value, () => this.Project); }
+            set { _Project = value; OnPropertyChanged("Project"); }
+        }
+
+        public bool IsSelected
+        {
+            get { return this._IsSelected; }
+            set { _IsSelected = value; OnPropertyChanged("IsSelected"); }
         }
 
     }

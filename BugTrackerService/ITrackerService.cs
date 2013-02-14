@@ -42,6 +42,12 @@ namespace BugTrackerService
         User GetMyUser();
 
         [OperationContract]
-        void Register(User user);
+        List<String> GetBugPriorityList();
+
+        [OperationContract]
+        List<User> GetUsersByProject(Project proj);
+
+        [OperationContract]
+        List<string> GetBugStatusList();
     }
 }

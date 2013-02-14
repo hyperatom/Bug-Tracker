@@ -59,7 +59,7 @@
         <ScalarProperty Name="Id" ColumnName="UserId" />
       </EndProperty>
     </AssociationSetMapping>
-    <EntitySetMapping Name="Roles1">
+    <EntitySetMapping Name="Roles">
       <EntityTypeMapping TypeName="bugtrackerModel.Role">
         <MappingFragment StoreEntitySet="roles">
           <ScalarProperty Name="RoleName" ColumnName="Role" />

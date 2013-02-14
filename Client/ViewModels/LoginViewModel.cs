@@ -8,10 +8,13 @@ using System.Windows.Input;
 using Client.ServiceReference;
 using System.ServiceModel;
 using System.ServiceModel.Security;
-using Client.Params.Login;
+using Client.Helpers;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.ComponentModel;
+using System.ServiceModel.Description;
+using Client.Services;
+using Client.Controllers;
 
 namespace Client.ViewModels
 {
@@ -19,28 +22,25 @@ namespace Client.ViewModels
     /// This view model controls the login user interface. It inherits
     /// operations and variables from the ViewModelBase class.
     /// </summary>
-    public class LoginViewModel : ViewModelBase<LoginWindow>, INotifyPropertyChanged
+    public class LoginViewModel : ViewModel, IWindow
     {
 
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public LoginViewModel() : base() { }
-
-
-        /// <summary>
-        /// Inherits from the parent class. Stores a reference to the window
-        /// controller class as a global variable.
-        /// </summary>
-        /// <param name="controller">Reference to window controller object.</param>
-        public LoginViewModel(IWindowController controller, TrackerServiceClient service) 
-            : base(controller, service) 
+        public LoginViewModel() : base() 
         {
             Username = GetStoredUsername();
             Password = GetStoredPassword();
 
             InitialiseRememberMeCheckBox();
         }
+
+
+        public IWindowLoader WindowLoader { get; set; }
+
+
+        public EventHandler RequestClose { get; set; }
 
 
         private bool _IsRememberMeChecked;
@@ -130,8 +130,8 @@ namespace Client.ViewModels
 
         private void ShowRegistrationWindow()
         {
-            _Controller.ShowRegistrationWindow();
-            _Controller.CloseLoginWindow();
+            WindowLoader.ShowView(new RegistrationViewModel());
+            RequestClose.Invoke(this, null);
         }
 
 
@@ -163,22 +163,33 @@ namespace Client.ViewModels
                 FlushUserCredentials();
             }
 
-            // Set up credentials with the service client
-            _Service.ClientCredentials.UserName.UserName = Username;
-            _Service.ClientCredentials.UserName.Password = Password;
+            
+            ClientCredentials clientCredentials = new ClientCredentials();
 
-            // Attempt to make a connection using credentials
+            clientCredentials.UserName.UserName = Username;
+            clientCredentials.UserName.Password = Password;
+
+            TrackerService.Service.ChannelFactory.Endpoint.Behaviors.Remove(typeof(ClientCredentials));
+            TrackerService.Service.ChannelFactory.Endpoint.Behaviors.Add(clientCredentials);
+
+            bool IsLoggedIn = false;
+
             try
             {
-                _Service.Login();
+                IsLoggedIn = TrackerService.Service.Login();
 
-                _Controller.ShowMainWindow();
-                _Controller.CloseLoginWindow();
+                WindowLoader.ShowView(new MainWindowViewModel());
+                RequestClose.Invoke(this, null);
             }
             // Display message if invalid credentials.
             catch (MessageSecurityException)
             {
                 MessageBox.Show("Invalid username or password!");
+            }
+            catch (FaultException fault)
+            {
+                MessageBox.Show(fault.Message);
+
             }
         }
 
@@ -297,16 +308,6 @@ namespace Client.ViewModels
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        
     }
 }
