@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -60,20 +63,29 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controllers\IWindowLoader.cs" />
     <Compile Include="Controllers\WindowLoader.cs" />
-    <Compile Include="ViewModels\Controls\BugPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\BugPanel\BugAddPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\BugPanel\BugPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\BugPanel\BugViewPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\BugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\CommandPanelViewModel.cs" />
     <Compile Include="ViewModels\IWindow.cs" />
+    <Compile Include="Views\Controls\BugAddPanel.xaml.cs">
+      <DependentUpon>BugAddPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\BugViewPanel.xaml.cs">
       <DependentUpon>BugViewPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\BugViewTable.xaml.cs">
+      <DependentUpon>BugViewTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\CommandPanel.xaml.cs">
       <DependentUpon>CommandPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
+    <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
-    <Compile Include="Views\RegistrationWindow.xaml.cs">
+    <Compile Include="Views\Windows\RegistrationWindow.xaml.cs">
       <DependentUpon>RegistrationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service References\ServiceReference\Reference.cs">
@@ -88,12 +100,20 @@
     </Compile>
     <Compile Include="Services\TrackerService.cs" />
     <Compile Include="ViewModels\BugViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Windows\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
-    <Compile Include="ViewModels\RegistrationViewModel.cs" />
+    <Compile Include="ViewModels\Windows\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Page Include="Views\Controls\BugAddPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\BugViewPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\BugViewTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,7 +121,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginWindow.xaml">
+    <Page Include="Views\Windows\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -109,15 +129,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\LoginWindow.xaml.cs">
+    <Compile Include="Views\Windows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\MainWindow.xaml">
+    <Page Include="Views\Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RegistrationWindow.xaml">
+    <Page Include="Views\Windows\RegistrationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,9 +230,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ParamConverters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\ladybird.png" />
   </ItemGroup>

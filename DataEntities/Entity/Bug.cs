@@ -52,5 +52,8 @@ namespace DataEntities.Entity
         [DataMember]
         [Required]
         public virtual Project Project { get; set; }
+
+        [DataMember]
+        public virtual User AssignedUser { get; set; }
     }
 }

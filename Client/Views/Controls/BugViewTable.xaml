@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="Client.Views.Controls.BugViewTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="510" d:DesignWidth="787"
+             xmlns:controlviewmodels="clr-namespace:Client.ViewModels.Controls"
+             xmlns:controls="clr-namespace:Client.Views.Controls">
+
+    <UserControl.Resources>
+        
+        <DataTemplate DataType="{x:Type controlviewmodels:BugViewPanelViewModel}">
+            <controls:BugViewPanel />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type controlviewmodels:BugAddPanelViewModel}">
+            <controls:BugAddPanel />
+        </DataTemplate>
+        
+    </UserControl.Resources>
+
+    <Grid>
+        <Label Content="{Binding ProjectTitle}" Height="58" Margin="54,28,67,0" Name="labelProjectTitle" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" />
+        
+        <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,67,66" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding BugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}">
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                </Style>
+            </DataGrid.RowStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" Width="Auto" />
+                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Title" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" Width="*" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="TextWrapping" Value="NoWrap" />
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=Priority}" Header="Priority" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=CreatedBy.Username}" Header="Created By" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=DateFound.Date, StringFormat=dd/MM/yyyy}" Header="Date" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=LastModified.Date, StringFormat=dd/MM/yyyy}" Header="Modified" Width="*" />
+                <DataGridCheckBoxColumn Binding="{Binding Path=Fixed}" Header="Fixed" Width="*" />
+                
+                <DataGridTemplateColumn Header="Assigned To">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding AssignedUser.Username}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
+
+    </Grid>
+</UserControl>

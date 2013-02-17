@@ -15,6 +15,7 @@ namespace Client.ViewModels.Controls
 
         private RelayCommand _DeleteSelectedBugsCommand;
         private RelayCommand _EditBugCommand;
+        private RelayCommand _AddBugCommand;
 
 
         public MainWindowViewModel Parent
@@ -23,7 +24,20 @@ namespace Client.ViewModels.Controls
             set { _Parent = value; }
         }
 
-        
+        private bool IsProjectSelected
+        {
+            get
+            {
+                if (Parent.SelectedActiveProject == null)
+                    return false;
+
+                return true;
+            }
+        }
+
+
+        #region Commands
+
         public ICommand DeleteSelectedBugsCommand
         {
             get
@@ -31,13 +45,25 @@ namespace Client.ViewModels.Controls
                 if (_DeleteSelectedBugsCommand == null)
                 {
                     _DeleteSelectedBugsCommand = new RelayCommand(param => this.DeleteSelectedBugs(),
-                                                                  param => Parent.IsRowsSelected);
+                                                                  param => Parent.BugTablePage.IsRowsSelected);
                 }
 
                 return _DeleteSelectedBugsCommand;
             }
         }
 
+        public ICommand AddBugCommand
+        {
+            get
+            {
+                if (_AddBugCommand == null)
+                {
+                    _AddBugCommand = new RelayCommand(param => ShowNewBugView(), param => IsProjectSelected);
+                }
+
+                return _AddBugCommand;
+            }
+        }
        
         public ICommand EditBugCommand
         {
@@ -45,18 +71,33 @@ namespace Client.ViewModels.Controls
             {
                 if (_EditBugCommand == null)
                 {
-                    _EditBugCommand = new RelayCommand(param => ShowBugView(), param => Parent.IsRowsSelected);
+                    _EditBugCommand = new RelayCommand(param => ShowBugView(), param => Parent.BugTablePage.IsRowsSelected);
                 }
 
                 return _EditBugCommand;
             }
         }
 
+        #endregion Commands
+
 
         private void ShowBugView()
         {
-            Parent.ToggleBugView();
-            Parent.SouthViewPanel.IsSaveButtonVisible = true;
+            Parent.BugTablePage.SouthViewPanel
+                = new BugViewPanelViewModel();
+
+            if (!Parent.BugTablePage.IsBugViewVisible)
+                Parent.BugTablePage.ToggleBugView();
+        }
+
+
+        private void ShowNewBugView()
+        {
+            Parent.BugTablePage.SouthViewPanel
+                = new BugAddPanelViewModel();
+
+            if (!Parent.BugTablePage.IsBugViewVisible)
+                Parent.BugTablePage.ToggleBugView();
         }
 
 
@@ -66,7 +107,7 @@ namespace Client.ViewModels.Controls
         private void DeleteSelectedBugs()
         {
             // Copy and cast selected bugs into a list of bug view models
-            List<BugViewModel> bugVmList = Parent.SelectedBugs.Cast<BugViewModel>().ToList();
+            List<BugViewModel> bugVmList = Parent.BugTablePage.SelectedBugs.Cast<BugViewModel>().ToList();
 
             // For each selected bug, remove it from the service and view
             foreach (BugViewModel bug in bugVmList)
@@ -74,11 +115,11 @@ namespace Client.ViewModels.Controls
                 // Delete using web service
                 TrackerService.Service.DeleteBug(bug.ToBugModel());
                 // Delete from local bug view
-                Parent.BugList.Remove(bug);
+                Parent.BugTablePage.BugList.Remove(bug);
             }
 
             // If south view panel open then close it
-            if (Parent.IsBugViewVisible) { Parent.ToggleBugView(); }
+            if (Parent.BugTablePage.IsBugViewVisible) { Parent.BugTablePage.ToggleBugView(); }
         }
 
 

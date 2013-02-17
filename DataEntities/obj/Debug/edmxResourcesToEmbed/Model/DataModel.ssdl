@@ -12,6 +12,10 @@
       <End Role="users" EntitySet="users" />
       <End Role="bugs" EntitySet="bugs" />
     </AssociationSet>
+    <AssociationSet Name="bugs_ibfk_2" Association="bugtrackerModel.Store.bugs_ibfk_2">
+      <End Role="users" EntitySet="users" />
+      <End Role="bugs" EntitySet="bugs" />
+    </AssociationSet>
     <AssociationSet Name="fkey_project" Association="bugtrackerModel.Store.fkey_project">
       <End Role="projects" EntitySet="projects" />
       <End Role="bugs" EntitySet="bugs" />
@@ -51,13 +55,14 @@
     <Property Name="Fixed" Type="bool" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
     <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="AssignedUser" Type="int" />
   </EntityType>
   <EntityType Name="organisations">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="25" />
   </EntityType>
   <EntityType Name="projects">
     <Key>
@@ -97,7 +102,7 @@
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="25" />
     <Property Name="Surname" Type="varchar" Nullable="false" MaxLength="40" />
-    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="15" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="254" />
     <Property Name="Password" Type="varchar" Nullable="false" MaxLength="60" />
     <Property Name="OrganisationId" Type="int" Nullable="false" />
   </EntityType>
@@ -110,6 +115,18 @@
       </Principal>
       <Dependent Role="bugs">
         <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="bugs_ibfk_2">
+    <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="0..1" />
+    <End Role="bugs" Type="bugtrackerModel.Store.bugs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bugs">
+        <PropertyRef Name="AssignedUser" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

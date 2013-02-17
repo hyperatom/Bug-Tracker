@@ -91,5 +91,14 @@
         <ScalarProperty Name="Id" ColumnName="OrganisationId" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="bugs_ibfk_2" TypeName="bugtrackerModel.bugs_ibfk_2" StoreEntitySet="bugs">
+      <EndProperty Name="Bug">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="AssignedUser" />
+      </EndProperty>
+      <Condition ColumnName="AssignedUser" IsNull="false" />
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

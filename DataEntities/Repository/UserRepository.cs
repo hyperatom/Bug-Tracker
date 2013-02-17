@@ -14,52 +14,64 @@ namespace DataEntities.Repository
 
         public User Create(User user)
         {
-            Context.AttachTo("Organisations", user.Organisation);
-
-            foreach (Role role in user.Roles)
+            using (var ctx = new WcfEntityContext())
             {
-                Context.AttachTo("Roles", role);
-            }
+                ctx.AttachTo("Organisations", user.Organisation);
 
-            if (user.Projects != null)
-            {
-                foreach (Project proj in user.Projects)
+                foreach (Role role in user.Roles)
                 {
-                    Context.AttachTo("Projects", proj);
+                    ctx.AttachTo("Roles", role);
                 }
+
+                if (user.Projects != null)
+                {
+                    foreach (Project proj in user.Projects)
+                    {
+                        ctx.AttachTo("Projects", proj);
+                    }
+                }
+
+                ctx.Users.AddObject(user);
+
+                ctx.SaveChanges();
+
+                return user;
             }
-
-            Context.Users.AddObject(user);
-           
-            Context.SaveChanges();
-
-            return user;
         }
 
 
-        public IQueryable<User> GetAll()
+        public IList<User> GetAll()
         {
-            IQueryable<User> users = Context.Users.Include("Projects").Include("Roles").Include("Organisation");
+            using (var ctx = new WcfEntityContext())
+            {
+                IList<User> users = ctx.Users.Include("Projects").Include("Roles").Include("Organisation").ToList();
 
-            return users;
+                return users;
+            }
         }
 
 
         public User Update(User user)
         {
-            Context.AttachModify("Users", user);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachModify("Users", user);
+                ctx.SaveChanges();
 
-            return user;
+                return user;
+            }
         }
 
 
         public void Delete(User user)
         {
-            Context.AttachTo("Users", user);
-            Context.Users.DeleteObject(user);
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachTo("Users", user);
+                ctx.Users.DeleteObject(user);
 
-            Context.SaveChanges();
+                ctx.SaveChanges();
+            }
         }
 
     }

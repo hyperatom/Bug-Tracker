@@ -9,42 +9,54 @@ namespace DataEntities.Repository
     public class OrganisationRepository : Repository
     {
 
-        public OrganisationRepository() : base() { }
+        public OrganisationRepository() { }
 
 
         public Organisation Create(Organisation organisation)
         {
-            Context.Organisations.AddObject(organisation);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.Organisations.AddObject(organisation);
+                ctx.SaveChanges();
 
-            return organisation;
+                return organisation;
+            }
         }
 
 
-        public IQueryable<Organisation> GetAll()
+        public IList<Organisation> GetAll()
         {
-            IQueryable<Organisation> organisations = Context.Organisations;
+            using (var ctx = new WcfEntityContext())
+            {
+                IList<Organisation> organisations = ctx.Organisations.ToList();
 
-            return organisations;
+                return organisations;
+            }
         }
 
 
         public Organisation Update(Organisation organisation)
         {
-            Context.AttachModify("Organisations", organisation);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachModify("Organisations", organisation);
+                ctx.SaveChanges();
 
-            return organisation;
+                return organisation;
+            }
         }
 
 
         public void Delete(Organisation organisation)
         {
-            Organisation myOrganisation = Context.Organisations.Where(p => p.Id == organisation.Id).FirstOrDefault();
-            Context.Organisations.Attach(myOrganisation);
-            Context.Organisations.DeleteObject(myOrganisation);
+            using (var ctx = new WcfEntityContext())
+            {
+                Organisation myOrganisation = ctx.Organisations.Where(p => p.Id == organisation.Id).FirstOrDefault();
+                ctx.Organisations.Attach(myOrganisation);
+                ctx.Organisations.DeleteObject(myOrganisation);
 
-            Context.SaveChanges();
+                ctx.SaveChanges();
+            }
         }
 
     }

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\Client\Views\App.xaml
-5-1680779909
+7-1710386631
 
-25-2010218921
-14637617180
-Views\Controls\BugViewPanel.xaml;Views\Controls\CommandPanel.xaml;Views\LoginWindow.xaml;Views\MainWindow.xaml;Views\RegistrationWindow.xaml;
+30-1092044024
+15-1906752644
+Views\Controls\BugAddPanel.xaml;Views\Controls\BugViewPanel.xaml;Views\Controls\BugViewTable.xaml;Views\Controls\CommandPanel.xaml;Views\Windows\LoginWindow.xaml;Views\Windows\MainWindow.xaml;Views\Windows\RegistrationWindow.xaml;
 
 False
 

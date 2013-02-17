@@ -80,6 +80,8 @@ namespace BugTrackerService
 
         public void SaveBug(Bug bug)
         {
+            bug.LastModified = DateTime.Now;
+
             BugRepository bugRepo = new BugRepository();
 
             bugRepo.Update(bug);
@@ -88,6 +90,9 @@ namespace BugTrackerService
 
         public Bug AddBug(Bug bug)
         {
+            bug.DateFound = DateTime.Now;
+            bug.LastModified = DateTime.Now;
+
             BugRepository bugRepo = new BugRepository();
 
             return bugRepo.Create(bug);
@@ -116,8 +121,12 @@ namespace BugTrackerService
         public List<User> GetUsersByProject(Project proj)
         {
             UserRepository userRep = new UserRepository();
+            ProjectRepository projRep = new ProjectRepository();
 
-            return userRep.GetAll().Where(p => p.Projects.Contains(proj)).ToList();
+            Project project = projRep.GetAll().Where(p => p.Id == proj.Id).SingleOrDefault();
+            List<User> userList = userRep.GetAll().Where(p => p.Projects.Any(x => x.Id == proj.Id)).ToList();
+
+            return userList;
         }
 
 

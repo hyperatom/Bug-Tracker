@@ -8,6 +8,7 @@
   <xs:element name="ArrayOfBug" nillable="true" type="tns:ArrayOfBug" />
   <xs:complexType name="Bug">
     <xs:sequence>
+      <xs:element minOccurs="0" name="AssignedUser" nillable="true" type="tns:User" />
       <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="tns:User" />
       <xs:element minOccurs="0" name="DateFound" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />

@@ -9,42 +9,54 @@ namespace DataEntities.Repository
     public class RoleRepository : Repository
     {
 
-        public RoleRepository() : base() { }
+        public RoleRepository() { }
 
 
         public Role Create(Role role)
         {
-            Context.Roles.AddObject(role);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.Roles.AddObject(role);
+                ctx.SaveChanges();
 
-            return role;
+                return role;
+            }
         }
 
 
-        public IQueryable<Role> GetAll()
+        public IList<Role> GetAll()
         {
-            IQueryable<Role> roles = Context.Roles;
+            using (var ctx = new WcfEntityContext())
+            {
+                IList<Role> roles = ctx.Roles.ToList();
 
-            return roles;
+                return roles;
+            }
         }
 
 
         public Role Update(Role role)
         {
-            Context.AttachModify("Roles", role);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachModify("Roles", role);
+                ctx.SaveChanges();
 
-            return role;
+                return role;
+            }
         }
 
 
         public void Delete(Role role)
         {
-            Role myrole = Context.Roles.Where(p => p.Id == role.Id).FirstOrDefault();
-            Context.Roles.Attach(myrole);
-            Context.Roles.DeleteObject(myrole);
+            using (var ctx = new WcfEntityContext())
+            {
+                Role myrole = ctx.Roles.Where(p => p.Id == role.Id).FirstOrDefault();
+                ctx.Roles.Attach(myrole);
+                ctx.Roles.DeleteObject(myrole);
 
-            Context.SaveChanges();
+                ctx.SaveChanges();
+            }
         }
 
     }

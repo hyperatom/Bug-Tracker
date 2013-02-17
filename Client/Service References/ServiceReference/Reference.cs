@@ -23,6 +23,9 @@ namespace Client.ServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.ServiceReference.User AssignedUserField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Client.ServiceReference.User CreatedByField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -59,6 +62,19 @@ namespace Client.ServiceReference {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.ServiceReference.User AssignedUser {
+            get {
+                return this.AssignedUserField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AssignedUserField, value) != true)) {
+                    this.AssignedUserField = value;
+                    this.RaisePropertyChanged("AssignedUser");
+                }
             }
         }
         

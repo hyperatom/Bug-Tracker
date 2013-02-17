@@ -9,41 +9,53 @@ namespace DataEntities.Repository
     public class ProjectRepository : Repository
     {
 
-        public ProjectRepository() : base() { }
+        public ProjectRepository() { }
 
 
         public Project Create(Project project)
         {
-            Context.Projects.AddObject(project);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.Projects.AddObject(project);
+                ctx.SaveChanges();
 
-            return project;
+                return project;
+            }
         }
 
 
-        public IQueryable<Project> GetAll()
+        public IList<Project> GetAll()
         {
-            IQueryable<Project> projects = Context.Projects;
+            using (var ctx = new WcfEntityContext())
+            {
+                IList<Project> projects = ctx.Projects.ToList();
 
-            return projects;
+                return projects;
+            }
         }
 
 
         public Project Update(Project project)
         {
-            Context.AttachModify("Projects", project);
-            Context.SaveChanges();
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachModify("Projects", project);
+                ctx.SaveChanges();
 
-            return project;
+                return project;
+            }
         }
 
 
         public void Delete(Project project)
         {
-            Context.AttachTo("Projects", project);
-            Context.Projects.DeleteObject(project);
+            using (var ctx = new WcfEntityContext())
+            {
+                ctx.AttachTo("Projects", project);
+                ctx.Projects.DeleteObject(project);
 
-            Context.SaveChanges();
+                ctx.SaveChanges();
+            }
         }
 
     }

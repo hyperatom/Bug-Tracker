@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Client.ServiceReference;
+using AutoMapper;
 
 namespace Client.ViewModels
 {
@@ -13,19 +14,9 @@ namespace Client.ViewModels
     public class BugViewModel : ViewModel
     {
 
-        private Int32 _Id;
-        private String _Name;
-        private String _Description;
-        private String _Priority;
-        private String _Status;
-        private DateTime _DateFound;
-        private DateTime _LastModified;
-        private Boolean _Fixed;
-        private User _CreatedBy;
-        private Project _Project;
-        private bool _IsSelected;
+        private Bug _Bug;
 
-        
+        private bool _IsSelected;
 
 
         /// <summary>
@@ -35,16 +26,8 @@ namespace Client.ViewModels
         /// <param name="bug">Bug object data structure.</param>
         public BugViewModel(Bug bug)
         {
-            _Id = bug.Id;
-            _Description = bug.Description;
-            _Name = bug.Name;
-            _Priority = bug.Priority;
-            _Status = bug.Status;
-            _CreatedBy = bug.CreatedBy;
-            _DateFound = bug.DateFound;
-            _Fixed = bug.Fixed;
-            _LastModified = bug.LastModified;
-            _Project = bug.Project;
+            _Bug = bug;
+
             _IsSelected = false;
         }
 
@@ -56,21 +39,9 @@ namespace Client.ViewModels
         /// <returns>A bug object resulting from the mapping.</returns>
         public Bug ToBugModel()
         {
-            Bug bug = new Bug
-            {
-                Id = _Id,
-                Description = _Description,
-                Status = _Status,
-                LastModified = _LastModified,
-                DateFound = _DateFound,
-                Fixed = _Fixed,
-                CreatedBy = _CreatedBy,
-                Priority = _Priority,
-                Name = _Name,
-                Project = _Project
-            };
+            Mapper.CreateMap<BugViewModel, Bug>();
 
-            return bug;
+            return Mapper.Map<BugViewModel, Bug>(this);
         }
 
 
@@ -80,62 +51,68 @@ namespace Client.ViewModels
         /// </summary>
         public Int32 Id
         {
-            get { return this._Id; }
-            set { _Id = value;  OnPropertyChanged("Id"); }
+            get { return this._Bug.Id; }
+            set { _Bug.Id = value; OnPropertyChanged("Id"); }
         }
 
         public String Name
         {
-            get { return this._Name; }
-            set { _Name = value; OnPropertyChanged("Name"); }
+            get { return this._Bug.Name; }
+            set { _Bug.Name = value; OnPropertyChanged("Name"); }
         }
 
         public String Description
         {
-            get { return this._Description; }
-            set { _Description = value; OnPropertyChanged("Description"); }
+            get { return this._Bug.Description; }
+            set { _Bug.Description = value; OnPropertyChanged("Description"); }
         }
 
         public String Priority
         {
-            get { return this._Priority; }
-            set { _Priority = value; OnPropertyChanged("Priority"); }
+            get { return this._Bug.Priority; }
+            set { _Bug.Priority = value; OnPropertyChanged("Priority"); }
         }
 
         public String Status
         {
-            get { return this._Status; }
-            set { _Status = value; OnPropertyChanged("Status"); }
+            get { return this._Bug.Status; }
+            set { _Bug.Status = value; OnPropertyChanged("Status"); }
         }
 
         public DateTime DateFound
         {
-            get { return this._DateFound; }
-            set { DateFound = value; OnPropertyChanged("DateFound"); }
+            get { return this._Bug.DateFound; }
+            set { _Bug.DateFound = value; OnPropertyChanged("DateFound"); }
         }
 
         public DateTime LastModified
         {
-            get { return this._LastModified; }
-            set { _LastModified = value; OnPropertyChanged("LastModified"); }
+            get { return this._Bug.LastModified; }
+            set { _Bug.LastModified = value; OnPropertyChanged("LastModified"); }
         }
 
         public Boolean Fixed
         {
-            get { return this._Fixed; }
-            set { _Fixed = value; OnPropertyChanged("Fixed"); }
+            get { return this._Bug.Fixed; }
+            set { _Bug.Fixed = value; OnPropertyChanged("Fixed"); }
         }
 
         public User CreatedBy
         {
-            get { return this._CreatedBy; }
-            set { _CreatedBy = value; OnPropertyChanged("CreatedBy"); }
+            get { return this._Bug.CreatedBy; }
+            set { _Bug.CreatedBy = value; OnPropertyChanged("CreatedBy"); }
         }
 
         public Project Project
         {
-            get { return this._Project; }
-            set { _Project = value; OnPropertyChanged("Project"); }
+            get { return this._Bug.Project; }
+            set { _Bug.Project = value; OnPropertyChanged("Project"); }
+        }
+
+        public User AssignedUser
+        {
+            get { return this._Bug.AssignedUser; }
+            set { _Bug.AssignedUser = value; OnPropertyChanged("AssignedUser"); }
         }
 
         public bool IsSelected
