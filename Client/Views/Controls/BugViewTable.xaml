@@ -5,16 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="510" d:DesignWidth="787"
-             xmlns:controlviewmodels="clr-namespace:Client.ViewModels.Controls"
+             xmlns:viewmodels="clr-namespace:Client.ViewModels"
              xmlns:controls="clr-namespace:Client.Views.Controls">
 
     <UserControl.Resources>
         
-        <DataTemplate DataType="{x:Type controlviewmodels:BugViewPanelViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:BugViewPanelViewModel}">
             <controls:BugViewPanel />
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type controlviewmodels:BugAddPanelViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:BugAddPanelViewModel}">
             <controls:BugAddPanel />
         </DataTemplate>
         

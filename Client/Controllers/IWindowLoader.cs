@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Client.ViewModels;
+using Client.Helpers;
 
 namespace Client.Controllers
 {

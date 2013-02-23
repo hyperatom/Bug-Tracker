@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using Client.Controllers;
+using Client.Helpers;
+using Microsoft.Practices.Unity;
 using Client.ViewModels;
 
 namespace Client
@@ -22,8 +24,9 @@ namespace Client
         /// </summary>
         public App()
         {
+            IMessenger comm = IOC.Container.Resolve<IMessenger>();
             //new WindowController();
-            new WindowLoader().ShowView(new LoginViewModel());
+            new WindowLoader(comm).ShowView(new LoginViewModel(comm));
         }
 
     }

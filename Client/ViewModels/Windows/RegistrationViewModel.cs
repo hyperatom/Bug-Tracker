@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Windows.Controls;
-using Client.Commands;
+using Client.Helpers;
 using System.Windows.Input;
 using System.Windows;
 using System.Text.RegularExpressions;
@@ -14,10 +14,11 @@ using Client.ServiceRegistration;
 using Client.ServiceReference;
 using System.Threading.Tasks;
 using Client.Controllers;
+using Client.ViewModels;
 
 namespace Client.ViewModels
 {
-    public class RegistrationViewModel : ViewModel, IWindow, IDataErrorInfo
+    public class RegistrationViewModel : ObservableObject, IWindow, IDataErrorInfo
     {
 
         private string _FirstName;
@@ -32,14 +33,18 @@ namespace Client.ViewModels
         private RelayCommand _RegisterCommand;
         private RelayCommand _CancelCommand;
 
+        private IMessenger _Messenger;
+
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
 
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public RegistrationViewModel() : base() 
+        public RegistrationViewModel(IMessenger comm) 
         {
+            _Messenger = comm;
+
             InitialiseFields();
         }
 
@@ -167,7 +172,7 @@ namespace Client.ViewModels
         /// </summary>
         private void Cancel()
         {
-            WindowLoader.ShowView(new LoginViewModel());
+            WindowLoader.ShowView(new LoginViewModel(_Messenger));
             RequestClose.Invoke(this, null);
         }
 

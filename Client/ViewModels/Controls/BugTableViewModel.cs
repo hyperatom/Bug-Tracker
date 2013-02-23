@@ -5,10 +5,14 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Client.ServiceReference;
 using Client.Services;
+using Microsoft.Practices.Unity;
+using Client.Helpers;
+using System.Windows;
+using Client.ViewModels;
 
-namespace Client.ViewModels.Controls
+namespace Client.ViewModels
 {
-    public class BugTableViewModel : ViewModel
+    public class BugTableViewModel : ObservableObject
     {
 
         private String _ProjectTitle;
@@ -18,9 +22,23 @@ namespace Client.ViewModels.Controls
         private ObservableCollection<BugViewModel> _BugList;
         private BugPanelViewModel _SouthViewPanel;
         private MainWindowViewModel _Parent;
+        private IMessenger _Messenger;
+        private ITrackerService _Service;
 
 
-        public BugTableViewModel() : base() { }
+        public BugTableViewModel(IMessenger comm)
+        {
+            _Messenger = comm;
+
+            _Service = IOC.Container.Resolve<ITrackerService>();
+
+            ListenOnAddedBugs();
+        }
+
+        private void ListenOnAddedBugs()
+        {
+            _Messenger.Register(Messages.AddPanelSavedBug, (Action<BugViewModel>)(p => { _BugList.Add(p); }));
+        }
 
 
         public MainWindowViewModel Parent
@@ -72,7 +90,7 @@ namespace Client.ViewModels.Controls
                 _SelectedBug = value;
 
                 if (SouthViewPanel.GetType() == typeof(BugViewPanelViewModel))
-                    SouthViewPanel.EditedBug = value.ToBugModel();
+                    SouthViewPanel.EditedBug = new BugViewModel(value.ToBugModel());
 
                 OnPropertyChanged("SelectedBug");
             }
@@ -156,7 +174,7 @@ namespace Client.ViewModels.Controls
             if (Parent.SelectedActiveProject != null)
             {
                 BugList.Clear();
-                List<Bug> bugList = TrackerService.Service.GetBugsByProject(Parent.SelectedActiveProject.ToProjectModel());
+                List<Bug> bugList = _Service.GetBugsByProject(Parent.SelectedActiveProject.ToProjectModel());
 
                 foreach (Bug bug in bugList)
                 {

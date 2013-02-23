@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Client.Controllers;
 
-namespace Client.ViewModels
+namespace Client.Helpers
 {
     public interface IWindow
     {

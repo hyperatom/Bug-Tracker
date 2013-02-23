@@ -87,20 +87,22 @@
   </xs:element>
   <xs:element name="SaveBugResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="SaveBugResult" nillable="true" type="q8:Bug" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddBug">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="bug" nillable="true" type="q8:Bug" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="bug" nillable="true" type="q9:Bug" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddBugResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="AddBugResult" nillable="true" type="q9:Bug" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="AddBugResult" nillable="true" type="q10:Bug" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -112,7 +114,7 @@
   <xs:element name="GetMyUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetMyUserResult" nillable="true" type="q10:User" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetMyUserResult" nillable="true" type="q11:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -124,21 +126,21 @@
   <xs:element name="GetBugPriorityListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugPriorityListResult" nillable="true" type="q11:ArrayOfstring" />
+        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugPriorityListResult" nillable="true" type="q12:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUsersByProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="proj" nillable="true" type="q12:Project" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="proj" nillable="true" type="q13:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUsersByProjectResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetUsersByProjectResult" nillable="true" type="q13:ArrayOfUser" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetUsersByProjectResult" nillable="true" type="q14:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -150,7 +152,7 @@
   <xs:element name="GetBugStatusListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugStatusListResult" nillable="true" type="q14:ArrayOfstring" />
+        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugStatusListResult" nillable="true" type="q15:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

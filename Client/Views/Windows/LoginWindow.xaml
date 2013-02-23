@@ -4,7 +4,7 @@
         Title="Bug Tracker | Login" Height="294" Width="317" Loaded="Window_Loaded"
         xmlns:local="clr-namespace:Client"
         xmlns:loginspace="clr-namespace:Client.Helpers"
-        xmlns:viewmodels="clr-namespace:Client.ViewModels">
+        xmlns:viewmodels="clr-namespace:Client.Helpers">
 
     <Grid>
         <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoginCommand}" />

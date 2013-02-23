@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using Client.ServiceReference;
 using System.ServiceModel;
 using System.ServiceModel.Security;
-using Client.Commands;
+using Client.Helpers;
 
 namespace Client
 {

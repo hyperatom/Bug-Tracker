@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using Client.Commands;
+using Client.Helpers;
 using System.Windows.Input;
 using Client.ServiceReference;
 using System.ServiceModel;
 using System.ServiceModel.Security;
-using Client.Helpers;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.ComponentModel;
 using System.ServiceModel.Description;
 using Client.Services;
 using Client.Controllers;
+using Microsoft.Practices.Unity;
+using Client.ViewModels;
 
 namespace Client.ViewModels
 {
@@ -22,14 +23,26 @@ namespace Client.ViewModels
     /// This view model controls the login user interface. It inherits
     /// operations and variables from the ViewModelBase class.
     /// </summary>
-    public class LoginViewModel : ViewModel, IWindow
+    public class LoginViewModel : ObservableObject, IWindow
     {
+
+        private IMessenger _Messenger;
+
+        private ITrackerService _Service;
+
+        private bool _IsRememberMeChecked;
+        private string _username;
+        private string _password;
+
 
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public LoginViewModel() : base() 
+        public LoginViewModel(IMessenger comm)
         {
+            _Messenger = comm;
+            _Service = IOC.Container.Resolve<ITrackerService>();
+
             Username = GetStoredUsername();
             Password = GetStoredPassword();
 
@@ -43,7 +56,6 @@ namespace Client.ViewModels
         public EventHandler RequestClose { get; set; }
 
 
-        private bool _IsRememberMeChecked;
         public bool IsRememberMeChecked
         {
             get 
@@ -58,7 +70,6 @@ namespace Client.ViewModels
         }
 
 
-        private string _username;
         public string Username
         {
             get { return _username; }
@@ -70,7 +81,6 @@ namespace Client.ViewModels
         }
 
 
-        private string _password;
         public string Password
         {
             get { return _password; }
@@ -94,6 +104,8 @@ namespace Client.ViewModels
             }
         }
 
+
+        #region Commands
 
         /// <summary>
         /// Initialises the method to use when the login command is invoked.
@@ -127,10 +139,12 @@ namespace Client.ViewModels
             }
         }
 
+        #endregion Commands
+
 
         private void ShowRegistrationWindow()
         {
-            WindowLoader.ShowView(new RegistrationViewModel());
+            WindowLoader.ShowView(new RegistrationViewModel(_Messenger));
             RequestClose.Invoke(this, null);
         }
 
@@ -163,22 +177,23 @@ namespace Client.ViewModels
                 FlushUserCredentials();
             }
 
-            
-            ClientCredentials clientCredentials = new ClientCredentials();
+            // Set service client credentials
+            TrackerService.SetCredentials(Username, Password);
 
-            clientCredentials.UserName.UserName = Username;
-            clientCredentials.UserName.Password = Password;
+            // Re-register the service instance with IOC container so it is injected
+            // into all dependant classes.
+            IOC.Container.RegisterInstance<ITrackerService>(TrackerService.Service);
 
-            TrackerService.Service.ChannelFactory.Endpoint.Behaviors.Remove(typeof(ClientCredentials));
-            TrackerService.Service.ChannelFactory.Endpoint.Behaviors.Add(clientCredentials);
+            // Update this object's own reference to the service
+            _Service = TrackerService.Service;
 
             bool IsLoggedIn = false;
 
             try
             {
-                IsLoggedIn = TrackerService.Service.Login();
+                IsLoggedIn = _Service.Login();
 
-                WindowLoader.ShowView(new MainWindowViewModel());
+                WindowLoader.ShowView(new MainWindowViewModel(_Messenger));
                 RequestClose.Invoke(this, null);
             }
             // Display message if invalid credentials.

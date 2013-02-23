@@ -78,13 +78,13 @@ namespace BugTrackerService
         }
 
 
-        public void SaveBug(Bug bug)
+        public Bug SaveBug(Bug bug)
         {
             bug.LastModified = DateTime.Now;
 
             BugRepository bugRepo = new BugRepository();
 
-            bugRepo.Update(bug);
+            return bugRepo.Update(bug);
         }
 
 

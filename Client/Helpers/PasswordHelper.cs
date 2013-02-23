@@ -7,6 +7,12 @@ using System.Windows.Controls;
 
 namespace Client.Helpers
 {
+    /// <summary>
+    /// This is a helper class which allows the password property
+    /// of a WPF PasswordBox to be retrieved in plaintext. This class
+    /// was taken from this web page:
+    /// http://blog.functionalfun.net/2008/06/wpf-passwordbox-and-data-binding.html
+    /// </summary>
     public static class PasswordHelper
     {
         public static readonly DependencyProperty BoundPassword =

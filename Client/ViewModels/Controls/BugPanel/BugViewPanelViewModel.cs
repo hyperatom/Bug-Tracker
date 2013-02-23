@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using Client.Commands;
+using Client.Helpers;
 using Client.Services;
 using System.Windows;
 using Client.ServiceReference;
 using System.ServiceModel;
+using Client.ViewModels;
 
-namespace Client.ViewModels.Controls
+namespace Client.ViewModels
 {
     public class BugViewPanelViewModel : BugPanelViewModel
     {
@@ -17,7 +18,7 @@ namespace Client.ViewModels.Controls
         private RelayCommand _SaveBugCommand;
         
 
-        public BugViewPanelViewModel() : base() { }
+        public BugViewPanelViewModel(IMessenger comm) : base(comm) { }
 
 
         public override BugTableViewModel Parent
@@ -28,7 +29,7 @@ namespace Client.ViewModels.Controls
             {
                 _Parent = value;
 
-                EditedBug = Parent.SelectedBug.ToBugModel();
+                EditedBug = new BugViewModel(Parent.SelectedBug.ToBugModel());
             }
         }
 
@@ -41,7 +42,7 @@ namespace Client.ViewModels.Controls
             {
                 if (_SaveBugCommand == null)
                 {
-                    _SaveBugCommand = new RelayCommand(p => this.SaveBug((Bug)p));
+                    _SaveBugCommand = new RelayCommand(p => this.SaveBug((BugViewModel)p));
                 }
 
                 return _SaveBugCommand;
@@ -55,24 +56,28 @@ namespace Client.ViewModels.Controls
         /// Saves a bug which has been editied.
         /// </summary>
         /// <param name="bug">The object which has been edited.</param>
-        private void SaveBug(Bug bug)
+        private void SaveBug(BugViewModel bug)
         {
-            try
+            if (BugIsValidated())
             {
-                TrackerService.Service.SaveBug(bug);
-                
-                BugViewModel selectedBug = Parent.BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
+                try
+                {
+                    Bug savedBug = _Service.SaveBug(bug.ToBugModel());
 
-                int index = Parent.BugList.IndexOf(selectedBug);
+                    BugViewModel selectedBug = Parent.BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
 
-                Parent.BugList.Remove(selectedBug);
-                Parent.BugList.Insert(index, new BugViewModel(bug));
+                    int index = Parent.BugList.IndexOf(selectedBug);
 
-                Parent.SelectedBug = Parent.BugList.ElementAt(index);
-            }
-            catch (FaultException e)
-            {
-                MessageBox.Show(e.Message);
+                    Parent.BugList.Remove(selectedBug);
+                    Parent.BugList.Insert(index, new BugViewModel(savedBug));
+                    Parent.SelectedBug = Parent.BugList.ElementAt(index);
+
+                    EditedBug = new BugViewModel(savedBug);
+                }
+                catch (FaultException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
         }
 

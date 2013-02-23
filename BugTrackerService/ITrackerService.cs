@@ -33,7 +33,7 @@ namespace BugTrackerService
         List<Bug> GetBugsByProject(Project project);
 
         [OperationContract]
-        void SaveBug(Bug bug);
+        Bug SaveBug(Bug bug);
 
         [OperationContract]
         Bug AddBug(Bug bug);

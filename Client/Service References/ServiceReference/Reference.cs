@@ -597,7 +597,7 @@ namespace Client.ServiceReference {
         System.Collections.Generic.List<Client.ServiceReference.Bug> GetBugsByProject(Client.ServiceReference.Project project);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/SaveBug", ReplyAction="http://tempuri.org/ITrackerService/SaveBugResponse")]
-        void SaveBug(Client.ServiceReference.Bug bug);
+        Client.ServiceReference.Bug SaveBug(Client.ServiceReference.Bug bug);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/AddBug", ReplyAction="http://tempuri.org/ITrackerService/AddBugResponse")]
         Client.ServiceReference.Bug AddBug(Client.ServiceReference.Bug bug);
@@ -666,8 +666,8 @@ namespace Client.ServiceReference {
             return base.Channel.GetBugsByProject(project);
         }
         
-        public void SaveBug(Client.ServiceReference.Bug bug) {
-            base.Channel.SaveBug(bug);
+        public Client.ServiceReference.Bug SaveBug(Client.ServiceReference.Bug bug) {
+            return base.Channel.SaveBug(bug);
         }
         
         public Client.ServiceReference.Bug AddBug(Client.ServiceReference.Bug bug) {

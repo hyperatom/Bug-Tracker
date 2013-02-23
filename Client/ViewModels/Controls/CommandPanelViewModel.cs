@@ -2,20 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Client.Commands;
+using Client.Helpers;
 using System.Windows.Input;
 using Client.Services;
+using Client.ServiceReference;
+using Microsoft.Practices.Unity;
+using Client.ViewModels;
 
-namespace Client.ViewModels.Controls
+namespace Client.ViewModels
 {
-    public class CommandPanelViewModel
+    public class CommandPanelViewModel : ObservableObject
     {
 
         private MainWindowViewModel _Parent;
 
+        private IMessenger _Messenger;
+
         private RelayCommand _DeleteSelectedBugsCommand;
         private RelayCommand _EditBugCommand;
         private RelayCommand _AddBugCommand;
+
+        private ITrackerService _Service;
+
+
+        public CommandPanelViewModel(IMessenger comm) 
+        {
+            _Messenger = comm;
+
+            _Service = IOC.Container.Resolve<ITrackerService>();
+        }
 
 
         public MainWindowViewModel Parent
@@ -84,7 +99,7 @@ namespace Client.ViewModels.Controls
         private void ShowBugView()
         {
             Parent.BugTablePage.SouthViewPanel
-                = new BugViewPanelViewModel();
+                = new BugViewPanelViewModel(_Messenger);
 
             if (!Parent.BugTablePage.IsBugViewVisible)
                 Parent.BugTablePage.ToggleBugView();
@@ -94,7 +109,7 @@ namespace Client.ViewModels.Controls
         private void ShowNewBugView()
         {
             Parent.BugTablePage.SouthViewPanel
-                = new BugAddPanelViewModel();
+                = new BugAddPanelViewModel(_Messenger, Parent.SelectedActiveProject.ToProjectModel());
 
             if (!Parent.BugTablePage.IsBugViewVisible)
                 Parent.BugTablePage.ToggleBugView();
@@ -113,7 +128,7 @@ namespace Client.ViewModels.Controls
             foreach (BugViewModel bug in bugVmList)
             {
                 // Delete using web service
-                TrackerService.Service.DeleteBug(bug.ToBugModel());
+                _Service.DeleteBug(bug.ToBugModel());
                 // Delete from local bug view
                 Parent.BugTablePage.BugList.Remove(bug);
             }
@@ -121,7 +136,6 @@ namespace Client.ViewModels.Controls
             // If south view panel open then close it
             if (Parent.BugTablePage.IsBugViewVisible) { Parent.BugTablePage.ToggleBugView(); }
         }
-
 
     }
 }

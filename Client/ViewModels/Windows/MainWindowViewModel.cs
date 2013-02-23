@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Client.ServiceReference;
-using Client.Commands;
+using Client.Helpers;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using System.Windows.Data;
 using System.ServiceModel;
 using Client.Services;
 using Client.Controllers;
-using Client.ViewModels.Controls;
+using Client.ViewModels;
 
 namespace Client.ViewModels
 {
@@ -22,8 +22,10 @@ namespace Client.ViewModels
     /// This class is the view model which controls the main bug
     /// view window.
     /// </summary>
-    public class MainWindowViewModel : ViewModel, IWindow
+    public class MainWindowViewModel : ObservableObject, IWindow
     {
+
+        private IMessenger _Messenger;
 
         private String                _Username;
         private ProjectViewModel      _SelectedActiveProject;
@@ -38,8 +40,10 @@ namespace Client.ViewModels
         /// <summary>
         /// Inherits constructor from base class.
         /// </summary>
-        public MainWindowViewModel() : base() 
+        public MainWindowViewModel(IMessenger comm)
         {
+            _Messenger = comm;
+
             Username = TrackerService.Service.GetMyUser().FirstName;
         }
 
@@ -61,7 +65,7 @@ namespace Client.ViewModels
             {
                 if (_BugTablePage == null)
                 {
-                    _BugTablePage = new BugTableViewModel();
+                    _BugTablePage = new BugTableViewModel(_Messenger);
                     _BugTablePage.Parent = this;
                 }
 
@@ -78,7 +82,7 @@ namespace Client.ViewModels
             {
                 if (_CommandPanel == null)
                 {
-                    _CommandPanel = new CommandPanelViewModel();
+                    _CommandPanel = new CommandPanelViewModel(_Messenger);
                     _CommandPanel.Parent = this;
                 }
 
@@ -119,6 +123,7 @@ namespace Client.ViewModels
                 _SelectedActiveProject = value;
                 BugTablePage.PopulateBugTable();
                 BugTablePage.ProjectTitle = value.Name;
+                BugTablePage.IsBugViewVisible = false;
             }
         }
 

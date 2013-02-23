@@ -16,22 +16,22 @@ namespace DataEntities.Repository
 
         public Bug Create(Bug bug)
         {
+            bug.DateFound    = DateTime.Now;
+            bug.LastModified = DateTime.Now;
+
             using (var ctx = new WcfEntityContext())
             {
-                bug.AssignedUser.Projects = null;
-                bug.AssignedUser.Organisation = null;
-                bug.AssignedUser.Roles = null;
-
-                bug.CreatedBy.Projects = null;
-                bug.CreatedBy.Organisation = null;
-                bug.CreatedBy.Roles = null;
+                var project      = ctx.Projects.Where(x => x.Id == bug.Project.Id)     .SingleOrDefault();
+                var createdBy    = ctx.Users.Where   (u => u.Id == bug.CreatedBy.Id)   .SingleOrDefault();
 
                 if (bug.AssignedUser != null)
-                    ctx.AttachTo("Users", bug.AssignedUser);
+                {
+                    var assignedUser = ctx.Users.Where(p => p.Id == bug.AssignedUser.Id).SingleOrDefault();
+                    bug.AssignedUser = assignedUser;
+                }
 
-                ctx.AttachTo("Projects", bug.Project);
-                
-                ctx.AttachTo("Users", bug.CreatedBy);
+                bug.CreatedBy    = createdBy;
+                bug.Project      = project;
 
                 ctx.Bugs.AddObject(bug);
                 ctx.SaveChanges();
@@ -51,27 +51,30 @@ namespace DataEntities.Repository
 
         public Bug Update(Bug bug)
         {
+            bug.LastModified = DateTime.Now;
+
             using (var ctx = new WcfEntityContext())
             {
-                var mybug = ctx.Bugs.Include("CreatedBy").Include("Project").Include("AssignedUser").Where(i => i.Id == bug.Id).SingleOrDefault();
-
-                var userAssigned = ctx.Users.Where(u => u.Id == bug.AssignedUser.Id).SingleOrDefault();
+                var oldBug = ctx.Bugs.Include("CreatedBy").Include("Project").Include("AssignedUser")
+                    .Where(h => h.Id == bug.Id).SingleOrDefault();
+           
                 var userCreated = ctx.Users.Where(n => n.Id == bug.CreatedBy.Id).SingleOrDefault();
                 var assignedProject = ctx.Projects.Where(c => c.Id == bug.Project.Id).SingleOrDefault();
 
-                if (userAssigned != null)
-                    mybug.AssignedUser = userAssigned;
+                if (bug.AssignedUser != null)
+                {
+                    var userAssigned = ctx.Users.Where(u => u.Id == bug.AssignedUser.Id).SingleOrDefault();
+                    oldBug.AssignedUser = userAssigned;
+                }
 
-                if (userCreated != null)
-                    mybug.CreatedBy = userCreated;
+                oldBug.CreatedBy = userCreated;
+                oldBug.Project = assignedProject;
 
-                if (assignedProject != null)
-                    mybug.Project = assignedProject;
-    
-                ctx.AttachModify("Bugs", mybug);
+                ctx.Bugs.ApplyCurrentValues(bug);
+
                 ctx.SaveChanges();
 
-                return mybug;
+                return bug;
             }
         }
 
