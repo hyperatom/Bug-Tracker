@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using Client.Services;
 using Client.ServiceReference;
 
 namespace Client.Helpers
 {
-    public static class IOC
+    public sealed class IOC
     {
 
-        private static UnityContainer _container;
+        private static UnityContainer _container = new UnityContainer();
 
 
         public static UnityContainer Container
@@ -22,20 +21,12 @@ namespace Client.Helpers
                 if (_container == null)
                 {
                     _container = new UnityContainer();
-                    Initialise();
                 }
 
                 return _container;
             }
 
-            set { _container = value; }
-        }
-
-
-        public static void Initialise()
-        {
-            _container.RegisterInstance<ITrackerService>(TrackerService.Service);
-            _container.RegisterInstance<IMessenger>(new Messenger());
+            //set { _container = value; }
         }
 
     }

@@ -11,10 +11,11 @@ using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.ServiceModel;
 using Client.ServiceRegistration;
-using Client.ServiceReference;
+//using Client.ServiceReference;
 using System.Threading.Tasks;
 using Client.Controllers;
 using Client.ViewModels;
+using Microsoft.Practices.Unity;
 
 namespace Client.ViewModels
 {
@@ -33,7 +34,8 @@ namespace Client.ViewModels
         private RelayCommand _RegisterCommand;
         private RelayCommand _CancelCommand;
 
-        private IMessenger _Messenger;
+        private IWindowLoader _WindowLoader;
+        private IRegistration _Service;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
@@ -41,9 +43,10 @@ namespace Client.ViewModels
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public RegistrationViewModel(IMessenger comm) 
+        public RegistrationViewModel(IWindowLoader loader, IRegistration svc) 
         {
-            _Messenger = comm;
+            _WindowLoader = loader;
+            _Service = svc;
 
             InitialiseFields();
         }
@@ -172,7 +175,7 @@ namespace Client.ViewModels
         /// </summary>
         private void Cancel()
         {
-            WindowLoader.ShowView(new LoginViewModel(_Messenger));
+            _WindowLoader.ShowView(IOC.Container.Resolve<LoginViewModel>());
             RequestClose.Invoke(this, null);
         }
 
@@ -208,16 +211,15 @@ namespace Client.ViewModels
         /// </summary>
         private void Register()
         {
+            IsRegisterButtonEnabled = false;
+
             if (CanRegister())
             {
-                IsRegisterButtonEnabled = false;
-
                 try
                 {
-                    Client.ServiceRegistration.Organisation org = 
-                        new Client.ServiceRegistration.Organisation { Name = Organisation };
+                    Organisation org = new Organisation { Name = Organisation };
 
-                    Client.ServiceRegistration.User user = new Client.ServiceRegistration.User
+                    User user = new User
                     {
                         FirstName = this.FirstName,
                         Password = this.Password,
@@ -226,22 +228,26 @@ namespace Client.ViewModels
                         Organisation = org
                     };
 
-                    Client.ServiceRegistration.RegistrationClient registerClient =
-                        new Client.ServiceRegistration.RegistrationClient();
-
-                    registerClient.RegisterCompleted += new EventHandler<AsyncCompletedEventArgs>(RegistrationComplete);
-                    registerClient.RegisterAsync(user);
+                    _Service.BeginRegister(user, RegistrationComplete, _Service);
                 }
                 catch (FaultException e)
                 {
+                    IsRegisterButtonEnabled = true;
+
                     MessageBox.Show(e.Message);
                 }
+            }
+            else
+            {
+                IsRegisterButtonEnabled = true;
             }
         }
 
 
-        public void RegistrationComplete(object sender, AsyncCompletedEventArgs args) 
+        public void RegistrationComplete(IAsyncResult result)
         {
+            ((IRegistration)result.AsyncState).EndRegister(result);
+
             IsRegisterButtonEnabled = true;
         }
 

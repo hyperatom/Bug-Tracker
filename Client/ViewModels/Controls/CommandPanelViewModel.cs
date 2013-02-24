@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Client.Helpers;
 using System.Windows.Input;
-using Client.Services;
+using Client.Helpers;
 using Client.ServiceReference;
-using Microsoft.Practices.Unity;
 using Client.ViewModels;
+using Microsoft.Practices.Unity;
 
 namespace Client.ViewModels
 {
     public class CommandPanelViewModel : ObservableObject
     {
-
-        private MainWindowViewModel _Parent;
 
         private IMessenger _Messenger;
 
@@ -23,27 +20,39 @@ namespace Client.ViewModels
         private RelayCommand _AddBugCommand;
 
         private ITrackerService _Service;
+        private ProjectViewModel _ActiveProject;
+        private IList<BugViewModel> _SelectedBugs;
 
 
-        public CommandPanelViewModel(IMessenger comm) 
+        public CommandPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj) 
         {
             _Messenger = comm;
+            _Service = svc;
+            _ActiveProject = activeProj;
 
-            _Service = IOC.Container.Resolve<ITrackerService>();
+            ListenForMessages();
         }
 
 
-        public MainWindowViewModel Parent
+        private bool IsBugsSelected
         {
-            get { return _Parent; }
-            set { _Parent = value; }
+            get
+            {
+                _Messenger.NotifyColleagues(Messages.RequestSelectedBugs);
+
+                if (_SelectedBugs != null && _SelectedBugs.Count > 0)
+                    return true;
+                else
+                    return false;
+            }
         }
+
 
         private bool IsProjectSelected
         {
             get
             {
-                if (Parent.SelectedActiveProject == null)
+                if (_ActiveProject == null)
                     return false;
 
                 return true;
@@ -59,8 +68,7 @@ namespace Client.ViewModels
             {
                 if (_DeleteSelectedBugsCommand == null)
                 {
-                    _DeleteSelectedBugsCommand = new RelayCommand(param => this.DeleteSelectedBugs(),
-                                                                  param => Parent.BugTablePage.IsRowsSelected);
+                    _DeleteSelectedBugsCommand = new RelayCommand(p => this.DeleteSelectedBugs(), p => IsBugsSelected);
                 }
 
                 return _DeleteSelectedBugsCommand;
@@ -73,7 +81,7 @@ namespace Client.ViewModels
             {
                 if (_AddBugCommand == null)
                 {
-                    _AddBugCommand = new RelayCommand(param => ShowNewBugView(), param => IsProjectSelected);
+                    _AddBugCommand = new RelayCommand(param => ShowAddBugView(), param => IsProjectSelected);
                 }
 
                 return _AddBugCommand;
@@ -86,7 +94,7 @@ namespace Client.ViewModels
             {
                 if (_EditBugCommand == null)
                 {
-                    _EditBugCommand = new RelayCommand(param => ShowBugView(), param => Parent.BugTablePage.IsRowsSelected);
+                    _EditBugCommand = new RelayCommand(param => ShowEditBugView(), param => IsBugsSelected);
                 }
 
                 return _EditBugCommand;
@@ -96,23 +104,22 @@ namespace Client.ViewModels
         #endregion Commands
 
 
-        private void ShowBugView()
+        private void ListenForMessages()
         {
-            Parent.BugTablePage.SouthViewPanel
-                = new BugViewPanelViewModel(_Messenger);
-
-            if (!Parent.BugTablePage.IsBugViewVisible)
-                Parent.BugTablePage.ToggleBugView();
+            _Messenger.Register<IList<BugViewModel>>(Messages.SelectedBugsChanged, p => _SelectedBugs = p);
+            _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, p => _ActiveProject = p);
         }
 
 
-        private void ShowNewBugView()
+        private void ShowEditBugView()
         {
-            Parent.BugTablePage.SouthViewPanel
-                = new BugAddPanelViewModel(_Messenger, Parent.SelectedActiveProject.ToProjectModel());
+            _Messenger.NotifyColleagues(Messages.ShowBugViewPanel);
+        }
 
-            if (!Parent.BugTablePage.IsBugViewVisible)
-                Parent.BugTablePage.ToggleBugView();
+
+        private void ShowAddBugView()
+        {
+            _Messenger.NotifyColleagues(Messages.ShowBugAddPanel);
         }
 
 
@@ -121,20 +128,14 @@ namespace Client.ViewModels
         /// </summary>
         private void DeleteSelectedBugs()
         {
-            // Copy and cast selected bugs into a list of bug view models
-            List<BugViewModel> bugVmList = Parent.BugTablePage.SelectedBugs.Cast<BugViewModel>().ToList();
-
             // For each selected bug, remove it from the service and view
-            foreach (BugViewModel bug in bugVmList)
+            foreach (BugViewModel bug in _SelectedBugs)
             {
                 // Delete using web service
                 _Service.DeleteBug(bug.ToBugModel());
                 // Delete from local bug view
-                Parent.BugTablePage.BugList.Remove(bug);
+                _Messenger.NotifyColleagues(Messages.SelectedBugDeleted, bug);
             }
-
-            // If south view panel open then close it
-            if (Parent.BugTablePage.IsBugViewVisible) { Parent.BugTablePage.ToggleBugView(); }
         }
 
     }

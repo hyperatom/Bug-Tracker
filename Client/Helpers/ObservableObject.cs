@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows;
 using System.ComponentModel;
 using Client.ServiceReference;
-using Client.Services;
 
 namespace Client.Helpers
 {

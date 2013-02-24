@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using Client.Helpers;
-using Client.Services;
-using System.Windows;
 using Client.ServiceReference;
-using System.ServiceModel;
 using Client.ViewModels;
 
 namespace Client.ViewModels
@@ -18,19 +17,16 @@ namespace Client.ViewModels
         private RelayCommand _SaveBugCommand;
         
 
-        public BugViewPanelViewModel(IMessenger comm) : base(comm) { }
-
-
-        public override BugTableViewModel Parent
+        public BugViewPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel proj, BugViewModel SelectedBug)
+            : base(comm, svc, proj) 
         {
-            get { return _Parent; }
+            ListenForMessages();
+            EditedBug = new BugViewModel(SelectedBug.ToBugModel());
+        }
 
-            set
-            {
-                _Parent = value;
-
-                EditedBug = new BugViewModel(Parent.SelectedBug.ToBugModel());
-            }
+        private void ListenForMessages()
+        {
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugChanged, p => EditedBug = new BugViewModel(p.ToBugModel()));
         }
 
 
@@ -64,13 +60,7 @@ namespace Client.ViewModels
                 {
                     Bug savedBug = _Service.SaveBug(bug.ToBugModel());
 
-                    BugViewModel selectedBug = Parent.BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
-
-                    int index = Parent.BugList.IndexOf(selectedBug);
-
-                    Parent.BugList.Remove(selectedBug);
-                    Parent.BugList.Insert(index, new BugViewModel(savedBug));
-                    Parent.SelectedBug = Parent.BugList.ElementAt(index);
+                    _Messenger.NotifyColleagues(Messages.SelectedBugSaved, new BugViewModel(savedBug));
 
                     EditedBug = new BugViewModel(savedBug);
                 }

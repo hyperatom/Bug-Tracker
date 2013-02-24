@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Client.ServiceReference;
-using Client.Services;
 using System.Windows;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -16,6 +15,8 @@ namespace Client.ViewModels
     public abstract class BugPanelViewModel : ObservableObject
     {
 
+        private bool _IsVisible;
+
         protected BugViewModel      _EditedBug;
         protected User              _AssignedUser;
         protected BugTableViewModel _Parent;
@@ -26,24 +27,34 @@ namespace Client.ViewModels
 
         protected IMessenger _Messenger;
         protected ITrackerService _Service;
+        protected ProjectViewModel _ActiveProject;
 
 
-        public BugPanelViewModel(IMessenger comm)
+        public BugPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj)
         {
-            if (comm == null)
-                throw new ArgumentException("An implementation of IMessenger is expected.");
+            if (activeProj == null)
+                throw new ArgumentNullException("The active project cannot be null.");
 
             _Messenger = comm;
+            _Service = svc;
+            _ActiveProject = activeProj;
 
-            _Service = IOC.Container.Resolve<ITrackerService>();
+            ListenForMessages();
         }
 
 
-        public virtual BugTableViewModel Parent
+        private void ListenForMessages()
         {
-            get { return _Parent; }
-            set { _Parent = value; }
+            _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, delegate { IsVisible = false; });
         }
+
+
+        public bool IsVisible
+        {
+            get { return _IsVisible; }
+            set { _IsVisible = value; OnPropertyChanged("IsVisible"); }
+        }
+
 
 
         public BugViewModel EditedBug
@@ -89,10 +100,10 @@ namespace Client.ViewModels
         {
             get
             {
-                if (_UsersInActiveProject == null && Parent.Parent.SelectedActiveProject != null)
+                if (_UsersInActiveProject == null && _ActiveProject != null)
                 {
                     _UsersInActiveProject = _Service.GetUsersByProject
-                        (Parent.Parent.SelectedActiveProject.ToProjectModel());
+                        (_ActiveProject.ToProjectModel());
                 }
 
                 return _UsersInActiveProject;

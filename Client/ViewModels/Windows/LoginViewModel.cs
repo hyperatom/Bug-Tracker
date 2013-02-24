@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Windows;
-using Client.Helpers;
 using System.Windows.Input;
-using Client.ServiceReference;
-using System.ServiceModel;
-using System.ServiceModel.Security;
-using System.IO.IsolatedStorage;
-using System.IO;
-using System.ComponentModel;
-using System.ServiceModel.Description;
-using Client.Services;
 using Client.Controllers;
-using Microsoft.Practices.Unity;
+using Client.Helpers;
+using Client.ServiceReference;
 using Client.ViewModels;
+using Microsoft.Practices.Unity;
 
 namespace Client.ViewModels
 {
@@ -26,9 +25,9 @@ namespace Client.ViewModels
     public class LoginViewModel : ObservableObject, IWindow
     {
 
+        private ClientBase<ITrackerService> _ServiceClient;
+        private IWindowLoader   _WindowLoader;
         private IMessenger _Messenger;
-
-        private ITrackerService _Service;
 
         private bool _IsRememberMeChecked;
         private string _username;
@@ -38,21 +37,23 @@ namespace Client.ViewModels
         /// <summary>
         /// Inherits from the parent class.
         /// </summary>
-        public LoginViewModel(IMessenger comm)
+        public LoginViewModel(ClientBase<ITrackerService> client, IWindowLoader loader, IMessenger messenger)
         {
-            _Messenger = comm;
-            _Service = IOC.Container.Resolve<ITrackerService>();
+            _WindowLoader = loader;
+            _ServiceClient = client;
+            _Messenger = messenger;
 
             Username = GetStoredUsername();
             Password = GetStoredPassword();
 
             InitialiseRememberMeCheckBox();
+
+            _Messenger.Register<ClientBase<ITrackerService>>
+                (Messages.WebServiceReferenceUpdated, p => _ServiceClient = p);
         }
 
 
-        public IWindowLoader WindowLoader { get; set; }
-
-
+        //public IWindowLoader WindowLoader { get; set; }
         public EventHandler RequestClose { get; set; }
 
 
@@ -144,7 +145,8 @@ namespace Client.ViewModels
 
         private void ShowRegistrationWindow()
         {
-            WindowLoader.ShowView(new RegistrationViewModel(_Messenger));
+            _WindowLoader.ShowView(IOC.Container.Resolve<RegistrationViewModel>());
+
             RequestClose.Invoke(this, null);
         }
 
@@ -177,23 +179,14 @@ namespace Client.ViewModels
                 FlushUserCredentials();
             }
 
-            // Set service client credentials
-            TrackerService.SetCredentials(Username, Password);
-
-            // Re-register the service instance with IOC container so it is injected
-            // into all dependant classes.
-            IOC.Container.RegisterInstance<ITrackerService>(TrackerService.Service);
-
-            // Update this object's own reference to the service
-            _Service = TrackerService.Service;
-
-            bool IsLoggedIn = false;
+            _WindowLoader.CreateService(Username, Password);
 
             try
             {
-                IsLoggedIn = _Service.Login();
+                _ServiceClient.Open();
 
-                WindowLoader.ShowView(new MainWindowViewModel(_Messenger));
+                _WindowLoader.ShowView(Windows.Main);
+
                 RequestClose.Invoke(this, null);
             }
             // Display message if invalid credentials.
@@ -283,6 +276,7 @@ namespace Client.ViewModels
 
         }
 
+
         private StreamReader GetStreamReader()
         {
             //First get the 'user-scoped' storage information location reference in the assembly
@@ -323,6 +317,5 @@ namespace Client.ViewModels
             }
         }
 
-        
     }
 }

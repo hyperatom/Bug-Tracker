@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.ServiceReference;
-using Client.Helpers;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.ServiceModel;
-using Client.Services;
+using System.Windows.Input;
 using Client.Controllers;
+using Client.Helpers;
+using Client.ServiceReference;
 using Client.ViewModels;
 
 namespace Client.ViewModels
@@ -26,6 +25,7 @@ namespace Client.ViewModels
     {
 
         private IMessenger _Messenger;
+        private ITrackerService _Service;
 
         private String                _Username;
         private ProjectViewModel      _SelectedActiveProject;
@@ -40,16 +40,17 @@ namespace Client.ViewModels
         /// <summary>
         /// Inherits constructor from base class.
         /// </summary>
-        public MainWindowViewModel(IMessenger comm)
+        public MainWindowViewModel(IMessenger comm, ITrackerService svc)
         {
             _Messenger = comm;
+            _Service = svc;
 
-            Username = TrackerService.Service.GetMyUser().FirstName;
+            Username = _Service.GetMyUser().FirstName;
+            
         }
 
 
         public EventHandler RequestClose { get; set; }
-        public IWindowLoader WindowLoader { get; set; }
 
 
         public String Username
@@ -65,8 +66,7 @@ namespace Client.ViewModels
             {
                 if (_BugTablePage == null)
                 {
-                    _BugTablePage = new BugTableViewModel(_Messenger);
-                    _BugTablePage.Parent = this;
+                    _BugTablePage = new BugTableViewModel(_Messenger, _Service, _SelectedActiveProject);
                 }
 
                 return _BugTablePage; 
@@ -82,8 +82,7 @@ namespace Client.ViewModels
             {
                 if (_CommandPanel == null)
                 {
-                    _CommandPanel = new CommandPanelViewModel(_Messenger);
-                    _CommandPanel.Parent = this;
+                    _CommandPanel = new CommandPanelViewModel(_Messenger, _Service, _SelectedActiveProject);
                 }
 
                 return _CommandPanel;
@@ -102,7 +101,7 @@ namespace Client.ViewModels
             {
                 if (_ProjectComboBox == null)
                 {
-                    _ProjectComboBox = ProjectModelToViewModel(TrackerService.Service.GetMyProjects().ToList());
+                    _ProjectComboBox = ProjectModelToViewModel(_Service.GetMyProjects().ToList());
                 }
 
                 return _ProjectComboBox;
@@ -121,9 +120,7 @@ namespace Client.ViewModels
             set
             {
                 _SelectedActiveProject = value;
-                BugTablePage.PopulateBugTable();
-                BugTablePage.ProjectTitle = value.Name;
-                BugTablePage.IsBugViewVisible = false;
+                _Messenger.NotifyColleagues(Messages.ActiveProjectChanged, value);
             }
         }
 

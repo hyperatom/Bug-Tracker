@@ -18,8 +18,9 @@ namespace ClientTests
     {
 
         private BugAddPanelViewModel _AddPanel;
-        private Project _ActiveProjectStub;
+        private ProjectViewModel _ActiveProjectStub;
         private IMessenger _Messenger;
+        private ITrackerService _ServiceMock;
 
 
         [TestFixtureSetUp]
@@ -39,12 +40,12 @@ namespace ClientTests
             serviceMock.Setup<List<string>> (p => p.GetBugStatusList()).Returns(mockStatus); 
             serviceMock.Setup<User>         (p => p.GetMyUser()).Returns(userMock);
 
-            IOC.Container = new UnityContainer();
             IOC.Container.RegisterInstance<ITrackerService>(serviceMock.Object);
+            _ServiceMock = serviceMock.Object;
 
-            _ActiveProjectStub = new Project { Id = 5, Description = "Stub Project", Name = "Stub Title" };
+            _ActiveProjectStub = new ProjectViewModel(new Project { Id = 5, Description = "Stub Project", Name = "Stub Title" });
             
-            _AddPanel = new BugAddPanelViewModel(_Messenger, _ActiveProjectStub);
+            _AddPanel = new BugAddPanelViewModel(_Messenger, serviceMock.Object, _ActiveProjectStub);
         }
 
 
@@ -52,7 +53,7 @@ namespace ClientTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestExceptionThrownWhenMessengerNull()
         {
-            _AddPanel = new BugAddPanelViewModel(null, _ActiveProjectStub);
+            _AddPanel = new BugAddPanelViewModel(null, _ServiceMock, _ActiveProjectStub);
         }
 
 
@@ -60,7 +61,7 @@ namespace ClientTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestExceptionThrownWhenProjectNull()
         {
-            _AddPanel = new BugAddPanelViewModel(_Messenger, null);
+            _AddPanel = new BugAddPanelViewModel(_Messenger, _ServiceMock, null);
         }
 
 

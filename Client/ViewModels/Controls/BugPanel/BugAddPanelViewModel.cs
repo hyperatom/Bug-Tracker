@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Client.Services;
 using Client.Helpers;
 using System.Windows.Input;
 using Client.ServiceReference;
@@ -20,8 +19,6 @@ namespace Client.ViewModels
     public class BugAddPanelViewModel : BugPanelViewModel
     {
 
-        private Project _ActiveProject;
-
         private RelayCommand _AddBugCommand;
 
         
@@ -31,20 +28,15 @@ namespace Client.ViewModels
         /// </summary>
         /// <param name="comm">Messenger object to communicate with other view models.</param>
         /// /// <param name="activeProject">The currently active project.</param>
-        public BugAddPanelViewModel(IMessenger comm, Project activeProject) : base(comm) 
+        public BugAddPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel proj) : base(comm, svc, proj) 
         {
-            if (activeProject == null)
-                throw new ArgumentException("The active project cannot be null.");
-
-            _ActiveProject = activeProject;
-
-            EditedBug = CreateNewModel();
+            InitialiseBugViewModel();
         }
 
 
         #region Commands
 
-        private ICommand AddBugCommand
+        public ICommand AddBugCommand
         {
             get
             {
@@ -66,14 +58,12 @@ namespace Client.ViewModels
         /// interface.
         /// </summary>
         /// <returns>A new bug view model with default values.</returns>
-        private BugViewModel CreateNewModel()
+        private void InitialiseBugViewModel()
         {
-            BugViewModel vm = new BugViewModel();
+            EditedBug = new BugViewModel();
 
-            vm.Priority = PriorityList[1];
-            vm.Status   = StatusList[1];
-
-            return vm;
+            EditedBug.Priority = PriorityList[1];
+            EditedBug.Status = StatusList[1];
         }
 
 
@@ -90,7 +80,7 @@ namespace Client.ViewModels
                 try
                 {
                     bug.CreatedBy = _Service.GetMyUser();
-                    bug.Project   = _ActiveProject;
+                    bug.Project   = _ActiveProject.ToProjectModel();
 
                     // Convert bug view model to bug model service can accept
                     Bug savedBug = _Service.AddBug(bug.ToBugModel());
@@ -98,7 +88,9 @@ namespace Client.ViewModels
                     // Notify listeners that bug has been saved
                     _Messenger.NotifyColleagues(Messages.AddPanelSavedBug, new BugViewModel(savedBug));
 
-                    EditedBug = CreateNewModel();               
+                    InitialiseBugViewModel();
+
+                    IsVisible = false;
                 }
                 catch (FaultException e)
                 {

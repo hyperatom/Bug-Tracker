@@ -8,6 +8,7 @@ using Client.Controllers;
 using Client.Helpers;
 using Microsoft.Practices.Unity;
 using Client.ViewModels;
+using Client.ServiceReference;
 
 namespace Client
 {
@@ -24,9 +25,7 @@ namespace Client
         /// </summary>
         public App()
         {
-            IMessenger comm = IOC.Container.Resolve<IMessenger>();
-            //new WindowController();
-            new WindowLoader(comm).ShowView(new LoginViewModel(comm));
+            new WindowLoader();
         }
 
     }

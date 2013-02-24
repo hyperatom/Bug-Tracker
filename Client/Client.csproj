@@ -116,6 +116,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\Windows.cs" />
     <Compile Include="Helpers\IMessenger.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
@@ -158,11 +159,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\TrackerService.cs" />
-    <Compile Include="ViewModels\DTOs\BugViewModel.cs" />
+    <Compile Include="ViewModels\Controls\DTOs\BugViewModel.cs" />
     <Compile Include="ViewModels\Windows\LoginViewModel.cs" />
     <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\DTOs\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\Controls\DTOs\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Windows\RegistrationViewModel.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
     <Page Include="Views\Controls\BugAddPanel.xaml">
@@ -316,7 +316,9 @@
   <ItemGroup>
     <Resource Include="Images\ladybird.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

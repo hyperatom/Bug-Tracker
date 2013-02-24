@@ -3,20 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Bug Tracker | Login" Height="294" Width="317" Loaded="Window_Loaded"
         xmlns:local="clr-namespace:Client"
-        xmlns:loginspace="clr-namespace:Client.Helpers"
-        xmlns:viewmodels="clr-namespace:Client.Helpers">
+        xmlns:helpers="clr-namespace:Client.Helpers">
 
     <Grid>
         <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoginCommand}" />
 
         <Label Content="Username:" Height="28" HorizontalAlignment="Left" Margin="34,80,0,0" Name="label1" VerticalAlignment="Top" />
         <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="34,128,0,0" Name="label2" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="114,80,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="120" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label Content="Login" Height="28" HorizontalAlignment="Left" Margin="34,30,0,0" Name="label3" VerticalAlignment="Top" />
+        
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="114,80,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="120" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <PasswordBox x:Name="PasswordBox" helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="114,128,61,104" />
+        
         <CheckBox Content="Remember me" Height="16" HorizontalAlignment="Left" Margin="136,194,0,0" Name="checkBoxRememberMe" VerticalAlignment="Top" IsChecked="{Binding Path=IsRememberMeChecked}" />
-        <PasswordBox x:Name="PasswordBox" loginspace:PasswordHelper.BindPassword="True" loginspace:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="114,128,61,104" />
+        
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="34,229,0,0" Name="RegisterTextBox" VerticalAlignment="Top">
             <Hyperlink Command="{Binding Path=RegistrationCommand}">Register</Hyperlink>
         </TextBlock>
+        
     </Grid>
 </Window>

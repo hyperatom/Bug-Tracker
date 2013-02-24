@@ -20,7 +20,7 @@ namespace ClientTests
         {
             var mockMessenger = new Mock<IMessenger>();
 
-            _WindowLoader = new WindowLoader(mockMessenger.Object);
+            _WindowLoader = new WindowLoader();
         }
 
 

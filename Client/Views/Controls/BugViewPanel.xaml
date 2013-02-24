@@ -20,7 +20,7 @@
         
     </UserControl.Resources>
 
-    <Grid Name="BugView" Background="#FFC2A491" Visibility="{Binding Parent.IsBugViewVisible, Converter={StaticResource BoolToVisiblity}}">
+    <Grid Name="BugView" Background="#FFC2A491" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="28,34,0,0" Name="textBlock2" Text="Name:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="28,69,0,0" Name="textBlock3" Text="Description:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="513,64,0,0" Name="textBlock4" Text="Priority:" VerticalAlignment="Top" />
@@ -28,12 +28,13 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="278,63,0,0" Name="textBlock6" Text="Date Found:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="278,96,0,0" Name="textBlock7" Text="Last Modified:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="278,125,0,0" Name="textBlock8" Text="Fixed:" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="513,30,0,0" Name="textBlock9" Text="Created By:" VerticalAlignment="Top" />
+        <TextBlock Text="Assigned To:" Height="28" HorizontalAlignment="Left" Margin="508,95,0,0" Name="labelAssignedUser" VerticalAlignment="Top" />
+        
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="359,60,0,0" Name="textBlockDateFound" Text="{Binding EditedBug.DateFound, Mode=TwoWay}" VerticalAlignment="Top" Width="129" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="359,93,0,0" Name="textBlockModified" Text="{Binding EditedBug.LastModified, Mode=TwoWay}" VerticalAlignment="Top" Width="129" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="513,30,0,0" Name="textBlock9" Text="Created By:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="593,28,0,0" Name="textBlockCreatedBy" Text="{Binding EditedBug.CreatedBy.Username, Mode=TwoWay}" VerticalAlignment="Top" Width="90"/>
-        <Label Content="Assigned To:" Height="28" HorizontalAlignment="Left" Margin="508,95,0,0" Name="labelAssignedUser" VerticalAlignment="Top" />
-
+        
         <TextBox Height="23" HorizontalAlignment="Left" Margin="98,29,0,0" Name="textBoxName" Text="{Binding EditedBug.Name, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="153" />
         <TextBox Height="72" HorizontalAlignment="Left" Margin="97,68,0,0" Name="textBoxDesc" Text="{Binding EditedBug.Description, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="154" TextWrapping="Wrap" />
 

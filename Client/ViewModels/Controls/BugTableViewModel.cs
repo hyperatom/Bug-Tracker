@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Collections.ObjectModel;
-using Client.ServiceReference;
-using Client.Services;
-using Microsoft.Practices.Unity;
-using Client.Helpers;
 using System.Windows;
+using Client.Helpers;
+using Client.ServiceReference;
 using Client.ViewModels;
+using Microsoft.Practices.Unity;
 
 namespace Client.ViewModels
 {
@@ -16,35 +15,27 @@ namespace Client.ViewModels
     {
 
         private String _ProjectTitle;
-        private bool _IsBugViewVisible;
+
         private BugViewModel _SelectedBug;
         private List<BugViewModel> _SelectedBugs;
+
         private ObservableCollection<BugViewModel> _BugList;
         private BugPanelViewModel _SouthViewPanel;
-        private MainWindowViewModel _Parent;
+
+        private ProjectViewModel _ActiveProject;
         private IMessenger _Messenger;
         private ITrackerService _Service;
 
 
-        public BugTableViewModel(IMessenger comm)
+        public BugTableViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj)
         {
             _Messenger = comm;
+            _Service = svc;
+            _ActiveProject = activeProj;
 
-            _Service = IOC.Container.Resolve<ITrackerService>();
+            _SelectedBugs = new List<BugViewModel>();
 
-            ListenOnAddedBugs();
-        }
-
-        private void ListenOnAddedBugs()
-        {
-            _Messenger.Register(Messages.AddPanelSavedBug, (Action<BugViewModel>)(p => { _BugList.Add(p); }));
-        }
-
-
-        public MainWindowViewModel Parent
-        {
-            get { return _Parent; }
-            set { _Parent = value; }
+            ListenForMessages();
         }
 
 
@@ -66,11 +57,10 @@ namespace Client.ViewModels
                 return _SouthViewPanel;
             }
 
-            set 
-            { 
+            set
+            {
                 _SouthViewPanel = value;
-                _SouthViewPanel.Parent = this;
-                OnPropertyChanged("SouthViewPanel"); 
+                OnPropertyChanged("SouthViewPanel");
             }
         }
 
@@ -89,8 +79,7 @@ namespace Client.ViewModels
             {
                 _SelectedBug = value;
 
-                if (SouthViewPanel.GetType() == typeof(BugViewPanelViewModel))
-                    SouthViewPanel.EditedBug = new BugViewModel(value.ToBugModel());
+                _Messenger.NotifyColleagues(Messages.SelectedBugChanged, value);
 
                 OnPropertyChanged("SelectedBug");
             }
@@ -101,7 +90,7 @@ namespace Client.ViewModels
         {
             get
             {
-                _SelectedBugs = new List<BugViewModel>();
+                _SelectedBugs.Clear();
 
                 foreach (BugViewModel bug in BugList)
                 {
@@ -110,34 +99,6 @@ namespace Client.ViewModels
                 }
 
                 return _SelectedBugs;
-            }
-        }
-
-
-        public bool IsBugViewVisible
-        {
-            get { return _IsBugViewVisible; }
-            set
-            {
-                _IsBugViewVisible = value;
-                OnPropertyChanged("IsBugViewVisible");
-            }
-        }
-
-
-        /// <summary>
-        /// The state of row selection. True if more than one rows are selected.
-        /// </summary>
-        public bool IsRowsSelected
-        {
-            get
-            {
-                if (SelectedBugs == null || SelectedBugs.Count <= 0)
-                {
-                    return false;
-                }
-
-                return true;
             }
         }
 
@@ -171,10 +132,10 @@ namespace Client.ViewModels
         /// </summary>
         public void PopulateBugTable()
         {
-            if (Parent.SelectedActiveProject != null)
+            if (_ActiveProject != null)
             {
                 BugList.Clear();
-                List<Bug> bugList = _Service.GetBugsByProject(Parent.SelectedActiveProject.ToProjectModel());
+                IList<Bug> bugList = _Service.GetBugsByProject(_ActiveProject.ToProjectModel());
 
                 foreach (Bug bug in bugList)
                 {
@@ -184,19 +145,65 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Toggles the visibility of the south view panel.
-        /// </summary>
-        public void ToggleBugView()
+        private void ListenForMessages()
+        {            
+            _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, ActiveProjectChanged);
+            _Messenger.Register<BugViewModel>(Messages.AddPanelSavedBug, p => _BugList.Add(p));
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, SelectedBugDeleted);
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, SaveBugToTable);
+
+            _Messenger.Register(Messages.ShowBugViewPanel, ShowBugViewPanel);
+            _Messenger.Register(Messages.ShowBugAddPanel, ShowBugAddPanel);
+            _Messenger.Register(Messages.RequestSelectedBugs, SendSelectedBugs);
+        }
+
+
+        private void SelectedBugDeleted(BugViewModel bug)
         {
-            if (!IsBugViewVisible)
-            {
-                IsBugViewVisible = true;
-            }
-            else
-            {
-                IsBugViewVisible = false;
-            }
+            _BugList.Remove(bug);
+
+            if (SouthViewPanel != null && SouthViewPanel.IsVisible)
+                SouthViewPanel.IsVisible = false;
+        }
+
+
+        private void SendSelectedBugs()
+        {
+            _Messenger.NotifyColleagues(Messages.SelectedBugsChanged, SelectedBugs);
+        }
+
+
+        private void SaveBugToTable(BugViewModel bug)
+        {
+            BugViewModel selectedBug = BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
+
+            int index = BugList.IndexOf(selectedBug);
+
+            BugList.Remove(selectedBug);
+            BugList.Insert(index, bug);
+            SelectedBug = BugList.ElementAt(index);
+        }
+
+
+        private void ShowBugViewPanel()
+        {
+            SouthViewPanel = new BugViewPanelViewModel(_Messenger, _Service, _ActiveProject, _SelectedBug);
+            SouthViewPanel.IsVisible = true;
+        }
+
+
+        private void ShowBugAddPanel()
+        {
+            SouthViewPanel = new BugAddPanelViewModel(_Messenger, _Service, _ActiveProject);
+            SouthViewPanel.IsVisible = true;
+        }
+
+
+        private void ActiveProjectChanged(ProjectViewModel proj)
+        {
+            _ActiveProject = proj;
+            PopulateBugTable();
+            ProjectTitle = proj.Name;
         }
 
     }

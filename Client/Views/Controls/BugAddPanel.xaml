@@ -20,7 +20,7 @@
 
     </UserControl.Resources>
 
-    <Grid Name="BugView" Background="#FFC2A491" Visibility="{Binding Parent.IsBugViewVisible, Converter={StaticResource BoolToVisiblity}}">
+    <Grid Name="BugView" Background="#FFC2A491" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
         
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="28,34,0,0" Name="textBlock2" Text="Name:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="28,77,0,0" Name="textBlock3" Text="Description:" VerticalAlignment="Top" />

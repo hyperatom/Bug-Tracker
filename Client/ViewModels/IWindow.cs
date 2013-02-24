@@ -8,7 +8,6 @@ namespace Client.Helpers
 {
     public interface IWindow
     {
-        IWindowLoader WindowLoader { get; set; }
         EventHandler RequestClose { get; set; }
     }
 }

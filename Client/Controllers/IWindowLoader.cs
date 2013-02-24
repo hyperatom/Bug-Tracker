@@ -9,5 +9,7 @@ namespace Client.Controllers
     public interface IWindowLoader
     {
         void ShowView(IWindow viewModel);
+        void ShowView(Windows windows);
+        void CreateService(String username, String password);
     }
 }
