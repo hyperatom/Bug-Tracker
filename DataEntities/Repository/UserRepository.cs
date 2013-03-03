@@ -16,11 +16,10 @@ namespace DataEntities.Repository
         {
             using (var ctx = new WcfEntityContext())
             {
-                ctx.AttachTo("Organisations", user.Organisation);
 
-                foreach (Role role in user.Roles)
+                /*foreach (ProjectRole projRole in user.ProjectRoles)
                 {
-                    ctx.AttachTo("Roles", role);
+                    ctx.AttachTo("Roles", projRole.);
                 }
 
                 if (user.Projects != null)
@@ -29,7 +28,7 @@ namespace DataEntities.Repository
                     {
                         ctx.AttachTo("Projects", proj);
                     }
-                }
+                }*/
 
                 ctx.Users.AddObject(user);
 
@@ -44,7 +43,7 @@ namespace DataEntities.Repository
         {
             using (var ctx = new WcfEntityContext())
             {
-                IList<User> users = ctx.Users.Include("Projects").Include("Roles").Include("Organisation").ToList();
+                IList<User> users = ctx.Users.ToList();
 
                 return users;
             }

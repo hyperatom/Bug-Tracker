@@ -23,5 +23,10 @@ namespace DataEntities.Entity
         [StringLength(200)]
         public String Description { get; set; }
 
+
+        [DataMember]
+        [StringLength(5, MinimumLength=5)]
+        public String Code { get; set; }
+
     }
 }

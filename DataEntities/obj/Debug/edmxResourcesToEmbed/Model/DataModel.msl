@@ -37,6 +37,7 @@
     <EntitySetMapping Name="Projects">
       <EntityTypeMapping TypeName="bugtrackerModel.Project">
         <MappingFragment StoreEntitySet="projects">
+          <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
@@ -51,14 +52,6 @@
         <ScalarProperty Name="Id" ColumnName="ProjectId" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="user_projects" TypeName="bugtrackerModel.user_projects" StoreEntitySet="user_projects">
-      <EndProperty Name="Project">
-        <ScalarProperty Name="Id" ColumnName="ProjectId" />
-      </EndProperty>
-      <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="UserId" />
-      </EndProperty>
-    </AssociationSetMapping>
     <EntitySetMapping Name="Roles">
       <EntityTypeMapping TypeName="bugtrackerModel.Role">
         <MappingFragment StoreEntitySet="roles">
@@ -67,30 +60,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="user_roles" TypeName="bugtrackerModel.user_roles" StoreEntitySet="user_roles">
-      <EndProperty Name="Role">
-        <ScalarProperty Name="Id" ColumnName="RoleId" />
-      </EndProperty>
-      <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="UserId" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <EntitySetMapping Name="Organisations">
-      <EntityTypeMapping TypeName="bugtrackerModel.Organisation">
-        <MappingFragment StoreEntitySet="organisations">
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <AssociationSetMapping Name="users_ibfk_1" TypeName="bugtrackerModel.users_ibfk_1" StoreEntitySet="users">
-      <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-      <EndProperty Name="organisation">
-        <ScalarProperty Name="Id" ColumnName="OrganisationId" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="bugs_ibfk_2" TypeName="bugtrackerModel.bugs_ibfk_2" StoreEntitySet="bugs">
       <EndProperty Name="Bug">
         <ScalarProperty Name="Id" ColumnName="Id" />
@@ -100,5 +69,14 @@
       </EndProperty>
       <Condition ColumnName="AssignedUser" IsNull="false" />
     </AssociationSetMapping>
+    <EntitySetMapping Name="ProjectRoles">
+      <EntityTypeMapping TypeName="bugtrackerModel.ProjectRole">
+        <MappingFragment StoreEntitySet="user_project_role">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

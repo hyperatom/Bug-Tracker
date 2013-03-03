@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Client.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Bug Tracker | Login" Height="294" Width="317" Loaded="Window_Loaded"
+        Title="Bug Tracker | Login" Height="294" Width="317"
         xmlns:local="clr-namespace:Client"
         xmlns:helpers="clr-namespace:Client.Helpers">
 

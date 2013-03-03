@@ -16,18 +16,19 @@ namespace DataEntities.Entity
         public ObjectSet<Bug> Bugs { get; set; }
         public ObjectSet<Project> Projects { get; set; }
         public ObjectSet<Role> Roles { get; set; }
-        public ObjectSet<Organisation> Organisations { get; set; }
+        public ObjectSet<ProjectRole> ProjectRole { get; set; }
 
         public WcfEntityContext() : this("name=DataEntities") { }
 
         public WcfEntityContext(string connectionString)
             : base(connectionString, "DataEntities")
         {
+            ProjectRole = CreateObjectSet<ProjectRole>();
             Users = CreateObjectSet<User>();
             Bugs = CreateObjectSet<Bug>();
             Projects = CreateObjectSet<Project>();
             Roles = CreateObjectSet<Role>();
-            Organisations = CreateObjectSet<Organisation>();
+
             //Turned off to avoid problems with serialization
             ContextOptions.ProxyCreationEnabled = false;
             ContextOptions.LazyLoadingEnabled = false;

@@ -1,33 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.ServiceModel.Security;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using Client.Controllers;
 using Client.Helpers;
 using Client.ServiceReference;
-using Client.ViewModels;
-using Microsoft.Practices.Unity;
+using Client.Factories;
+using Client.ViewModels.Windows;
 
 namespace Client.ViewModels
 {
     /// <summary>
-    /// This view model controls the login user interface. It inherits
-    /// operations and variables from the ViewModelBase class.
+    /// This view model controls the login user interface. It is responsible
+    /// for setting up the web service with valid credentials.
     /// </summary>
-    public class LoginViewModel : ObservableObject, IWindow
+    public class LoginViewModel : ObservableObject, ILoginViewModel
     {
 
-        private ClientBase<ITrackerService> _ServiceClient;
-        private IWindowLoader   _WindowLoader;
         private IMessenger _Messenger;
+        private IServiceFactory _ServiceFactory;
+        private IWindowFactory _WindowFactory;
 
         private bool _IsRememberMeChecked;
         private string _username;
@@ -35,28 +29,39 @@ namespace Client.ViewModels
 
 
         /// <summary>
-        /// Inherits from the parent class.
+        /// Stores references to dependencies and initialises object properties.
         /// </summary>
-        public LoginViewModel(ClientBase<ITrackerService> client, IWindowLoader loader, IMessenger messenger)
+        /// <param name="client"></param>
+        /// <param name="loader"></param>
+        /// <param name="messenger"></param>
+        public LoginViewModel(IMessenger messenger, IServiceFactory svcfactory, IWindowFactory winfactory)
         {
-            _WindowLoader = loader;
-            _ServiceClient = client;
+            if (messenger == null)
+                throw new ArgumentNullException("The messenger cannot be null.");
+
+            if (svcfactory == null)
+                throw new ArgumentNullException("The service factory cannot be null.");
+
+            if (winfactory == null)
+                throw new ArgumentNullException("The window factory cannot be null.");
+
             _Messenger = messenger;
+            _ServiceFactory = svcfactory;
+            _WindowFactory = winfactory;
 
             Username = GetStoredUsername();
             Password = GetStoredPassword();
 
             InitialiseRememberMeCheckBox();
-
-            _Messenger.Register<ClientBase<ITrackerService>>
-                (Messages.WebServiceReferenceUpdated, p => _ServiceClient = p);
         }
 
 
-        //public IWindowLoader WindowLoader { get; set; }
         public EventHandler RequestClose { get; set; }
 
 
+        /// <summary>
+        /// Stores the state of the remember me check box
+        /// </summary>
         public bool IsRememberMeChecked
         {
             get 
@@ -93,6 +98,10 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// If the window loads with stored user credentials,
+        /// check the remember me box, else set it unchecked.
+        /// </summary>
         private void InitialiseRememberMeCheckBox()
         {
             if (CanLogin())
@@ -143,14 +152,22 @@ namespace Client.ViewModels
         #endregion Commands
 
 
+        /// <summary>
+        /// Request the window loader displays the registration
+        /// window and closes the current view.
+        /// </summary>
         private void ShowRegistrationWindow()
         {
-            _WindowLoader.ShowView(IOC.Container.Resolve<RegistrationViewModel>());
+            _WindowFactory.CreateRegistrationWindow().Show();
 
             RequestClose.Invoke(this, null);
         }
 
 
+        /// <summary>
+        /// Checks if the user has populated both username and password text blocks.
+        /// </summary>
+        /// <returns>True if both fields populated, false otherwise</returns>
         private bool CanLogin()
         {
             if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password))
@@ -179,15 +196,17 @@ namespace Client.ViewModels
                 FlushUserCredentials();
             }
 
-            _WindowLoader.CreateService(Username, Password);
+            // Tell the service container to create a new service with these credentials
+            ClientBase<ITrackerService> svc = _ServiceFactory.CreateService(Username, Password);
 
             try
             {
-                _ServiceClient.Open();
+                // Test if we can open the communication channel
+                svc.Open();
 
-                _WindowLoader.ShowView(Windows.Main);
-
-                RequestClose.Invoke(this, null);
+                // If we can then show the main window
+                _WindowFactory.CreateMainWindow().Show();
+                RequestClose(this, null);
             }
             // Display message if invalid credentials.
             catch (MessageSecurityException)
@@ -197,11 +216,13 @@ namespace Client.ViewModels
             catch (FaultException fault)
             {
                 MessageBox.Show(fault.Message);
-
             }
         }
 
 
+        /// <summary>
+        /// Deletes user credentials from the persistent file.
+        /// </summary>
         private void FlushUserCredentials()
         {
             try
@@ -216,24 +237,30 @@ namespace Client.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Gets a reference to the stream writer for this applications settings.
+        /// </summary>
+        /// <returns>A reference to the stream writer.</returns>
         private StreamWriter GetStreamWriter()
         {
-            //First get the 'user-scoped' storage information location reference in the assembly
             IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
-            //create a stream writer object to write content in the location
+            
             StreamWriter srWriter = new StreamWriter(new IsolatedStorageFileStream("BugTrackerCredentials", FileMode.Create, isolatedStorage));
             
             return srWriter;
         }
 
 
+        /// <summary>
+        /// Stores the current user credentials in a persistent file.
+        /// </summary>
         private void StoreUserCredentials()
         {
             try
             {
                 StreamWriter srWriter = GetStreamWriter();
 
-                //wriet to the isolated storage created in the above code section.
                 srWriter.WriteLine(Username);
                 srWriter.WriteLine(Password);
 
@@ -247,6 +274,10 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Retrieves a username from the persistent file
+        /// </summary>
+        /// <returns>A string representing the username.</returns>
         private string GetStoredUsername()
         {
             try
@@ -257,37 +288,43 @@ namespace Client.ViewModels
 
                 //Open the isolated storage
                 if (srReader == null)
-                {
                     return "";
-                }
                 else
-                {
                     username = srReader.ReadLine().ToString();
-                }
-                //close reader
+
                 srReader.Close();
 
                 return username;
             }
-            catch(Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message);
+
                 return "";
             }
 
         }
 
 
+        /// <summary>
+        /// Gets a reference to the stream reader to read the persistent storage file for this application.
+        /// </summary>
+        /// <returns>A reference to the stream reader.</returns>
         private StreamReader GetStreamReader()
         {
-            //First get the 'user-scoped' storage information location reference in the assembly
+            
             IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
-            //create a stream reader object to read content from the created isolated location
+            
             StreamReader srReader = new StreamReader(new IsolatedStorageFileStream("BugTrackerCredentials", FileMode.OpenOrCreate, isolatedStorage));
             
             return srReader;
         }
 
 
+        /// <summary>
+        /// Retrieves the users password from persistent storage file.
+        /// </summary>
+        /// <returns>A string representing the user's password.</returns>
         private string GetStoredPassword()
         {
             try
@@ -306,13 +343,15 @@ namespace Client.ViewModels
                     srReader.ReadLine();
                     password = srReader.ReadLine().ToString();
                 }
-                //close reader
+                
                 srReader.Close();
 
                 return password;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message);
+
                 return "";
             }
         }

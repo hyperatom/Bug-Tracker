@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.Controllers;
 
 namespace Client.Helpers
 {
+    /// <summary>
+    /// Interface defining the operations of a window.
+    /// </summary>
     public interface IWindow
     {
         EventHandler RequestClose { get; set; }

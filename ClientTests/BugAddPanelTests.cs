@@ -8,7 +8,6 @@ using Client.ViewModels;
 using Client.Helpers;
 using Client.ServiceReference;
 using System.Runtime.Serialization;
-using Client.Services;
 using Microsoft.Practices.Unity;
 
 namespace ClientTests
@@ -40,12 +39,11 @@ namespace ClientTests
             serviceMock.Setup<List<string>> (p => p.GetBugStatusList()).Returns(mockStatus); 
             serviceMock.Setup<User>         (p => p.GetMyUser()).Returns(userMock);
 
-            IOC.Container.RegisterInstance<ITrackerService>(serviceMock.Object);
             _ServiceMock = serviceMock.Object;
 
             _ActiveProjectStub = new ProjectViewModel(new Project { Id = 5, Description = "Stub Project", Name = "Stub Title" });
             
-            _AddPanel = new BugAddPanelViewModel(_Messenger, serviceMock.Object, _ActiveProjectStub);
+            _AddPanel = new BugAddPanelViewModel(_Messenger, _ServiceMock, _ActiveProjectStub);
         }
 
 

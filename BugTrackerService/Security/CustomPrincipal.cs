@@ -58,9 +58,17 @@ namespace BugTrackerService.Security
         protected virtual void EnsureRoles()
         {
             UserRepository repo = new UserRepository();
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
 
             User user = repo.GetAll().Where(p => p.Username == _identity.Name).Single();
-            IList<Role> userRoles = user.Roles.ToList();
+            IList<Role> userRoles = new List<Role>();
+            IList<ProjectRole> projRoles = projRoleRepo.GetAll().Where(p => p.User.Id == user.Id).ToList();
+            
+            foreach (ProjectRole projRole in projRoles)
+            {
+                if (!userRoles.Contains(projRole.Role))
+                    userRoles.Add(projRole.Role);
+            }
 
             _roles = new string[userRoles.Count()];
 

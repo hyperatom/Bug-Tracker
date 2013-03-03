@@ -33,15 +33,5 @@ namespace DataEntities.Entity
         [Required]
         [StringLength(60)]
         public String Password { get; set; }
-
-        [DataMember]
-        public IList<Project> Projects { get; set; }
-
-        [DataMember]
-        public IList<Role> Roles { get; set; }
-
-        [DataMember]
-        [Required]
-        public Organisation Organisation { get; set; }
     }
 }

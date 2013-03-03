@@ -6,6 +6,7 @@ using Client.ServiceReference;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Client.Helpers;
+using AutoMapper;
 
 namespace Client.ViewModels
 {
@@ -16,9 +17,7 @@ namespace Client.ViewModels
     public class ProjectViewModel : ObservableObject
     {
 
-        private Int32 _Id;
-        private String _Name;
-        private String _Description;
+        private Project _Project;
 
 
         /// <summary>
@@ -28,90 +27,39 @@ namespace Client.ViewModels
         /// <param name="bug">Bug object data structure.</param>
         public ProjectViewModel(Project proj)
         {
-            _Id = proj.Id;
-            _Name = proj.Name;
-            _Description = proj.Description;
+            _Project = proj;
         }
 
 
         /// <summary>
-        /// Converts a list of bug objects to an observable
-        /// collection of bug view models.
-        /// </summary>
-        /// <param name="bugList">List of bug objects.</param>
-        /// <returns>Observable collection of bug view models.</returns>
-        private ObservableCollection<BugViewModel> BugListToObservable(List<Bug> bugList)
-        {
-            ObservableCollection<BugViewModel> observableBugs = new ObservableCollection<BugViewModel>();
-            
-            foreach (Bug bug in bugList)
-            {
-                observableBugs.Add(new BugViewModel(bug));
-            }
-
-            return observableBugs;
-        }
-
-
-        /// <summary>
-        /// Converts an observable collection of bug view models to bug objects.
-        /// </summary>
-        /// <param name="obsBugs">Observable collection of bug view models.</param>
-        /// <returns>Returns a list of bug objects.</returns>
-        private List<Bug> ObservableBugsToList(ObservableCollection<BugViewModel> obsBugs)
-        {
-            List<Bug> bugList = new List<Bug>();
-
-            if (obsBugs != null)
-            {
-                foreach (BugViewModel vm in obsBugs)
-                {
-                    bugList.Add(vm.ToBugModel());
-                }
-            }
-
-            return bugList;
-        }
-
-
-        /// <summary>
-        /// Converts the current view model object back to
-        /// a simple project data structure.
+        /// Converts the current view model object back into
+        /// a data transfer object.
         /// </summary>
         /// <returns>A project object resulting from the mapping.</returns>
         public Project ToProjectModel()
         {
-            Project proj = new Project
-            {
-                Id = _Id,
-                Name = _Name,
-                Description = _Description,
-            };
+            Mapper.CreateMap<ProjectViewModel, Project>();
 
-            return proj;
+            return Mapper.Map<ProjectViewModel, Project>(this);
         }
 
 
-        /// <summary>
-        /// Field controls access to the bug's ID field. Changes cause
-        /// objects view to be notified using SetAndNotify method.
-        /// </summary>
         public Int32 Id
         {
-            get { return this._Id; }
-            set { _Id = value; OnPropertyChanged("Id"); }
+            get { return _Project.Id; }
+            set { _Project.Id = value; OnPropertyChanged("Id"); }
         }
 
         public String Name
         {
-            get { return this._Name; }
-            set { _Name = value; OnPropertyChanged("Name"); }
+            get { return _Project.Name; }
+            set { _Project.Name = value; OnPropertyChanged("Name"); }
         }
 
         public String Description
         {
-            get { return this._Description; }
-            set { Description = value; OnPropertyChanged("Description"); }
+            get { return _Project.Description; }
+            set { _Project.Description = value; OnPropertyChanged("Description"); }
         }
 
     }

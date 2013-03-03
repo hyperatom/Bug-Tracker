@@ -9,16 +9,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for RegistrationWindow.xaml
+    /// Interaction logic for ProjectManagerPanel.xaml
     /// </summary>
-    public partial class RegistrationWindow : Window
+    public partial class ProjectManagerPanel : UserControl
     {
-        public RegistrationWindow()
+        public ProjectManagerPanel()
         {
             InitializeComponent();
         }

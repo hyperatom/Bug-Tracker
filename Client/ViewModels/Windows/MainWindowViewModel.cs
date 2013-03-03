@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using Client.Controllers;
 using Client.Helpers;
 using Client.ServiceReference;
-using Client.ViewModels;
+using Client.ViewModels.Controls;
+using Client.ViewModels.Windows;
+using Client.Factories;
+using System.Collections.Generic;
 
 namespace Client.ViewModels
 {
     /// <summary>
     /// This class is the view model which controls the main bug
-    /// view window.
+    /// view window. This class is concerned with controlling
+    /// child components which compose of the main window.
     /// </summary>
-    public class MainWindowViewModel : ObservableObject, IWindow
+    public class MainWindowViewModel : ObservableObject, IMainWindowViewModel
     {
 
+        // Dependencies
         private IMessenger _Messenger;
         private ITrackerService _Service;
+        private IControlFactory _ControlFactory;
 
-        private String                _Username;
-        private ProjectViewModel      _SelectedActiveProject;
-        private CommandPanelViewModel _CommandPanel;
-        private BugTableViewModel     _BugTablePage;
+        // Child Panels
+        private ICommandPanelViewModel _CommandPanel;
+        private IBugTableViewModel     _BugTablePanel;
+
+        private String _Username;
+        private ProjectViewModel _SelectedActiveProject;
 
         private ObservableCollection<ProjectViewModel> _ProjectComboBox;
 
@@ -38,15 +36,30 @@ namespace Client.ViewModels
 
 
         /// <summary>
-        /// Inherits constructor from base class.
+        /// Stores references to dependencies and initialises the 
+        /// username field by retrieving currents user from service.
         /// </summary>
-        public MainWindowViewModel(IMessenger comm, ITrackerService svc)
+        /// <param name="comm">Messenger to communciate with other view models.</param>
+        /// <param name="svc">Web service allowing remote procedures to be called.</param>
+        /// <param name="ctrlfactory">Factory to create controls on the main window.</param>
+        public MainWindowViewModel(IMessenger comm, ITrackerService svc, IControlFactory ctrlfactory)
         {
+            if (comm == null)
+                throw new ArgumentNullException("The messenger cannot be null.");
+
+            if (svc == null)
+                throw new ArgumentNullException("The service factory cannot be null.");
+
+            if (ctrlfactory == null)
+                throw new ArgumentNullException("The control factory cannot be null.");
+
             _Messenger = comm;
             _Service = svc;
+            _ControlFactory = ctrlfactory;
 
             Username = _Service.GetMyUser().FirstName;
-            
+
+            InitialiseActiveProject();
         }
 
 
@@ -60,40 +73,48 @@ namespace Client.ViewModels
         }
 
 
-        public BugTableViewModel BugTablePage
+        /// <summary>
+        /// The panel which displays the table of bugs
+        /// </summary>
+        public IBugTableViewModel BugTablePanel
         {
             get
             {
-                if (_BugTablePage == null)
+                if (_BugTablePanel == null)
                 {
-                    _BugTablePage = new BugTableViewModel(_Messenger, _Service, _SelectedActiveProject);
+                    _BugTablePanel = _ControlFactory.CreateBugTablePanel(_SelectedActiveProject);
                 }
 
-                return _BugTablePage; 
+                return _BugTablePanel; 
             }
 
-            set { _BugTablePage = value; }
+            set { _BugTablePanel = value; OnPropertyChanged("BugTablePanel"); }
         }
 
 
-        public CommandPanelViewModel CommandPanel
+        /// <summary>
+        /// Command panel which provides buttons to manipulate bugs
+        /// </summary>
+        public ICommandPanelViewModel CommandPanel
         {
             get 
             {
                 if (_CommandPanel == null)
                 {
-                    _CommandPanel = new CommandPanelViewModel(_Messenger, _Service, _SelectedActiveProject);
+                    _CommandPanel = _ControlFactory.CreateCommandPanel(_SelectedActiveProject);
                 }
 
                 return _CommandPanel;
             }
 
-            set { _CommandPanel = value; OnPropertyChanged("CommandPanelViewModel"); }
+            set { _CommandPanel = value; OnPropertyChanged("CommandPanel"); }
         }
 
 
         /// <summary>
         /// The list of user assigned projects to be displayed in combo box.
+        /// Associated projects are retrieved from the service and initialses
+        /// the currently active project.
         /// </summary>
         public ObservableCollection<ProjectViewModel> ProjectComboBox
         {
@@ -101,7 +122,12 @@ namespace Client.ViewModels
             {
                 if (_ProjectComboBox == null)
                 {
-                    _ProjectComboBox = ProjectModelToViewModel(_Service.GetMyProjects().ToList());
+                    _ProjectComboBox = new ObservableCollection<ProjectViewModel>();
+                    
+                    foreach (Project proj in _Service.GetMyProjects())
+                    {
+                        _ProjectComboBox.Add(new ProjectViewModel(proj));
+                    }
                 }
 
                 return _ProjectComboBox;
@@ -120,7 +146,11 @@ namespace Client.ViewModels
             set
             {
                 _SelectedActiveProject = value;
+
+                // Notify listeners of active project change
                 _Messenger.NotifyColleagues(Messages.ActiveProjectChanged, value);
+
+                OnPropertyChanged("SelectedActiveProject");
             }
         }
 
@@ -143,27 +173,18 @@ namespace Client.ViewModels
         #endregion
 
 
-        private void Debug()
+        private void InitialiseActiveProject()
         {
+            List<Project> projects = _Service.GetMyProjects();
             
+            if (projects.Count > 0 && projects != null)
+                SelectedActiveProject = new ProjectViewModel(projects[0]);
         }
 
 
-        /// <summary>
-        /// Converts a list of project objects to an observable collection of projects.
-        /// </summary>
-        /// <param name="list">The list of project objects.</param>
-        /// <returns>The result of the mappings between project and view model objects.</returns>
-        private ObservableCollection<ProjectViewModel> ProjectModelToViewModel(List<Project> list)
+        private void Debug()
         {
-            ObservableCollection<ProjectViewModel> obsProjects = new ObservableCollection<ProjectViewModel>();
-
-            foreach (Project proj in list)
-            {
-                obsProjects.Add(new ProjectViewModel(proj));
-            }
-
-            return obsProjects;
+            
         }
 
     }

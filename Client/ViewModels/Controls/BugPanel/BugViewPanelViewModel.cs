@@ -11,19 +11,40 @@ using Client.ViewModels;
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Extends the behaviour of a bug view panel by adding
+    /// operations to edit an existing bug.
+    /// </summary>
     public class BugViewPanelViewModel : BugPanelViewModel
     {
 
         private RelayCommand _SaveBugCommand;
         
 
-        public BugViewPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel proj, BugViewModel SelectedBug)
-            : base(comm, svc, proj) 
+        /// <summary>
+        /// Initialises the bug view panel and de-references the selected bug to
+        /// ensure updates to the edited bug do not reflect in the bug table.
+        /// Also initialises a message listener to monitor changes in selected bug.
+        /// </summary>
+        /// <param name="comm">The mediator object for communication between view models.</param>
+        /// <param name="svc">The bug tracker web service.</param>
+        /// <param name="activeProj">The currently active project.</param>
+        /// <param name="selectedBug">The currently selected bug</param>
+        public BugViewPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj, BugViewModel selectedBug)
+            : base(comm, svc, activeProj) 
         {
+            if (selectedBug == null)
+                throw new ArgumentNullException("The selected bug cannot be null.");
+
+            EditedBug = selectedBug.Clone();
+
             ListenForMessages();
-            EditedBug = new BugViewModel(SelectedBug.ToBugModel());
         }
 
+
+        /// <summary>
+        /// Listens for messages which change object dependencies.
+        /// </summary>
         private void ListenForMessages()
         {
             _Messenger.Register<BugViewModel>(Messages.SelectedBugChanged, p => EditedBug = new BugViewModel(p.ToBugModel()));

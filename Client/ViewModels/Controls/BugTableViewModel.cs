@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using Client.Helpers;
 using Client.ServiceReference;
-using Client.ViewModels;
-using Microsoft.Practices.Unity;
+using Client.Factories;
+using Client.ViewModels.Controls;
 
 namespace Client.ViewModels
 {
-    public class BugTableViewModel : ObservableObject
+    /// <summary>
+    /// This class controls operations concerned with the bug table.
+    /// </summary>
+    public class BugTableViewModel : ObservableObject, IBugTableViewModel
     {
 
         private String _ProjectTitle;
@@ -23,22 +24,50 @@ namespace Client.ViewModels
         private BugPanelViewModel _SouthViewPanel;
 
         private ProjectViewModel _ActiveProject;
+
+        // Dependencies
         private IMessenger _Messenger;
         private ITrackerService _Service;
+        private IControlFactory _ControlFactory;
 
 
-        public BugTableViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj)
+        /// <summary>
+        /// Stores dependencies and initialises selected bug list. Also
+        /// sets up a message listener to recieve incoming messages.
+        /// </summary>
+        /// <param name="comm">The mediator for communicatin with other view models.</param>
+        /// <param name="svc">The bug tracker web service.</param>
+        /// <param name="activeProj">The currently active project</param>
+        public BugTableViewModel(IMessenger comm, ITrackerService svc, 
+                                 IControlFactory ctrlfactory, ProjectViewModel activeProj)
         {
+            if (comm == null)
+                throw new ArgumentNullException("The messenger cannot be null.");
+
+            if (svc == null)
+                throw new ArgumentNullException("The active project cannot be null.");
+
+            if (ctrlfactory == null)
+                throw new ArgumentNullException("The control factory cannot be null.");
+
+            if (activeProj == null)
+                throw new ArgumentNullException("The active project cannot be null.");
+
             _Messenger = comm;
             _Service = svc;
             _ActiveProject = activeProj;
+            _ControlFactory = ctrlfactory;
 
-            _SelectedBugs = new List<BugViewModel>();
+            ProjectTitle = activeProj.Name;
+            PopulateBugTable();
 
             ListenForMessages();
         }
 
 
+        /// <summary>
+        /// The title of the currently active project.
+        /// </summary>
         public String ProjectTitle
         {
             get { return _ProjectTitle; }
@@ -66,7 +95,8 @@ namespace Client.ViewModels
 
 
         /// <summary>
-        /// Stores the bug view model which the user has currently selected.
+        /// Stores the bug view model which the user has currently selected
+        /// and notifies listeners of the change.
         /// </summary>
         public BugViewModel SelectedBug
         {
@@ -86,11 +116,15 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Derives the currently selected bugs by searching for
+        /// bugs which have IsSelected property set to true.
+        /// </summary>
         public List<BugViewModel> SelectedBugs
         {
             get
             {
-                _SelectedBugs.Clear();
+                _SelectedBugs = new List<BugViewModel>();
 
                 foreach (BugViewModel bug in BugList)
                 {
@@ -135,6 +169,7 @@ namespace Client.ViewModels
             if (_ActiveProject != null)
             {
                 BugList.Clear();
+
                 IList<Bug> bugList = _Service.GetBugsByProject(_ActiveProject.ToProjectModel());
 
                 foreach (Bug bug in bugList)
@@ -145,11 +180,15 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Subscribes to incoming messages concerned with
+        /// data stored in this object.
+        /// </summary>
         private void ListenForMessages()
         {            
             _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, ActiveProjectChanged);
             _Messenger.Register<BugViewModel>(Messages.AddPanelSavedBug, p => _BugList.Add(p));
-            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, SelectedBugDeleted);
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, RemoveBugFromTable);
             _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, SaveBugToTable);
 
             _Messenger.Register(Messages.ShowBugViewPanel, ShowBugViewPanel);
@@ -158,7 +197,12 @@ namespace Client.ViewModels
         }
 
 
-        private void SelectedBugDeleted(BugViewModel bug)
+        /// <summary>
+        /// Removes a bug object from the table and closes the
+        /// south view panel if it is open.
+        /// </summary>
+        /// <param name="bug">The bug to remove from the table.</param>
+        private void RemoveBugFromTable(BugViewModel bug)
         {
             _BugList.Remove(bug);
 
@@ -167,12 +211,19 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Notifies listeners when the selected bug list changes.
+        /// </summary>
         private void SendSelectedBugs()
         {
             _Messenger.NotifyColleagues(Messages.SelectedBugsChanged, SelectedBugs);
         }
 
 
+        /// <summary>
+        /// Saves a bug object to the table.
+        /// </summary>
+        /// <param name="bug">The bug object to save.</param>
         private void SaveBugToTable(BugViewModel bug)
         {
             BugViewModel selectedBug = BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
@@ -185,20 +236,31 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Creates a new bug editing panel and sets it visible.
+        /// </summary>
         private void ShowBugViewPanel()
         {
-            SouthViewPanel = new BugViewPanelViewModel(_Messenger, _Service, _ActiveProject, _SelectedBug);
+            SouthViewPanel = _ControlFactory.CreateBugViewPanel(_ActiveProject, _SelectedBug);
             SouthViewPanel.IsVisible = true;
         }
 
 
+        /// <summary>
+        /// Creates a new bug add panel and sets it visible.
+        /// </summary>
         private void ShowBugAddPanel()
         {
-            SouthViewPanel = new BugAddPanelViewModel(_Messenger, _Service, _ActiveProject);
+            SouthViewPanel = _ControlFactory.CreateBugAddPanel(_ActiveProject);
             SouthViewPanel.IsVisible = true;
         }
 
 
+        /// <summary>
+        /// Updates object data when the currently active project
+        /// is changed.
+        /// </summary>
+        /// <param name="proj">The new active project.</param>
         private void ActiveProjectChanged(ProjectViewModel proj)
         {
             _ActiveProject = proj;

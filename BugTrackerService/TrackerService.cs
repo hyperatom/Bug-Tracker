@@ -59,12 +59,23 @@ namespace BugTrackerService
         public List<Project> GetMyProjects()
         {
             UserRepository repo = new UserRepository();
-            ProjectRepository projRepo = new ProjectRepository();
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
             
             string identity = CustomPrincipal.Current.Identity.Name;
             User currentUser = repo.GetAll().Where(x => x.Username == identity).FirstOrDefault();
 
-            return currentUser.Projects.ToList();
+            // Get all project roles associated with user
+            List<ProjectRole> projRoleList = projRoleRepo.GetAll().Where(p => p.User.Id == currentUser.Id).ToList();
+            
+            List<Project> projList = new List<Project>();
+
+            foreach (ProjectRole projRole in projRoleList)
+            {
+                projList.Add(projRole.Project);
+            }
+
+            
+            return projList;
         }
 
 
@@ -120,11 +131,16 @@ namespace BugTrackerService
 
         public List<User> GetUsersByProject(Project proj)
         {
-            UserRepository userRep = new UserRepository();
-            ProjectRepository projRep = new ProjectRepository();
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
 
-            Project project = projRep.GetAll().Where(p => p.Id == proj.Id).SingleOrDefault();
-            List<User> userList = userRep.GetAll().Where(p => p.Projects.Any(x => x.Id == proj.Id)).ToList();
+            List<User> userList = new List<User>();
+            List<ProjectRole> projRoleList = projRoleRepo.GetAll().Where(p => p.Project.Id == proj.Id).ToList();
+
+            foreach (ProjectRole projRole in projRoleList)
+            {
+                if (!userList.Contains(projRole.User))
+                    userList.Add(projRole.User);
+            }
 
             return userList;
         }

@@ -12,6 +12,11 @@ using Client.ViewModels;
 
 namespace Client.ViewModels
 {
+
+    /// <summary>
+    /// Abstracts the operations of a generic bug panel and
+    /// initialises the data bound to user input fields.
+    /// </summary>
     public abstract class BugPanelViewModel : ObservableObject
     {
 
@@ -19,7 +24,6 @@ namespace Client.ViewModels
 
         protected BugViewModel      _EditedBug;
         protected User              _AssignedUser;
-        protected BugTableViewModel _Parent;
 
         protected List<String> _PriorityList;
         protected List<User>   _UsersInActiveProject;
@@ -30,10 +34,22 @@ namespace Client.ViewModels
         protected ProjectViewModel _ActiveProject;
 
 
+        /// <summary>
+        /// Stores references to dependencies and sets up a message listener.
+        /// </summary>
+        /// <param name="comm">The communication channel with other view models.</param>
+        /// <param name="svc">The bug tracker web service.</param>
+        /// <param name="activeProj">The currently active project.</param>
         public BugPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj)
         {
+            if (comm == null)
+                throw new ArgumentNullException("The messenger cannot be null.");
+
             if (activeProj == null)
                 throw new ArgumentNullException("The active project cannot be null.");
+
+            if (svc == null)
+                throw new ArgumentNullException("The web service cannot be null.");
 
             _Messenger = comm;
             _Service = svc;
@@ -43,12 +59,18 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Listens for incoming messages.
+        /// </summary>
         private void ListenForMessages()
         {
             _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, delegate { IsVisible = false; });
         }
 
 
+        /// <summary>
+        /// Property bound to the views visibility.
+        /// </summary>
         public bool IsVisible
         {
             get { return _IsVisible; }
@@ -56,7 +78,10 @@ namespace Client.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Stores the bug view model which is currently
+        /// being edited.
+        /// </summary>
         public BugViewModel EditedBug
         {
             get { return _EditedBug; }
@@ -71,6 +96,9 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Gets the currently assigned user of the bug being viewed.
+        /// </summary>
         public User AssignedUser
         {
             get 
@@ -82,6 +110,9 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Gets a list of possible bug status from the web service.
+        /// </summary>
         public List<String> StatusList
         {
             get
@@ -96,6 +127,9 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Gets a collection of all users associated with the active project.
+        /// </summary>
         public List<User> UsersInActiveProject
         {
             get
@@ -113,6 +147,9 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Gets a collection of possible bug priorities from the web service.
+        /// </summary>
         public List<String> PriorityList
         {
             get
@@ -127,6 +164,11 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Validates the bug view model by triggering the property changed
+        /// notification and returns true or false.
+        /// </summary>
+        /// <returns>True if bug is validated, false otherwise.</returns>
         protected bool BugIsValidated()
         {
             EditedBug.IsValidating = true;

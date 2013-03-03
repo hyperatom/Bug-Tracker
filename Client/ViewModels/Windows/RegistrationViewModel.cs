@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using System.Windows.Controls;
-using Client.Helpers;
-using System.Windows.Input;
-using System.Windows;
-using System.Text.RegularExpressions;
-using System.Net.Mail;
+using System.Linq;
 using System.ServiceModel;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Input;
+using Client.Factories;
+using Client.Helpers;
 using Client.ServiceRegistration;
-//using Client.ServiceReference;
-using System.Threading.Tasks;
-using Client.Controllers;
-using Client.ViewModels;
-using Microsoft.Practices.Unity;
+using Client.ViewModels.Windows;
 
 namespace Client.ViewModels
 {
-    public class RegistrationViewModel : ObservableObject, IWindow, IDataErrorInfo
+    /// <summary>
+    /// This class is concerned with operations which allow a user to register.
+    /// </summary>
+    public class RegistrationViewModel : ObservableObject, IRegistrationViewModel, IDataErrorInfo
     {
 
         private string _FirstName;
@@ -34,26 +31,31 @@ namespace Client.ViewModels
         private RelayCommand _RegisterCommand;
         private RelayCommand _CancelCommand;
 
-        private IWindowLoader _WindowLoader;
+        private IWindowFactory _WindowFactory;
         private IRegistration _Service;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
 
         /// <summary>
-        /// Inherits from the parent class.
+        /// Stores references to dependencies and initialses object fields.
         /// </summary>
-        public RegistrationViewModel(IWindowLoader loader, IRegistration svc) 
+        /// <param name="loader">The window loader.</param>
+        /// <param name="svc">The registration web service.</param>
+        public RegistrationViewModel(IRegistration svc, IWindowFactory winfactory) 
         {
-            _WindowLoader = loader;
-            _Service = svc;
+            if (svc == null)
+                throw new ArgumentNullException("Registration service cannot be null");
 
-            InitialiseFields();
+            if (winfactory == null)
+                throw new ArgumentNullException("Window factory cannot be null");
+
+            _Service = svc;
+            _WindowFactory = winfactory;
         }
 
 
         public EventHandler RequestClose { get; set; }
-        public IWindowLoader WindowLoader { get; set; }
 
 
         private string FirstName
@@ -147,19 +149,6 @@ namespace Client.ViewModels
 
 
         /// <summary>
-        /// Initialises the form fields with empty strings to
-        /// ensure validation detects an empty field.
-        /// </summary>
-        private void InitialiseFields()
-        {
-            FirstAndLastName = "";
-            Email = "";
-            Password = "";
-            Organisation = "";
-        }
-
-
-        /// <summary>
         /// Regex splits full name into first and second names.
         /// </summary>
         /// <param name="fullName">The users full name as a single string.</param>
@@ -175,7 +164,8 @@ namespace Client.ViewModels
         /// </summary>
         private void Cancel()
         {
-            _WindowLoader.ShowView(IOC.Container.Resolve<LoginViewModel>());
+            _WindowFactory.CreateLoginWindow().Show();
+
             RequestClose.Invoke(this, null);
         }
 
@@ -217,17 +207,16 @@ namespace Client.ViewModels
             {
                 try
                 {
-                    Organisation org = new Organisation { Name = Organisation };
-
                     User user = new User
                     {
                         FirstName = this.FirstName,
                         Password = this.Password,
                         Surname = this.LastName,
                         Username = this.Email,
-                        Organisation = org
+                        Organisation = new Organisation { Name = Organisation }
                     };
 
+                    // Execute registration operation concurrently
                     _Service.BeginRegister(user, RegistrationComplete, _Service);
                 }
                 catch (FaultException e)
@@ -244,6 +233,10 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Enables button when registration is complete.
+        /// </summary>
+        /// <param name="result"></param>
         public void RegistrationComplete(IAsyncResult result)
         {
             ((IRegistration)result.AsyncState).EndRegister(result);
@@ -258,6 +251,11 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Validate each field in the data entry form.
+        /// </summary>
+        /// <param name="Field">The field to be validated.</param>
+        /// <returns>A string representing the error message.</returns>
         public string this[string Field]
         {
             get
@@ -278,17 +276,17 @@ namespace Client.ViewModels
                         const int MaxFirstNameLength = 25;
                         const int MaxLastNameLength = 40;
 
-                        if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]{1,"+MaxFirstNameLength+"} [A-Za-z]+$"))
-                            result = "Your first name can be as most "+MaxFirstNameLength+" characters.";
-
-                        if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]+ [A-Za-z]{1,"+MaxLastNameLength+"}$"))
-                            result = "Your last name can be as most "+MaxLastNameLength+" characters.";
-
-                        if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]+ [A-Za-z]+$"))
-                            result = "Please enter your First and Last name.";
-
                         if (String.IsNullOrEmpty(FirstAndLastName))
                             result = "This field cannot be left blank!";
+
+                        else if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]{1,"+MaxFirstNameLength+"} [A-Za-z]+$"))
+                            result = "Your first name can be as most "+MaxFirstNameLength+" characters.";
+
+                        else if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]+ [A-Za-z]{1,"+MaxLastNameLength+"}$"))
+                            result = "Your last name can be as most "+MaxLastNameLength+" characters.";
+
+                        else if (!Regex.IsMatch(FirstAndLastName, @"^[A-Za-z]+ [A-Za-z]+$"))
+                            result = "Please enter your First and Last name.";
 
                         break;
                     }
@@ -297,14 +295,14 @@ namespace Client.ViewModels
                     {
                         const int MaxEmailLength = 254;
 
-                        if (!Regex.IsMatch(Email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
-                            result = "Please enter a valid email address.";
-                       
-                        if (Email.Length > MaxEmailLength)
-                            result = "Email must be less than "+MaxEmailLength+" characters long.";
-
                         if (String.IsNullOrEmpty(Email))
                             result = "This field cannot be left blank!";
+
+                        else if (!Regex.IsMatch(Email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+                            result = "Please enter a valid email address.";
+                       
+                        else if (Email.Length > MaxEmailLength)
+                            result = "Email must be less than "+MaxEmailLength+" characters long.";
 
                         break;
                     }
@@ -313,11 +311,11 @@ namespace Client.ViewModels
                     {
                         const int MaxPasswordLength = 60;
 
-                        if (Password.Length > MaxPasswordLength)
-                            result = "Password can be at most " +MaxPasswordLength+ " characters long.";
-
                         if (String.IsNullOrEmpty(Password))
                             result = "This field cannot be left blank!";
+
+                        else if (Password.Length > MaxPasswordLength)
+                            result = "Password can be at most " +MaxPasswordLength+ " characters long.";
 
                         break;
                     }
@@ -326,11 +324,11 @@ namespace Client.ViewModels
                     {
                         const int MaxOrgLength = 25;
 
-                        if (Organisation.Length > MaxOrgLength)
-                            result = "Organisation name can be at most "+MaxOrgLength+" characters long.";
-
                         if (String.IsNullOrEmpty(Organisation))
                             result = "This field cannot be left blank!";
+
+                        else if (Organisation.Length > MaxOrgLength)
+                            result = "Organisation name can be at most "+MaxOrgLength+" characters long.";
 
                         break;
                     }

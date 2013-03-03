@@ -21,22 +21,18 @@
     
     <Grid>
         
-        
-        
         <Grid Height="116" Name="grid1" VerticalAlignment="Top">
 
             <Image Height="93" HorizontalAlignment="Left" Margin="33,9,0,0" Name="Logo" Stretch="Fill" VerticalAlignment="Top" Width="118" Source="/Client;component/Images/ladybird.png" />
             
             <ContentControl Content="{Binding CommandPanel}" Margin="215,11,684,14" Name="CommandPanel" />
-
-            <Label Height="59" HorizontalAlignment="Left" Margin="867,45,0,0" Name="labelWelcomeMessage" Content="{Binding Username}" VerticalAlignment="Top" Width="144" FontSize="24" Foreground="#FF830521" FontWeight="Thin" />
-            <Label Content="Welcome," Height="38" HorizontalAlignment="Left" Margin="866,12,0,0" Name="labelWelcome" VerticalAlignment="Top" FontSize="22" Width="107" FontStyle="Italic" FontWeight="Normal" />
             <Label Content="Select an active project." Height="28" HorizontalAlignment="Left" Margin="706,23,0,0" Name="label1" VerticalAlignment="Top" Width="145" />
             
             <ComboBox Height="23" HorizontalAlignment="Left" Margin="711,56,0,0" Name="comboBox1" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ProjectComboBox}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedActiveProject}" SelectedIndex="0" DataContext="{Binding}" />
             
-            <Button Content="Debug" Height="48" HorizontalAlignment="Left" Margin="1017,29,0,0" Name="button4" VerticalAlignment="Top" Width="77" Command="{Binding Path=DeBugCommand}" />
-            
+            <Button Content="Debug" Height="48" HorizontalAlignment="Left" Margin="507,44,0,0" Name="button4" VerticalAlignment="Top" Width="77" Command="{Binding Path=DeBugCommand}" />
+            <Button Content="Logout" Height="69" HorizontalAlignment="Left" Margin="1053,23,0,0" Name="button1" VerticalAlignment="Top" Width="53" />
+            <Button Content="My Projects" Height="56" HorizontalAlignment="Left" Margin="946,36,0,0" Name="button2" VerticalAlignment="Top" Width="74" />
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="White" Offset="0" />
@@ -53,11 +49,12 @@
                     <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
+            <Label Height="59" HorizontalAlignment="Left" Margin="17,51,0,0" Name="labelWelcomeMessage" Content="{Binding Username}" VerticalAlignment="Top" Width="144" FontSize="24" Foreground="#FF830521" FontWeight="Thin" />
+            <Label Content="Welcome," Height="38" HorizontalAlignment="Left" Margin="16,18,0,0" Name="labelWelcome" VerticalAlignment="Top" FontSize="22" Width="107" FontStyle="Italic" FontWeight="Normal" />
         </Grid>
 
-        <ContentControl Content="{Binding BugTablePage}" Margin="206,122,0,22" Name="BugTablePage" />
+        <ContentControl Content="{Binding BugTablePanel}" Margin="198,116,0,22" Name="BugTablePage" />
 
         <StatusBar Height="23" Name="StatusBar" VerticalAlignment="Bottom" />
-        
     </Grid>
 </Window>

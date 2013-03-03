@@ -13,8 +13,8 @@ using Client.ViewModels;
 namespace Client.ViewModels
 {
     /// <summary>
-    /// This class is a type of BugPanel which provides 
-    /// functionality for adding bugs to the system.
+    /// This class is a type of BugPanel which extends its
+    /// functionality so adding bugs to the system is possible.
     /// </summary>
     public class BugAddPanelViewModel : BugPanelViewModel
     {
@@ -23,12 +23,13 @@ namespace Client.ViewModels
 
         
         /// <summary>
-        /// Creates a new model for user to enter data
-        /// and ensures text box fields are blank.
+        /// Initialises the panel object.
         /// </summary>
         /// <param name="comm">Messenger object to communicate with other view models.</param>
-        /// /// <param name="activeProject">The currently active project.</param>
-        public BugAddPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel proj) : base(comm, svc, proj) 
+        /// <param name="svc">The bug tracker web service.</param>
+        /// <param name="activeProj">The currently active project.</param>
+        public BugAddPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj) 
+            : base(comm, svc, activeProj) 
         {
             InitialiseBugViewModel();
         }
@@ -57,7 +58,6 @@ namespace Client.ViewModels
         /// priority and status values which reflect on the user
         /// interface.
         /// </summary>
-        /// <returns>A new bug view model with default values.</returns>
         private void InitialiseBugViewModel()
         {
             EditedBug = new BugViewModel();
@@ -90,6 +90,7 @@ namespace Client.ViewModels
 
                     InitialiseBugViewModel();
 
+                    // Close the add panel
                     IsVisible = false;
                 }
                 catch (FaultException e)

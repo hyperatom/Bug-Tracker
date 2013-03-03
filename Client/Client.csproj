@@ -116,20 +116,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controllers\Windows.cs" />
+    <Compile Include="Factories\ControlFactory.cs" />
+    <Compile Include="Factories\IControlFactory.cs" />
+    <Compile Include="Factories\IServiceFactory.cs" />
+    <Compile Include="Factories\IWindowFactory.cs" />
+    <Compile Include="Factories\ServiceFactory.cs" />
+    <Compile Include="Factories\WindowFactory.cs" />
     <Compile Include="Helpers\IMessenger.cs" />
     <Compile Include="Helpers\Messages.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Controllers\IWindowLoader.cs" />
-    <Compile Include="Controllers\WindowLoader.cs" />
-    <Compile Include="Helpers\IOC.cs" />
     <Compile Include="Helpers\Mediator.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugAddPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugViewPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\CommandPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\IBugTableViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ICommandPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\IWindow.cs" />
+    <Compile Include="ViewModels\Windows\ILoginViewModel.cs" />
+    <Compile Include="ViewModels\Windows\IMainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Windows\IRegistrationViewModel.cs" />
     <Compile Include="Views\Controls\BugAddPanel.xaml.cs">
       <DependentUpon>BugAddPanel.xaml</DependentUpon>
     </Compile>
@@ -142,6 +150,10 @@
     <Compile Include="Views\Controls\CommandPanel.xaml.cs">
       <DependentUpon>CommandPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\ProjectManagerPanel.xaml.cs">
+      <DependentUpon>ProjectManagerPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\IWindow.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -178,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\CommandPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ProjectManagerPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -316,9 +332,7 @@
   <ItemGroup>
     <Resource Include="Images\ladybird.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

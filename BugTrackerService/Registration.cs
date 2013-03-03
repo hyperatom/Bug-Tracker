@@ -30,18 +30,7 @@ namespace BugTrackerService
         /// <param name="user">New user object containing new organisation.</param>
         public void Register(User user)
         {
-            UserRepository userRepo = new UserRepository();
-            OrganisationRepository orgRepo = new OrganisationRepository();
-            RoleRepository roleRepo = new RoleRepository();
-
-            if (UserExists(user))
-                throw new FaultException("A user with this username already exists.");
-
-            Role role = roleRepo.GetAll().Where(p => p.RoleName == "Project Manager").SingleOrDefault();
-
-            user.Organisation = orgRepo.Create(user.Organisation);
-            user.Roles = new List<Role>() { role };
-            userRepo.Create(user);
+            
         }
 
 

@@ -10,17 +10,32 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Client.Views.Windows;
+using Client.ViewModels.Windows;
 
 namespace Client
 {
+
+    public interface IRegistrationWindow : IWindow { }
+
     /// <summary>
     /// Interaction logic for RegistrationWindow.xaml
     /// </summary>
-    public partial class RegistrationWindow : Window
+    public partial class RegistrationWindow : Window, IRegistrationWindow
     {
-        public RegistrationWindow()
+
+        public RegistrationWindow(IRegistrationViewModel viewModel)
         {
+            if (viewModel == null)
+                throw new ArgumentNullException("View model cannot be null.");
+
+            this.DataContext = viewModel;
+
+            viewModel.RequestClose += delegate { this.Close(); };
+
             InitializeComponent();
         }
+
     }
+
 }

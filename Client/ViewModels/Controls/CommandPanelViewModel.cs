@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Client.Helpers;
 using Client.ServiceReference;
-using Client.ViewModels;
-using Microsoft.Practices.Unity;
+using Client.ViewModels.Controls;
 
 namespace Client.ViewModels
 {
-    public class CommandPanelViewModel : ObservableObject
+    /// <summary>
+    /// This class provides methods which invoke data manipulation
+    /// operations on bug object.
+    /// </summary>
+    public class CommandPanelViewModel : ObservableObject, ICommandPanelViewModel
     {
 
         private IMessenger _Messenger;
@@ -24,8 +25,23 @@ namespace Client.ViewModels
         private IList<BugViewModel> _SelectedBugs;
 
 
+        /// <summary>
+        /// Stores references to dependencies and listens for incoming messages.
+        /// </summary>
+        /// <param name="comm">The mediator which allows communication between view models.</param>
+        /// <param name="svc">The bug tracker web service.</param>
+        /// <param name="activeProj"></param>
         public CommandPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj) 
         {
+            if (comm == null)
+                throw new ArgumentNullException("The messenger cannot be null.");
+
+            if (svc == null)
+                throw new ArgumentNullException("Web service cannot be null.");
+
+            if (activeProj == null)
+                throw new ArgumentNullException("The active project cannot be null.");
+
             _Messenger = comm;
             _Service = svc;
             _ActiveProject = activeProj;
@@ -34,10 +50,15 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Requests a collection of currently selected bugs and
+        /// returns true or false depending if any are selected.
+        /// </summary>
         private bool IsBugsSelected
         {
             get
             {
+                // Request currently selected bugs
                 _Messenger.NotifyColleagues(Messages.RequestSelectedBugs);
 
                 if (_SelectedBugs != null && _SelectedBugs.Count > 0)
@@ -48,6 +69,9 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Tracks whether an active project is selected.
+        /// </summary>
         private bool IsProjectSelected
         {
             get
@@ -104,6 +128,9 @@ namespace Client.ViewModels
         #endregion Commands
 
 
+        /// <summary>
+        /// Subscribes to incoming messages concerned with data in this object.
+        /// </summary>
         private void ListenForMessages()
         {
             _Messenger.Register<IList<BugViewModel>>(Messages.SelectedBugsChanged, p => _SelectedBugs = p);
@@ -111,12 +138,18 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Sends a message requesting to show the bug view panel.
+        /// </summary>
         private void ShowEditBugView()
         {
             _Messenger.NotifyColleagues(Messages.ShowBugViewPanel);
         }
 
 
+        /// <summary>
+        /// Sends a messages requesting to show the bug add panel.
+        /// </summary>
         private void ShowAddBugView()
         {
             _Messenger.NotifyColleagues(Messages.ShowBugAddPanel);
@@ -133,7 +166,7 @@ namespace Client.ViewModels
             {
                 // Delete using web service
                 _Service.DeleteBug(bug.ToBugModel());
-                // Delete from local bug view
+                // Notify listeners of delete operation
                 _Messenger.NotifyColleagues(Messages.SelectedBugDeleted, bug);
             }
         }

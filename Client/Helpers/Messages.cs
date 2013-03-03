@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Client.Helpers
 {
+    /// <summary>
+    /// Collection of messages which objects can use to communicate. Objects wishing
+    /// to communicate data must use the same message object as an identifier.
+    /// </summary>
     public static class Messages
     {
         public static readonly string AddPanelSavedBug = "Add Panel Saved Bug";

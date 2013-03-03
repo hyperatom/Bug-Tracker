@@ -10,16 +10,29 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Client.Views.Windows;
+using Client.ViewModels.Windows;
 
 namespace Client
 {
+
+    public interface IMainWindow : IWindow { }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
-        public MainWindow()
+
+        public MainWindow(IMainWindowViewModel viewModel)
         {
+            if (viewModel == null)
+                throw new ArgumentNullException("View model cannot be null.");
+
+            this.DataContext = viewModel;
+
+            viewModel.RequestClose += delegate { this.Close(); };
+
             InitializeComponent();
         }
 

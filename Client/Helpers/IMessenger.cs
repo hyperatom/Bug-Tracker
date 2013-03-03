@@ -1,6 +1,9 @@
 ﻿using System;
 namespace Client.Helpers
 {
+    /// <summary>
+    /// Interface defining the methods for a type of messenger class.
+    /// </summary>
     public interface IMessenger
     {
         void NotifyColleagues(string message);

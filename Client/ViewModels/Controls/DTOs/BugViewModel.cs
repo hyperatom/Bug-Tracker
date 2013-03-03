@@ -16,6 +16,7 @@ namespace Client.ViewModels
     /// <summary>
     /// This class is a client representation of a bug data structure.
     /// It is an observable object and notifies its container of changes.
+    /// 
     /// </summary>
     public class BugViewModel : ObservableObject, IDataErrorInfo
     {
@@ -28,6 +29,9 @@ namespace Client.ViewModels
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
 
+        /// <summary>
+        /// Default constructor initialises an empty bug view model.
+        /// </summary>
         public BugViewModel()
         {
             _Bug = new Bug();
@@ -62,14 +66,14 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Useful for de-referencing an object by
+        /// making a copy of it.
+        /// </summary>
+        /// <returns></returns>
         public BugViewModel Clone()
         {
-            MemoryStream stream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            formatter.Serialize(stream, this);
-            stream.Position = 0;
-            return (BugViewModel) formatter.Deserialize(stream);
+            return new BugViewModel(this.ToBugModel());
         }
 
 
@@ -87,10 +91,6 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Field controls access to the bug's ID field. Changes cause
-        /// objects view to be notified using SetAndNotify method.
-        /// </summary>
         public Int32 Id
         {
             get { return this._Bug.Id; }
@@ -157,6 +157,7 @@ namespace Client.ViewModels
             set { _Bug.AssignedUser = value; OnPropertyChanged("AssignedUser"); }
         }
 
+        // Tracks if the bug is selected in a view
         public bool IsSelected
         {
             get { return this._IsSelected; }
@@ -170,6 +171,11 @@ namespace Client.ViewModels
         }
 
 
+        /// <summary>
+        /// Validates the properties of the view model.
+        /// </summary>
+        /// <param name="Field">The field to validate.</param>
+        /// <returns>An error message as a string.</returns>
         public string this[string Field]
         {
             get
@@ -190,7 +196,8 @@ namespace Client.ViewModels
 
                         if (String.IsNullOrEmpty(Name))
                             result = "This field cannot be left blank!";
-                        if (Name.Length > MaxNameLength)
+                        
+                        else if (Name.Length > MaxNameLength)
                             result = "Name cannot exceed "+MaxNameLength+" characters.";
 
                         break;
