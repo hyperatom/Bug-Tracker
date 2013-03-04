@@ -8,6 +8,7 @@ using Client.ViewModels;
 using Client.ViewModels.Windows;
 using Microsoft.Practices.Unity;
 using Client.ViewModels.Controls;
+using Client.ViewModels.Controls.ProjectPanel;
 
 namespace Client
 {
@@ -82,6 +83,9 @@ namespace Client
             container.RegisterType<BugPanelViewModel, BugViewPanelViewModel>("ViewPanel");
             container.RegisterType<IBugTableViewModel, BugTableViewModel>();
             container.RegisterType<ICommandPanelViewModel, CommandPanelViewModel>();
+            container.RegisterType<IProjectManagerViewModel, ProjectManagerViewModel>();
+            container.RegisterType<ProjectPanelViewModel, ProjectAddPanelViewModel>("Add");
+            container.RegisterType<ProjectPanelViewModel, ProjectViewPanelViewModel>("View");
 
             // Factories
             container.RegisterType<IServiceFactory, ServiceFactory>();

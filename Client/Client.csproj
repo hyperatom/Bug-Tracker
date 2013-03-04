@@ -133,7 +133,12 @@
     <Compile Include="ViewModels\Controls\CommandPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\IBugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\ICommandPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\IContentPanel.cs" />
+    <Compile Include="ViewModels\Controls\IProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectManagerViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\ProjectAddPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\ProjectPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\ProjectViewPanelViewModel.cs" />
     <Compile Include="ViewModels\IWindow.cs" />
     <Compile Include="ViewModels\Windows\ILoginViewModel.cs" />
     <Compile Include="ViewModels\Windows\IMainWindowViewModel.cs" />
@@ -152,6 +157,9 @@
     </Compile>
     <Compile Include="Views\Controls\ProjectManagerPanel.xaml.cs">
       <DependentUpon>ProjectManagerPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ProjectViewPanel.xaml.cs">
+      <DependentUpon>ProjectViewPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\IWindow.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
@@ -194,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\ProjectManagerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ProjectViewPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

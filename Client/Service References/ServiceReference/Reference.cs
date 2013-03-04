@@ -337,6 +337,9 @@ namespace Client.ServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -352,6 +355,19 @@ namespace Client.ServiceReference {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Code {
+            get {
+                return this.CodeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
+                    this.CodeField = value;
+                    this.RaisePropertyChanged("Code");
+                }
             }
         }
         
@@ -408,9 +424,6 @@ namespace Client.ServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ITrackerService")]
     public interface ITrackerService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/Login", ReplyAction="http://tempuri.org/ITrackerService/LoginResponse")]
-        bool Login();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetAllBugs", ReplyAction="http://tempuri.org/ITrackerService/GetAllBugsResponse")]
         System.Collections.Generic.List<Client.ServiceReference.Bug> GetAllBugs();
         
@@ -420,8 +433,8 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/DeleteBug", ReplyAction="http://tempuri.org/ITrackerService/DeleteBugResponse")]
         void DeleteBug(Client.ServiceReference.Bug bug);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetMyProjects", ReplyAction="http://tempuri.org/ITrackerService/GetMyProjectsResponse")]
-        System.Collections.Generic.List<Client.ServiceReference.Project> GetMyProjects();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetProjectsAssignedTo", ReplyAction="http://tempuri.org/ITrackerService/GetProjectsAssignedToResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.Project> GetProjectsAssignedTo(Client.ServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetBugsByProject", ReplyAction="http://tempuri.org/ITrackerService/GetBugsByProjectResponse")]
         System.Collections.Generic.List<Client.ServiceReference.Bug> GetBugsByProject(Client.ServiceReference.Project project);
@@ -443,6 +456,18 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetBugStatusList", ReplyAction="http://tempuri.org/ITrackerService/GetBugStatusListResponse")]
         System.Collections.Generic.List<string> GetBugStatusList();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetProjectsManagedBy", ReplyAction="http://tempuri.org/ITrackerService/GetProjectsManagedByResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.Project> GetProjectsManagedBy(Client.ServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/AddProject", ReplyAction="http://tempuri.org/ITrackerService/AddProjectResponse")]
+        Client.ServiceReference.Project AddProject(Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/SaveProject", ReplyAction="http://tempuri.org/ITrackerService/SaveProjectResponse")]
+        Client.ServiceReference.Project SaveProject(Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/DeleteProject", ReplyAction="http://tempuri.org/ITrackerService/DeleteProjectResponse")]
+        void DeleteProject(Client.ServiceReference.Project project);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -472,10 +497,6 @@ namespace Client.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public bool Login() {
-            return base.Channel.Login();
-        }
-        
         public System.Collections.Generic.List<Client.ServiceReference.Bug> GetAllBugs() {
             return base.Channel.GetAllBugs();
         }
@@ -488,8 +509,8 @@ namespace Client.ServiceReference {
             base.Channel.DeleteBug(bug);
         }
         
-        public System.Collections.Generic.List<Client.ServiceReference.Project> GetMyProjects() {
-            return base.Channel.GetMyProjects();
+        public System.Collections.Generic.List<Client.ServiceReference.Project> GetProjectsAssignedTo(Client.ServiceReference.User user) {
+            return base.Channel.GetProjectsAssignedTo(user);
         }
         
         public System.Collections.Generic.List<Client.ServiceReference.Bug> GetBugsByProject(Client.ServiceReference.Project project) {
@@ -518,6 +539,22 @@ namespace Client.ServiceReference {
         
         public System.Collections.Generic.List<string> GetBugStatusList() {
             return base.Channel.GetBugStatusList();
+        }
+        
+        public System.Collections.Generic.List<Client.ServiceReference.Project> GetProjectsManagedBy(Client.ServiceReference.User user) {
+            return base.Channel.GetProjectsManagedBy(user);
+        }
+        
+        public Client.ServiceReference.Project AddProject(Client.ServiceReference.Project project) {
+            return base.Channel.AddProject(project);
+        }
+        
+        public Client.ServiceReference.Project SaveProject(Client.ServiceReference.Project project) {
+            return base.Channel.SaveProject(project);
+        }
+        
+        public void DeleteProject(Client.ServiceReference.Project project) {
+            base.Channel.DeleteProject(project);
         }
     }
 }

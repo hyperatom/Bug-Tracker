@@ -14,10 +14,6 @@ namespace BugTrackerService
     public interface ITrackerService
     {
         [OperationContract]
-        //[FaultContract(typeof(BadLoginFault))]
-        bool Login();
-
-        [OperationContract]
         List<Bug> GetAllBugs();
 
         [OperationContract]
@@ -27,7 +23,7 @@ namespace BugTrackerService
         void DeleteBug(Bug bug);
 
         [OperationContract]
-        List<Project> GetMyProjects();
+        IList<Project> GetProjectsAssignedTo(User user);
 
         [OperationContract]
         List<Bug> GetBugsByProject(Project project);
@@ -49,5 +45,17 @@ namespace BugTrackerService
 
         [OperationContract]
         List<string> GetBugStatusList();
+
+        [OperationContract]
+        IList<Project> GetProjectsManagedBy(User user);
+
+        [OperationContract]
+        Project AddProject(Project project);
+
+        [OperationContract]
+        Project SaveProject(Project project);
+
+        [OperationContract]
+        void DeleteProject(Project project);
     }
 }

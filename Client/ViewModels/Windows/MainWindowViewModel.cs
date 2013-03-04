@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using Client.Factories;
 using Client.Helpers;
 using Client.ServiceReference;
 using Client.ViewModels.Controls;
 using Client.ViewModels.Windows;
-using Client.Factories;
-using System.Collections.Generic;
 
 namespace Client.ViewModels
 {
@@ -25,14 +27,15 @@ namespace Client.ViewModels
 
         // Child Panels
         private ICommandPanelViewModel _CommandPanel;
-        private IBugTableViewModel     _BugTablePanel;
+        private IContentPanel          _ContentPanel;
 
-        private String _Username;
+        private User _CurrentUser;
         private ProjectViewModel _SelectedActiveProject;
 
         private ObservableCollection<ProjectViewModel> _ProjectComboBox;
 
         private RelayCommand _DeBugCommand;
+        private RelayCommand _ShowProjectManagerPanelCommand;
 
 
         /// <summary>
@@ -57,9 +60,10 @@ namespace Client.ViewModels
             _Service = svc;
             _ControlFactory = ctrlfactory;
 
-            Username = _Service.GetMyUser().FirstName;
+            _CurrentUser = _Service.GetMyUser();
 
             InitialiseActiveProject();
+            ListenForMessages();
         }
 
 
@@ -68,27 +72,26 @@ namespace Client.ViewModels
 
         public String Username
         {
-            get { return _Username; }
-            set { _Username = value; }
+            get { return _CurrentUser.FirstName; }
         }
 
 
         /// <summary>
         /// The panel which displays the table of bugs
         /// </summary>
-        public IBugTableViewModel BugTablePanel
+        public IContentPanel ContentPanel
         {
             get
             {
-                if (_BugTablePanel == null)
+                if (_ContentPanel == null)
                 {
-                    _BugTablePanel = _ControlFactory.CreateBugTablePanel(_SelectedActiveProject);
+                    _ContentPanel = _ControlFactory.CreateBugTablePanel(_SelectedActiveProject);
                 }
 
-                return _BugTablePanel; 
+                return _ContentPanel; 
             }
 
-            set { _BugTablePanel = value; OnPropertyChanged("BugTablePanel"); }
+            set { _ContentPanel = value; OnPropertyChanged("ContentPanel"); }
         }
 
 
@@ -124,7 +127,7 @@ namespace Client.ViewModels
                 {
                     _ProjectComboBox = new ObservableCollection<ProjectViewModel>();
                     
-                    foreach (Project proj in _Service.GetMyProjects())
+                    foreach (Project proj in _Service.GetProjectsAssignedTo(_Service.GetMyUser()))
                     {
                         _ProjectComboBox.Add(new ProjectViewModel(proj));
                     }
@@ -170,12 +173,49 @@ namespace Client.ViewModels
             }
         }
 
+        public ICommand ShowProjectManagerPanelCommand
+        {
+            get
+            {
+                if (_ShowProjectManagerPanelCommand == null)
+                {
+                    _ShowProjectManagerPanelCommand = new RelayCommand(param => this.ShowProjectManagerPanel());
+                }
+
+                return _ShowProjectManagerPanelCommand;
+            }
+        }
+
         #endregion
+
+
+        private void ListenForMessages()
+        {
+            _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ProjectComboBox.Add(p));
+            _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => UpdateProjectInComboBox(p));
+        }
+
+
+        private void UpdateProjectInComboBox(ProjectViewModel proj)
+        {
+            var project = ProjectComboBox.Where(p => p.Id == proj.Id).SingleOrDefault();
+
+            int index = ProjectComboBox.IndexOf(project);
+
+            ProjectComboBox.RemoveAt(index);
+            ProjectComboBox.Insert(index, proj);
+        }
+
+
+        private void ShowProjectManagerPanel()
+        {
+            ContentPanel = _ControlFactory.CreateProjectManagerPanel(_CurrentUser);
+        }
 
 
         private void InitialiseActiveProject()
         {
-            List<Project> projects = _Service.GetMyProjects();
+            List<Project> projects = _Service.GetProjectsAssignedTo(_Service.GetMyUser());
             
             if (projects.Count > 0 && projects != null)
                 SelectedActiveProject = new ProjectViewModel(projects[0]);
@@ -184,7 +224,7 @@ namespace Client.ViewModels
 
         private void Debug()
         {
-            
+            MessageBox.Show("d");
         }
 
     }

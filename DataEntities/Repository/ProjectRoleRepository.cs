@@ -20,6 +20,8 @@ namespace DataEntities.Repository
             {
                 ctx.ProjectRole.AddObject(projRole);
 
+                ctx.SaveChanges();
+
                 return projRole;
             }
         }

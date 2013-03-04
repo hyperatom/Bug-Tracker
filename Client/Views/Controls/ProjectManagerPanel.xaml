@@ -3,10 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ViewModels="clr-namespace:Client.ViewModels.Controls.ProjectPanel"
+             xmlns:Controls="clr-namespace:Client.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="428" d:DesignWidth="726">
+   
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type ViewModels:ProjectPanelViewModel}">
+            <Controls:ProjectViewPanel />
+        </DataTemplate>
+        
+        <Style TargetType="{x:Type ListViewItem}">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00000000"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#00000000"/>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
+        
         <TextBlock Height="35" HorizontalAlignment="Left" Margin="24,23,0,0" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
-        <ListBox Height="104" HorizontalAlignment="Left" Margin="24,76,0,0" Name="listBox1" VerticalAlignment="Top" Width="266" />
+
+        <ListView ItemsSource="{Binding ManagedProjects}" Margin="24,64,419,201" Background="Transparent" BorderBrush="Transparent">
+
+            <ListView.View>
+                <GridView>
+                    
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Hyperlink Command="{Binding DataContext.ViewProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
+                                        <Label Content="{Binding Path=Name}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
+                    
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
+                                    X
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
+        
+        <Button Command="{Binding NewProjectCommand}"  Content="New" HorizontalAlignment="Left" Margin="22,231,0,0" Name="button1" Width="75" Height="23" VerticalAlignment="Top" />
+        
     </Grid>
 </UserControl>

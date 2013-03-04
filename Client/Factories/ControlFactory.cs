@@ -1,6 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
 using Client.ViewModels;
 using Client.ViewModels.Controls;
+using Client.ServiceReference;
+using Client.Views.Controls;
+using Client.ViewModels.Controls.ProjectPanel;
 
 namespace Client.Factories
 {
@@ -43,6 +46,24 @@ namespace Client.Factories
         public BugPanelViewModel CreateBugAddPanel(ProjectViewModel project)
         {
             return _Container.Resolve<BugPanelViewModel>("AddPanel", new ParameterOverride("activeProj", project));
+        }
+
+
+        public IProjectManagerViewModel CreateProjectManagerPanel(User currentUser)
+        {
+            return _Container.Resolve<IProjectManagerViewModel>(new ParameterOverride("currentUser", currentUser));
+        }
+
+
+        public ProjectPanelViewModel CreateProjectAddPanel()
+        {
+            return _Container.Resolve<ProjectPanelViewModel>("Add");
+        }
+
+
+        public ProjectPanelViewModel CreateProjectViewPanel(ProjectViewModel vm)
+        {
+            return _Container.Resolve<ProjectPanelViewModel>("View", new ParameterOverride("selectedProj", vm));
         }
 
     }

@@ -1,9 +1,7 @@
-C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\BugTrackerService.dll.config
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\BugTrackerService.dll
-C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\BugTrackerService.pdb
-C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\AutoMapper.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\DataEntities.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\DevTrends.WCFDataAnnotations.dll
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\AutoMapper.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\Microsoft.Practices.Unity.dll
@@ -16,3 +14,5 @@ C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTracker
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\obj\Debug\BugTrackerService.csprojResolveAssemblyReference.cache
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\obj\Debug\BugTrackerService.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\obj\Debug\BugTrackerService.pdb
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\BugTrackerService.dll.config
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\BugTrackerService\bin\Debug\BugTrackerService.pdb

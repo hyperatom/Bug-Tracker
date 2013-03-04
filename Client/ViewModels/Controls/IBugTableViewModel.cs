@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Client.ViewModels.Controls
 {
-    public interface IBugTableViewModel
+    public interface IBugTableViewModel : IContentPanel
     {
         ObservableCollection<BugViewModel> BugList { get; set; }
         void PopulateBugTable();

@@ -19,12 +19,6 @@ namespace BugTrackerService
     public class TrackerService : ITrackerService
     {
 
-        public bool Login()
-        {
-            return true;
-        }
-
-
         public List<Bug> GetAllBugs()
         {
             BugRepository repo = new BugRepository();
@@ -56,26 +50,11 @@ namespace BugTrackerService
         }
 
 
-        public List<Project> GetMyProjects()
+        public IList<Project> GetProjectsAssignedTo(User user)
         {
-            UserRepository repo = new UserRepository();
             ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
-            
-            string identity = CustomPrincipal.Current.Identity.Name;
-            User currentUser = repo.GetAll().Where(x => x.Username == identity).FirstOrDefault();
 
-            // Get all project roles associated with user
-            List<ProjectRole> projRoleList = projRoleRepo.GetAll().Where(p => p.User.Id == currentUser.Id).ToList();
-            
-            List<Project> projList = new List<Project>();
-
-            foreach (ProjectRole projRole in projRoleList)
-            {
-                projList.Add(projRole.Project);
-            }
-
-            
-            return projList;
+            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id).Select(c => c.Project).Distinct().ToList();
         }
 
 
@@ -154,6 +133,52 @@ namespace BugTrackerService
                 "In Progress",
                 "Closed"
             };
+        }
+
+
+
+        public IList<Project> GetProjectsManagedBy(User user)
+        {
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+            RoleRepository roleRepo = new RoleRepository();
+
+            Role manager = roleRepo.GetAll().Where(r => r.RoleName == "Project Manager").SingleOrDefault();
+
+            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id && p.Role.Id == manager.Id).Select(c => c.Project).Distinct().ToList();
+        }
+
+
+        public Project AddProject(Project project)
+        {
+            ProjectRepository projRepo = new ProjectRepository();
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+            RoleRepository roleRepo = new RoleRepository();
+
+            Project addedProj = projRepo.Create(project);
+
+            int ManagerId = roleRepo.GetAll().Where(x => x.RoleName == "Project Manager").Select(c => c.Id).SingleOrDefault();
+            int CurrentUserId = GetMyUser().Id;
+
+            // Make the user who added the project, a project manager
+            projRoleRepo.Create(new ProjectRole { ProjectId = addedProj.Id, RoleId = ManagerId, UserId = CurrentUserId });
+
+            return addedProj;
+        }
+
+
+        public Project SaveProject(Project project)
+        {
+            ProjectRepository projRepo = new ProjectRepository();
+
+            return projRepo.Update(project);
+        }
+
+
+        public void DeleteProject(Project project)
+        {
+            ProjectRepository projRepo = new ProjectRepository();
+
+            projRepo.Delete(project);
         }
 
     }

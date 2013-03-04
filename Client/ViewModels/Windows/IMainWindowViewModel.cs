@@ -7,12 +7,12 @@ namespace Client.ViewModels.Windows
 {
     public interface IMainWindowViewModel : IWindow
     {
-        IBugTableViewModel BugTablePanel { get; set; }
+        IContentPanel ContentPanel { get; set; }
         ICommandPanelViewModel CommandPanel { get; set; }
         ICommand DeBugCommand { get; }
 
         ObservableCollection<ProjectViewModel> ProjectComboBox { get; set; }
         ProjectViewModel SelectedActiveProject { get; set; }
-        string Username { get; set; }
+        string Username { get; }
     }
 }

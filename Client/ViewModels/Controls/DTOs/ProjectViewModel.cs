@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Client.Helpers;
 using AutoMapper;
+using System.ComponentModel;
 
 namespace Client.ViewModels
 {
@@ -14,10 +15,19 @@ namespace Client.ViewModels
     /// This class is a client representation of a project data structure.
     /// It is an observable object and notifies its view of changes.
     /// </summary>
-    public class ProjectViewModel : ObservableObject
+    public class ProjectViewModel : ObservableObject, IDataErrorInfo
     {
 
         private Project _Project;
+        private bool _IsValidating = false;
+
+        private Dictionary<string, string> _Errors = new Dictionary<string, string>();
+
+
+        public ProjectViewModel() 
+        {
+            _Project = new Project();
+        }
 
 
         /// <summary>
@@ -32,6 +42,17 @@ namespace Client.ViewModels
 
 
         /// <summary>
+        /// Useful for de-referencing an object by
+        /// making a copy of it.
+        /// </summary>
+        /// <returns></returns>
+        public ProjectViewModel Clone()
+        {
+            return new ProjectViewModel(this.ToProjectModel());
+        }
+
+
+        /// <summary>
         /// Converts the current view model object back into
         /// a data transfer object.
         /// </summary>
@@ -41,6 +62,20 @@ namespace Client.ViewModels
             Mapper.CreateMap<ProjectViewModel, Project>();
 
             return Mapper.Map<ProjectViewModel, Project>(this);
+        }
+
+
+        public bool IsValidating
+        {
+            get { return _IsValidating; }
+            set { _IsValidating = value; }
+        }
+
+
+        public Dictionary<string, string> Errors
+        {
+            get { return _Errors; }
+            set { _Errors = value; }
         }
 
 
@@ -62,5 +97,78 @@ namespace Client.ViewModels
             set { _Project.Description = value; OnPropertyChanged("Description"); }
         }
 
+        public String Code
+        {
+            get { return _Project.Code; }
+            set { _Project.Code = value; OnPropertyChanged("Code"); }
+        }
+
+
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+
+        public string this[string Field]
+        {
+            get
+            {
+                string result = string.Empty;
+
+                if (!_IsValidating)
+                    return result;
+
+                // Remove any previous errors from the dictionary
+                _Errors.Remove(Field);
+
+                switch (Field)
+                {
+                    case "Name":
+                        {
+                            const int MaxNameLength = 40;
+
+                            if (String.IsNullOrEmpty(Name))
+                            {
+                                result = "This field cannot be left blank!";
+                            }
+
+                            else if (Name.Length > MaxNameLength)
+                                result = "Name cannot exceed " + MaxNameLength + " characters.";
+
+                            break;
+                        }
+
+                    case "Description":
+                        {
+                            const int MaxDescLength = 200;
+
+                            if (Description.Length > MaxDescLength)
+                                result = "Description cannot exceed " + MaxDescLength + " characters.";
+
+                            break;
+                        }
+
+                    case "Code":
+                        {
+                            const int CodeLength = 5;
+
+                            if (String.IsNullOrEmpty(Code))
+                                result = "This field cannot be left blank!";
+
+                            else if (Code.Length != CodeLength)
+                                result = "Code must be " + CodeLength + " characters long.";
+
+                            break;
+                        }
+                }
+
+                // If there was an error add it to dictionary
+                if (result != string.Empty)
+                    _Errors.Add(Field, result);
+
+                return result;
+            }
+        }
     }
 }
