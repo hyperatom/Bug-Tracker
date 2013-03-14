@@ -14,26 +14,22 @@ namespace Client.ViewModels.Controls
     public class ProjectManagerViewModel : ObservableObject, IProjectManagerViewModel
     {
 
-        private ITrackerService _Service;
         private IMessenger _Messenger;
         private IControlFactory _Factory;
 
-        private ICommand _ShowDeleteDialogCommand;
-        private ICommand _ViewProjectCommand;
-        private ICommand _NewProjectCommand;
-
-        private ObservableCollection<ProjectViewModel> _ManagedProjects;
-
         private ProjectPanelViewModel _SouthViewPanel;
-        private IAssignedProjectsPanelViewModel _AssignedProjectsPanel;
-        private IDeleteProjectDialogViewModel _DeleteDialog;
 
+        private IAssignedProjectsPanelViewModel _AssignedProjectsPanel;
+        private IManagedProjectsPanelViewModel _ManagedProjectsPanel;
+        private IProjectUsersPanelViewModel _ProjectUsersPanel;
+
+        private IDeleteProjectDialogViewModel _DeleteDialog;
+        
         private User _CurrentUser;
 
 
-        public ProjectManagerViewModel(ITrackerService svc, IMessenger mess, IControlFactory ctrlFactory, User currentUser)
+        public ProjectManagerViewModel(IMessenger mess, IControlFactory ctrlFactory, User currentUser)
         {
-            _Service = svc;
             _Messenger = mess;
             _Factory = ctrlFactory;
             _CurrentUser = currentUser;
@@ -42,21 +38,10 @@ namespace Client.ViewModels.Controls
         }
 
 
-        public ObservableCollection<ProjectViewModel> ManagedProjects
+        public IDeleteProjectDialogViewModel DeleteDialog
         {
-            get 
-            {
-                if (_ManagedProjects == null)
-                {
-                    _ManagedProjects = new ObservableCollection<ProjectViewModel>();
-
-                    _Service.GetProjectsManagedBy(_CurrentUser).ForEach(p => _ManagedProjects.Add(new ProjectViewModel(p)));
-                }
-
-                return _ManagedProjects;
-            }
-
-            set { _ManagedProjects = value; OnPropertyChanged("ManagedProjects"); }
+            get { return _DeleteDialog; }
+            set { _DeleteDialog = value; OnPropertyChanged("DeleteDialog"); }
         }
 
 
@@ -81,77 +66,46 @@ namespace Client.ViewModels.Controls
         }
 
 
-        public IDeleteProjectDialogViewModel DeleteDialog
+        public IManagedProjectsPanelViewModel ManagedProjectsPanel
         {
-            get { return _DeleteDialog; }
-            set { _DeleteDialog = value; OnPropertyChanged("DeleteDialog"); }
-        }
-
-
-        #region Commands
-
-        public ICommand ShowDeleteDialogCommand
-        {
-            get
+            get 
             {
-                if (_ShowDeleteDialogCommand == null)
-                {
-                    _ShowDeleteDialogCommand = new RelayCommand(param => ShowDeleteProjectDialog((ProjectViewModel)param));
-                }
+                if (_ManagedProjectsPanel == null)
+                    _ManagedProjectsPanel = _Factory.CreateManagedProjectsPanel(_CurrentUser);
 
-                return _ShowDeleteDialogCommand;
+                return _ManagedProjectsPanel;
             }
+
+            set { _ManagedProjectsPanel = value; OnPropertyChanged("ManagedProjectsPanel"); }
         }
 
-        public ICommand ViewProjectCommand
+
+        public IProjectUsersPanelViewModel ProjectUsersPanel
         {
-            get
+            get 
             {
-                if (_ViewProjectCommand == null)
-                {
-                    _ViewProjectCommand = new RelayCommand
-                        (param => SouthViewPanel = _Factory.CreateProjectViewPanel((ProjectViewModel)param));
-                }
+                if (_ProjectUsersPanel == null)
+                    _ProjectUsersPanel = _Factory.CreateProjectUsersPanel(null);
 
-                return _ViewProjectCommand;
+                return _ProjectUsersPanel;
             }
+
+            set { _ProjectUsersPanel = value; }
         }
-
-        public ICommand NewProjectCommand
-        {
-            get
-            {
-                if (_NewProjectCommand == null)
-                {
-                    _NewProjectCommand = new RelayCommand(param => SouthViewPanel = _Factory.CreateProjectAddPanel());
-                }
-
-                return _NewProjectCommand;
-            }
-        }
-
-        #endregion Commands
 
 
         private void ListenForMessages()
         {
-            _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => SaveProjectToList(p));
-            _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ManagedProjects.Add(p));
-            _Messenger.Register<ProjectViewModel>(Messages.RequestDeleteProject, p => DeleteProject(p));
+            _Messenger.Register(Messages.ShowProjectAddPanel, ShowProjectAddPanel);
 
-            _Messenger.Register(Messages.CloseDeleteProjectDialog, 
-                delegate { DeleteDialog.IsVisible = false; DeleteDialog = null; });
-        }
+            _Messenger.Register<ProjectViewModel>(Messages.ShowProjectViewPanel, 
+                            p => ShowProjectViewPanel((ProjectViewModel)p));
 
+            _Messenger.Register(Messages.CloseDeleteProjectDialog,
+                            delegate { DeleteDialog.IsVisible = false; DeleteDialog = null; });
 
-        private void SaveProjectToList(ProjectViewModel project)
-        {
-            var proj = ManagedProjects.Where(x => x.Id == project.Id).SingleOrDefault();
-
-            int index = ManagedProjects.IndexOf(proj);
-
-            ManagedProjects.RemoveAt(index);
-            ManagedProjects.Insert(index, project);
+            _Messenger.Register<ProjectViewModel>(Messages.ShowProjectDeleteDialog, 
+                p => ShowDeleteProjectDialog((ProjectViewModel)p));
         }
 
 
@@ -161,22 +115,15 @@ namespace Client.ViewModels.Controls
         }
 
 
-        private void DeleteProject(ProjectViewModel project)
+        private void ShowProjectViewPanel(ProjectViewModel project)
         {
-            DeleteDialog.IsVisible = false;
-            DeleteDialog = null;
+            SouthViewPanel = _Factory.CreateProjectViewPanel(project);
+        }
 
-            try
-            {
-                _Service.DeleteProject(project.ToProjectModel());
-                ManagedProjects.Remove(project);
 
-                _Messenger.NotifyColleagues(Messages.DeletedProject, project);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+        private void ShowProjectAddPanel()
+        {
+            SouthViewPanel = _Factory.CreateProjectAddPanel();
         }
 
     }

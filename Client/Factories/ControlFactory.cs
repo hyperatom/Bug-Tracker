@@ -79,5 +79,20 @@ namespace Client.Factories
             return _Container.Resolve<IAssignedProjectsPanelViewModel>(new ParameterOverride("currentUser", currentUser));
         }
 
+
+        public IManagedProjectsPanelViewModel CreateManagedProjectsPanel(User currentUser)
+        {
+            return _Container.Resolve<IManagedProjectsPanelViewModel>(new ParameterOverride("currentUser", currentUser));
+        }
+
+
+        public IProjectUsersPanelViewModel CreateProjectUsersPanel(ProjectViewModel proj)
+        {
+            if (proj == null)
+                return _Container.Resolve<IProjectUsersPanelViewModel>();
+
+            return _Container.Resolve<IProjectUsersPanelViewModel>(new ParameterOverride("proj", proj));
+        }
+
     }
 }

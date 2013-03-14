@@ -19,68 +19,41 @@
             <Controls:AssignedProjectsPanel />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type ViewModels:ManagedProjectsPanelViewModel}">
+            <Controls:ManagedProjectsPanel />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type DialogViewModels:DeleteProjectDialogViewModel}">
             <my:DeleteProjectDialog />
         </DataTemplate>
 
-        <Style TargetType="{x:Type ListViewItem}">
-            <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00000000"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#00000000"/>
-            </Style.Resources>
-        </Style>
+        <DataTemplate DataType="{x:Type ViewModels:ProjectUsersPanelViewModel}">
+            <Controls:ProjectUsersPanel />
+        </DataTemplate>
+
     </UserControl.Resources>
     
     <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         
-        <TextBlock Height="35" HorizontalAlignment="Left" Margin="24,23,0,0" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-        <ListView ItemsSource="{Binding ManagedProjects}" Margin="24,106,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+        <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Center" />
+        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Center" />
 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <Hyperlink Command="{Binding DataContext.ViewProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
-                                        <Label Content="{Binding Path=Name}" />
-                                    </Hyperlink>
-                                </TextBlock>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+        <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
 
-                    <GridViewColumn Header="Description">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Description}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+        <ContentControl Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" />
 
-                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
-                    
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Command="{Binding DataContext.ShowDeleteDialogCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
-                                    X
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    
-                </GridView>
-            </ListView.View>
+        <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="2" Content="{Binding DeleteDialog}" HorizontalAlignment="Center" VerticalAlignment="Center"  Name="contentControl1" />
 
-        </ListView>
-
-        <ContentControl Content="{Binding AssignedProjectsPanel}" Name="AssignedProjectsPanel" VerticalAlignment="Bottom" Margin="0,0,0,197" />
-
-        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
-        
-        <Button Command="{Binding NewProjectCommand}"  Content="Add" HorizontalAlignment="Left" Margin="24,68,0,0" Name="button1" Width="63" Height="23" VerticalAlignment="Top" />
-        <ContentControl Content="{Binding DeleteDialog}" HorizontalAlignment="Left" Margin="220,177,0,0" Name="contentControl1" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

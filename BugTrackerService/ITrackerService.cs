@@ -47,6 +47,9 @@ namespace BugTrackerService
         List<User> GetUsersByProject(Project proj);
 
         [OperationContract]
+        IList<User> GetAssignedUsersByProject(Project proj);
+
+        [OperationContract]
         List<string> GetBugStatusList();
 
         [OperationContract]

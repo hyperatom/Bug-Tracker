@@ -26,5 +26,9 @@ namespace Client.Helpers
         public static readonly string RequestDeleteProject = "Request Delete Project";
         public static readonly string DeletedProject = "Deleted Project";
         public static readonly string CloseDeleteProjectDialog = "Close Delete Dialog";
+        public static readonly string ShowProjectViewPanel = "Show Project View Panel";
+        public static readonly string ShowProjectAddPanel = "Show Project Add Panel";
+        public static readonly string ShowProjectDeleteDialog = "Show Project Delete Dialog";
+        public static readonly string ProjectSelected = "Project Selected";
     }
 }

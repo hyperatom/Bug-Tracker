@@ -65,7 +65,12 @@ namespace Client.ViewModels.Controls.ProjectPanel
         public ProjectViewModel SelectedProject
         {
             get { return _SelectedProject; }
-            set { _SelectedProject = value; OnPropertyChanged("SelectedProject"); }
+            set 
+            { 
+                _SelectedProject = value;
+                _Messenger.NotifyColleagues(Messages.ProjectSelected, value);
+                OnPropertyChanged("SelectedProject"); 
+            }
         }
 
 

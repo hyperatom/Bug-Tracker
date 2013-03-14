@@ -18,5 +18,7 @@ namespace Client.Factories
         ProjectPanelViewModel CreateProjectViewPanel(ProjectViewModel vm);
         IDeleteProjectDialogViewModel CreateDeleteProjectDialog(ProjectViewModel vm);
         IAssignedProjectsPanelViewModel CreateAssignedProjectsPanel(User currentUser);
+        IManagedProjectsPanelViewModel CreateManagedProjectsPanel(User currentUser);
+        IProjectUsersPanelViewModel CreateProjectUsersPanel(ProjectViewModel proj);
     }
 }

@@ -207,5 +207,17 @@ namespace BugTrackerService
             }
         }
 
+
+        public IList<User> GetAssignedUsersByProject(Project proj)
+        {
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+            RoleRepository roleRepo = new RoleRepository();
+
+            Role projMgr = roleRepo.GetAll().Where(p => p.RoleName == "Project Manager").SingleOrDefault();
+
+            return projRoleRepo.GetAll().Where(p => p.Project.Id == proj.Id && p.Role.Id != projMgr.Id)
+                                        .Select(p => p.User).Distinct().ToList();
+        }
+
     }
 }

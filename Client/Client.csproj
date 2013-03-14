@@ -140,8 +140,12 @@
     <Compile Include="ViewModels\Controls\ProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\AssignedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\IAssignedProjectsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\IManagedProjectsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\IProjectUsersPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\ManagedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectAddPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\ProjectUsersPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectViewPanelViewModel.cs" />
     <Compile Include="ViewModels\IWindow.cs" />
     <Compile Include="ViewModels\Windows\ILoginViewModel.cs" />
@@ -165,8 +169,14 @@
     <Compile Include="Views\Controls\Dialogs\DeleteProjectDialog.xaml.cs">
       <DependentUpon>DeleteProjectDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\ManagedProjectsPanel.xaml.cs">
+      <DependentUpon>ManagedProjectsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ProjectManagerPanel.xaml.cs">
       <DependentUpon>ProjectManagerPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\ProjectUsersPanel.xaml.cs">
+      <DependentUpon>ProjectUsersPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\ProjectViewPanel.xaml.cs">
       <DependentUpon>ProjectViewPanel.xaml</DependentUpon>
@@ -219,7 +229,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\ManagedProjectsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\ProjectManagerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ProjectUsersPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

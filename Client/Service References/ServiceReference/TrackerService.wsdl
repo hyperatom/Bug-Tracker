@@ -523,6 +523,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_GetAssignedUsersByProject_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_GetAssignedUsersByProject_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="Service_GetBugStatusList_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -825,6 +863,12 @@
   <wsdl:message name="ITrackerService_GetUsersByProject_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUsersByProjectResponse" />
   </wsdl:message>
+  <wsdl:message name="ITrackerService_GetAssignedUsersByProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAssignedUsersByProject" />
+  </wsdl:message>
+  <wsdl:message name="ITrackerService_GetAssignedUsersByProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAssignedUsersByProjectResponse" />
+  </wsdl:message>
   <wsdl:message name="ITrackerService_GetBugStatusList_InputMessage">
     <wsdl:part name="parameters" element="tns:GetBugStatusList" />
   </wsdl:message>
@@ -905,6 +949,10 @@
     <wsdl:operation name="GetUsersByProject">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/GetUsersByProject" message="tns:ITrackerService_GetUsersByProject_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/GetUsersByProjectResponse" message="tns:ITrackerService_GetUsersByProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedUsersByProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/GetAssignedUsersByProject" message="tns:ITrackerService_GetAssignedUsersByProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/GetAssignedUsersByProjectResponse" message="tns:ITrackerService_GetAssignedUsersByProject_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetBugStatusList">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/GetBugStatusList" message="tns:ITrackerService_GetBugStatusList_InputMessage" />
@@ -1052,6 +1100,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#Service_GetUsersByProject_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedUsersByProject">
+      <soap12:operation soapAction="http://tempuri.org/ITrackerService/GetAssignedUsersByProject" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#Service_GetAssignedUsersByProject_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#Service_GetAssignedUsersByProject_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

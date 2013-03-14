@@ -89,6 +89,8 @@ namespace Client
             container.RegisterType<ProjectPanelViewModel, ProjectViewPanelViewModel>("View");
             container.RegisterType<IDeleteProjectDialogViewModel, DeleteProjectDialogViewModel>();
             container.RegisterType<IAssignedProjectsPanelViewModel, AssignedProjectsPanelViewModel>();
+            container.RegisterType<IManagedProjectsPanelViewModel, ManagedProjectsPanelViewModel>();
+            container.RegisterType<IProjectUsersPanelViewModel, ProjectUsersPanelViewModel>();
 
             // Factories
             container.RegisterType<IServiceFactory, ServiceFactory>();

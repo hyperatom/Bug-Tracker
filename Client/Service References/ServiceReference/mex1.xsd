@@ -148,6 +148,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetAssignedUsersByProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="proj" nillable="true" type="q18:Project" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAssignedUsersByProjectResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetAssignedUsersByProjectResult" nillable="true" type="q19:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetBugStatusList">
     <xs:complexType>
       <xs:sequence />
@@ -156,56 +170,56 @@
   <xs:element name="GetBugStatusListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugStatusListResult" nillable="true" type="q18:ArrayOfstring" />
+        <xs:element xmlns:q20="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetBugStatusListResult" nillable="true" type="q20:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetProjectsManagedBy">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q19:User" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q21:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetProjectsManagedByResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetProjectsManagedByResult" nillable="true" type="q20:ArrayOfProject" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetProjectsManagedByResult" nillable="true" type="q22:ArrayOfProject" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q21:Project" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q23:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddProjectResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="AddProjectResult" nillable="true" type="q22:Project" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="AddProjectResult" nillable="true" type="q24:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SaveProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q23:Project" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q25:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SaveProjectResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="SaveProjectResult" nillable="true" type="q24:Project" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="SaveProjectResult" nillable="true" type="q26:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DeleteProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q25:Project" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q27:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -217,8 +231,8 @@
   <xs:element name="LeaveProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q26:Project" />
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q27:User" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q28:Project" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q29:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

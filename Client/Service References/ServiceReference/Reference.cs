@@ -457,6 +457,9 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetUsersByProject", ReplyAction="http://tempuri.org/ITrackerService/GetUsersByProjectResponse")]
         System.Collections.Generic.List<Client.ServiceReference.User> GetUsersByProject(Client.ServiceReference.Project proj);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetAssignedUsersByProject", ReplyAction="http://tempuri.org/ITrackerService/GetAssignedUsersByProjectResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.User> GetAssignedUsersByProject(Client.ServiceReference.Project proj);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetBugStatusList", ReplyAction="http://tempuri.org/ITrackerService/GetBugStatusListResponse")]
         System.Collections.Generic.List<string> GetBugStatusList();
         
@@ -545,6 +548,10 @@ namespace Client.ServiceReference {
         
         public System.Collections.Generic.List<Client.ServiceReference.User> GetUsersByProject(Client.ServiceReference.Project proj) {
             return base.Channel.GetUsersByProject(proj);
+        }
+        
+        public System.Collections.Generic.List<Client.ServiceReference.User> GetAssignedUsersByProject(Client.ServiceReference.Project proj) {
+            return base.Channel.GetAssignedUsersByProject(proj);
         }
         
         public System.Collections.Generic.List<string> GetBugStatusList() {
