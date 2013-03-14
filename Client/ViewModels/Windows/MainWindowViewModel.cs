@@ -24,6 +24,7 @@ namespace Client.ViewModels
         private IMessenger _Messenger;
         private ITrackerService _Service;
         private IControlFactory _ControlFactory;
+        private IWindowFactory _WindowFactory;
 
         // Child Panels
         private ICommandPanelViewModel _CommandPanel;
@@ -34,8 +35,9 @@ namespace Client.ViewModels
 
         private ObservableCollection<ProjectViewModel> _ProjectComboBox;
 
-        private RelayCommand _DeBugCommand;
-        private RelayCommand _ShowProjectManagerPanelCommand;
+        private ICommand _DeBugCommand;
+        private ICommand _ShowProjectManagerPanelCommand;
+        private ICommand _LogoutCommand;
 
 
         /// <summary>
@@ -45,7 +47,8 @@ namespace Client.ViewModels
         /// <param name="comm">Messenger to communciate with other view models.</param>
         /// <param name="svc">Web service allowing remote procedures to be called.</param>
         /// <param name="ctrlfactory">Factory to create controls on the main window.</param>
-        public MainWindowViewModel(IMessenger comm, ITrackerService svc, IControlFactory ctrlfactory)
+        public MainWindowViewModel(IMessenger comm, ITrackerService svc, 
+                                   IWindowFactory winfactory, IControlFactory ctrlfactory)
         {
             if (comm == null)
                 throw new ArgumentNullException("The messenger cannot be null.");
@@ -56,9 +59,13 @@ namespace Client.ViewModels
             if (ctrlfactory == null)
                 throw new ArgumentNullException("The control factory cannot be null.");
 
+            if (winfactory == null)
+                throw new ArgumentNullException("The window factory cannot be null.");
+
             _Messenger = comm;
             _Service = svc;
             _ControlFactory = ctrlfactory;
+            _WindowFactory = winfactory;
 
             _CurrentUser = _Service.GetMyUser();
 
@@ -127,7 +134,7 @@ namespace Client.ViewModels
                 {
                     _ProjectComboBox = new ObservableCollection<ProjectViewModel>();
                     
-                    foreach (Project proj in _Service.GetProjectsAssignedTo(_Service.GetMyUser()))
+                    foreach (Project proj in _Service.GetAllProjectsByUser(_Service.GetMyUser()))
                     {
                         _ProjectComboBox.Add(new ProjectViewModel(proj));
                     }
@@ -173,6 +180,19 @@ namespace Client.ViewModels
             }
         }
 
+        public ICommand LogoutCommand
+        {
+            get
+            {
+                if (_LogoutCommand == null)
+                {
+                    _LogoutCommand = new RelayCommand(param => Logout());
+                }
+
+                return _LogoutCommand;
+            }
+        }
+
         public ICommand ShowProjectManagerPanelCommand
         {
             get
@@ -193,6 +213,22 @@ namespace Client.ViewModels
         {
             _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ProjectComboBox.Add(p));
             _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => UpdateProjectInComboBox(p));
+
+            _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => ProjectDeletedAction(p));
+        }
+
+
+        private void ProjectDeletedAction(ProjectViewModel project)
+        {
+            if (SelectedActiveProject.Id == project.Id && ProjectComboBox.Count > 1)
+            {
+                if (ProjectComboBox.IndexOf(SelectedActiveProject) != 0)
+                    SelectedActiveProject = ProjectComboBox[0];
+                else
+                    SelectedActiveProject = ProjectComboBox[1];
+            }
+
+            ProjectComboBox.Remove(ProjectComboBox.Where(c => c.Id == project.Id).SingleOrDefault());
         }
 
 
@@ -215,10 +251,17 @@ namespace Client.ViewModels
 
         private void InitialiseActiveProject()
         {
-            List<Project> projects = _Service.GetProjectsAssignedTo(_Service.GetMyUser());
+            List<Project> projects = _Service.GetAllProjectsByUser(_CurrentUser);
             
             if (projects.Count > 0 && projects != null)
                 SelectedActiveProject = new ProjectViewModel(projects[0]);
+        }
+
+
+        private void Logout()
+        {
+            _WindowFactory.CreateLoginWindow().Show();
+            RequestClose.Invoke(this, null);
         }
 
 

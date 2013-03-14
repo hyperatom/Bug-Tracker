@@ -53,8 +53,13 @@ namespace BugTrackerService
         public IList<Project> GetProjectsAssignedTo(User user)
         {
             ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+            RoleRepository roleRepo = new RoleRepository();
 
-            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id).Select(c => c.Project).Distinct().ToList();
+            int projManager = roleRepo.GetAll().Where(p => p.RoleName == "Project Manager")
+                .Select(p => p.Id).SingleOrDefault();
+
+            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id && p.RoleId != projManager)
+                .Select(c => c.Project).Distinct().ToList();
         }
 
 
@@ -179,6 +184,27 @@ namespace BugTrackerService
             ProjectRepository projRepo = new ProjectRepository();
 
             projRepo.Delete(project);
+        }
+
+
+        public IList<Project> GetAllProjectsByUser(User user)
+        {
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+
+            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id).Select(p => p.Project).Distinct().ToList();
+        }
+
+
+        public void LeaveProject(Project project, User user)
+        {
+            ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
+
+            var associations = projRoleRepo.GetAll().Where(p => p.User.Id == user.Id && p.Project.Id == project.Id);
+
+            foreach (var ass in associations)
+            {
+                projRoleRepo.Delete(ass);
+            }
         }
 
     }

@@ -23,5 +23,8 @@ namespace Client.Helpers
         public static readonly string RequestSelectedBugs = "Request Selected Bugs";
         public static readonly string SavedProject = "Saved Project";
         public static readonly string AddedProject = "Added Project";
+        public static readonly string RequestDeleteProject = "Request Delete Project";
+        public static readonly string DeletedProject = "Deleted Project";
+        public static readonly string CloseDeleteProjectDialog = "Close Delete Dialog";
     }
 }

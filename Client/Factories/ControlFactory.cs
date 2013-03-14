@@ -4,6 +4,7 @@ using Client.ViewModels.Controls;
 using Client.ServiceReference;
 using Client.Views.Controls;
 using Client.ViewModels.Controls.ProjectPanel;
+using Client.ViewModels.Controls.Dialogs;
 
 namespace Client.Factories
 {
@@ -64,6 +65,18 @@ namespace Client.Factories
         public ProjectPanelViewModel CreateProjectViewPanel(ProjectViewModel vm)
         {
             return _Container.Resolve<ProjectPanelViewModel>("View", new ParameterOverride("selectedProj", vm));
+        }
+
+
+        public IDeleteProjectDialogViewModel CreateDeleteProjectDialog(ProjectViewModel vm)
+        {
+            return _Container.Resolve<IDeleteProjectDialogViewModel>(new ParameterOverride("proj", vm));
+        }
+
+
+        public IAssignedProjectsPanelViewModel CreateAssignedProjectsPanel(User currentUser)
+        {
+            return _Container.Resolve<IAssignedProjectsPanelViewModel>(new ParameterOverride("currentUser", currentUser));
         }
 
     }

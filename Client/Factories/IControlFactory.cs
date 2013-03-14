@@ -3,6 +3,7 @@ using Client.ViewModels;
 using Client.ViewModels.Controls;
 using Client.ServiceReference;
 using Client.ViewModels.Controls.ProjectPanel;
+using Client.ViewModels.Controls.Dialogs;
 
 namespace Client.Factories
 {
@@ -15,5 +16,7 @@ namespace Client.Factories
         IProjectManagerViewModel CreateProjectManagerPanel(User currentUser);
         ProjectPanelViewModel CreateProjectAddPanel();
         ProjectPanelViewModel CreateProjectViewPanel(ProjectViewModel vm);
+        IDeleteProjectDialogViewModel CreateDeleteProjectDialog(ProjectViewModel vm);
+        IAssignedProjectsPanelViewModel CreateAssignedProjectsPanel(User currentUser);
     }
 }

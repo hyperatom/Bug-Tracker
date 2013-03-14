@@ -19,7 +19,9 @@ namespace Client.ViewModels
     {
 
         private Project _Project;
+
         private bool _IsValidating = false;
+        private bool _IsSelected = false;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
@@ -76,6 +78,13 @@ namespace Client.ViewModels
         {
             get { return _Errors; }
             set { _Errors = value; }
+        }
+
+
+        public bool IsSelected
+        {
+            get { return _IsSelected; }
+            set { _IsSelected = value; OnPropertyChanged("IsSelected"); }
         }
 
 

@@ -20,7 +20,7 @@
         
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
+    <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}" Background="#FFE8A972">
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="17,27,0,0" Name="textBlock1" Text="Name:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="17,66,0,0" Name="textBlock2" Text="Description:" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="270,28,0,0" Name="textBlock3" Text="Code:" VerticalAlignment="Top" />

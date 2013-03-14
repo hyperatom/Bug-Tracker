@@ -5,15 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ViewModels="clr-namespace:Client.ViewModels.Controls.ProjectPanel"
              xmlns:Controls="clr-namespace:Client.Views.Controls"
+             xmlns:DialogViewModels="clr-namespace:Client.ViewModels.Controls.Dialogs"
              mc:Ignorable="d" 
-             d:DesignHeight="428" d:DesignWidth="726">
+             d:DesignHeight="428" d:DesignWidth="726" xmlns:my="clr-namespace:Client.Views.Controls.Dialogs">
    
     <UserControl.Resources>
 
         <DataTemplate DataType="{x:Type ViewModels:ProjectPanelViewModel}">
             <Controls:ProjectViewPanel />
         </DataTemplate>
-        
+
+        <DataTemplate DataType="{x:Type ViewModels:AssignedProjectsPanelViewModel}">
+            <Controls:AssignedProjectsPanel />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type DialogViewModels:DeleteProjectDialogViewModel}">
+            <my:DeleteProjectDialog />
+        </DataTemplate>
+
         <Style TargetType="{x:Type ListViewItem}">
             <Style.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00000000"/>
@@ -26,11 +35,10 @@
         
         <TextBlock Height="35" HorizontalAlignment="Left" Margin="24,23,0,0" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
 
-        <ListView ItemsSource="{Binding ManagedProjects}" Margin="24,64,419,201" Background="Transparent" BorderBrush="Transparent">
+        <ListView ItemsSource="{Binding ManagedProjects}" Margin="24,106,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
 
             <ListView.View>
                 <GridView>
-                    
                     <GridViewColumn Header="Name">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -42,13 +50,21 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    
+
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
                     <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
                     
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
+                                <Button Command="{Binding DataContext.ShowDeleteDialogCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
                                     X
                                 </Button>
                             </DataTemplate>
@@ -60,9 +76,11 @@
 
         </ListView>
 
+        <ContentControl Content="{Binding AssignedProjectsPanel}" Name="AssignedProjectsPanel" VerticalAlignment="Bottom" Margin="0,0,0,197" />
+
         <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
         
-        <Button Command="{Binding NewProjectCommand}"  Content="New" HorizontalAlignment="Left" Margin="22,231,0,0" Name="button1" Width="75" Height="23" VerticalAlignment="Top" />
-        
+        <Button Command="{Binding NewProjectCommand}"  Content="Add" HorizontalAlignment="Left" Margin="24,68,0,0" Name="button1" Width="63" Height="23" VerticalAlignment="Top" />
+        <ContentControl Content="{Binding DeleteDialog}" HorizontalAlignment="Left" Margin="220,177,0,0" Name="contentControl1" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

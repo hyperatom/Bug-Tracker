@@ -436,6 +436,9 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetProjectsAssignedTo", ReplyAction="http://tempuri.org/ITrackerService/GetProjectsAssignedToResponse")]
         System.Collections.Generic.List<Client.ServiceReference.Project> GetProjectsAssignedTo(Client.ServiceReference.User user);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetAllProjectsByUser", ReplyAction="http://tempuri.org/ITrackerService/GetAllProjectsByUserResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.Project> GetAllProjectsByUser(Client.ServiceReference.User user);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetBugsByProject", ReplyAction="http://tempuri.org/ITrackerService/GetBugsByProjectResponse")]
         System.Collections.Generic.List<Client.ServiceReference.Bug> GetBugsByProject(Client.ServiceReference.Project project);
         
@@ -468,6 +471,9 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/DeleteProject", ReplyAction="http://tempuri.org/ITrackerService/DeleteProjectResponse")]
         void DeleteProject(Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/LeaveProject", ReplyAction="http://tempuri.org/ITrackerService/LeaveProjectResponse")]
+        void LeaveProject(Client.ServiceReference.Project project, Client.ServiceReference.User user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -513,6 +519,10 @@ namespace Client.ServiceReference {
             return base.Channel.GetProjectsAssignedTo(user);
         }
         
+        public System.Collections.Generic.List<Client.ServiceReference.Project> GetAllProjectsByUser(Client.ServiceReference.User user) {
+            return base.Channel.GetAllProjectsByUser(user);
+        }
+        
         public System.Collections.Generic.List<Client.ServiceReference.Bug> GetBugsByProject(Client.ServiceReference.Project project) {
             return base.Channel.GetBugsByProject(project);
         }
@@ -555,6 +565,10 @@ namespace Client.ServiceReference {
         
         public void DeleteProject(Client.ServiceReference.Project project) {
             base.Channel.DeleteProject(project);
+        }
+        
+        public void LeaveProject(Client.ServiceReference.Project project, Client.ServiceReference.User user) {
+            base.Channel.LeaveProject(project, user);
         }
     }
 }

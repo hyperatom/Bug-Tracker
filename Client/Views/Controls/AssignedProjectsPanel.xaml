@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Client.Views.Controls.AssignedProjectsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="295" d:DesignWidth="569">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
+    </UserControl.Resources>
+
+    <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
+        
+        
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Projects I'm Assigned To" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" />
+
+        <ListView SelectedItem="{Binding SelectedProject}" ItemsSource="{Binding AssignedProjects}" Margin="12,86,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
+
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+        <Button Command="{Binding LeaveProjectCommand}" Content="Leave" Height="23" HorizontalAlignment="Left" Margin="15,49,0,0" Name="buttonLeave" VerticalAlignment="Top" Width="66" />
+    
+        </Grid>
+    
+</UserControl>

@@ -26,6 +26,9 @@ namespace BugTrackerService
         IList<Project> GetProjectsAssignedTo(User user);
 
         [OperationContract]
+        IList<Project> GetAllProjectsByUser(User user);
+
+        [OperationContract]
         List<Bug> GetBugsByProject(Project project);
 
         [OperationContract]
@@ -57,5 +60,8 @@ namespace BugTrackerService
 
         [OperationContract]
         void DeleteProject(Project project);
+
+        [OperationContract]
+        void LeaveProject(Project project, User user);
     }
 }

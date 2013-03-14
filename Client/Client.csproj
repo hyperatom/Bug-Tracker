@@ -131,11 +131,15 @@
     <Compile Include="ViewModels\Controls\BugPanel\BugViewPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\CommandPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\Dialogs\DeleteProjectDialogViewModel.cs" />
+    <Compile Include="ViewModels\Controls\Dialogs\IDeleteProjectDialogViewModel.cs" />
     <Compile Include="ViewModels\Controls\IBugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\ICommandPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\IContentPanel.cs" />
     <Compile Include="ViewModels\Controls\IProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectManagerViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\AssignedProjectsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\IAssignedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectAddPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectViewPanelViewModel.cs" />
@@ -143,6 +147,9 @@
     <Compile Include="ViewModels\Windows\ILoginViewModel.cs" />
     <Compile Include="ViewModels\Windows\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\Windows\IRegistrationViewModel.cs" />
+    <Compile Include="Views\Controls\AssignedProjectsPanel.xaml.cs">
+      <DependentUpon>AssignedProjectsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\BugAddPanel.xaml.cs">
       <DependentUpon>BugAddPanel.xaml</DependentUpon>
     </Compile>
@@ -154,6 +161,9 @@
     </Compile>
     <Compile Include="Views\Controls\CommandPanel.xaml.cs">
       <DependentUpon>CommandPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Dialogs\DeleteProjectDialog.xaml.cs">
+      <DependentUpon>DeleteProjectDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\ProjectManagerPanel.xaml.cs">
       <DependentUpon>ProjectManagerPanel.xaml</DependentUpon>
@@ -185,6 +195,10 @@
     <Compile Include="ViewModels\Controls\DTOs\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Windows\RegistrationViewModel.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
+    <Page Include="Views\Controls\AssignedProjectsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\BugAddPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -198,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\CommandPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Dialogs\DeleteProjectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

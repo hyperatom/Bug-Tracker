@@ -22,9 +22,9 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             if (IsProjectValid)
             {
-                _Service.AddProject(proj.ToProjectModel());
+                Project savedProject = _Service.AddProject(proj.ToProjectModel());
 
-                _Messenger.NotifyColleagues(Messages.AddedProject, proj);
+                _Messenger.NotifyColleagues(Messages.AddedProject, new ProjectViewModel(savedProject));
 
                 IsVisible = false;
             }

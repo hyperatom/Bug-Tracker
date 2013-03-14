@@ -51,7 +51,12 @@ namespace DataEntities.Repository
         {
             using (var ctx = new WcfEntityContext())
             {
-                ctx.ProjectRole.DeleteObject(projRole);
+                var entityToDelete = ctx.ProjectRole.Where(p => p.ProjectId == projRole.ProjectId 
+                                                           && p.UserId == projRole.UserId 
+                                                           && p.RoleId == projRole.RoleId).SingleOrDefault();
+
+                ctx.ProjectRole.DeleteObject(entityToDelete);
+                ctx.SaveChanges();
             }
         }
 
