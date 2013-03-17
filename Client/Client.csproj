@@ -133,6 +133,7 @@
     <Compile Include="ViewModels\Controls\CommandPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\Dialogs\DeleteProjectDialogViewModel.cs" />
     <Compile Include="ViewModels\Controls\Dialogs\IDeleteProjectDialogViewModel.cs" />
+    <Compile Include="ViewModels\Controls\DTOs\UserViewModel.cs" />
     <Compile Include="ViewModels\Controls\IBugTableViewModel.cs" />
     <Compile Include="ViewModels\Controls\ICommandPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\IContentPanel.cs" />
@@ -140,8 +141,10 @@
     <Compile Include="ViewModels\Controls\ProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\AssignedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\IAssignedProjectsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\IJoinProjectPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\IManagedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\IProjectUsersPanelViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ProjectPanel\JoinProjectPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ManagedProjectsPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectAddPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\ProjectPanel\ProjectPanelViewModel.cs" />
@@ -168,6 +171,9 @@
     </Compile>
     <Compile Include="Views\Controls\Dialogs\DeleteProjectDialog.xaml.cs">
       <DependentUpon>DeleteProjectDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\JoinProjectPanel.xaml.cs">
+      <DependentUpon>JoinProjectPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\ManagedProjectsPanel.xaml.cs">
       <DependentUpon>ManagedProjectsPanel.xaml</DependentUpon>
@@ -226,6 +232,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Dialogs\DeleteProjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\JoinProjectPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -295,6 +305,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.Project.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference\Client.ServiceReference.Role.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\Client.ServiceReference.User.datasource">

@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Client.Helpers;
+using Client.ViewModels.Controls.DTOs;
 
 
 namespace Client.ViewModels
@@ -22,6 +23,7 @@ namespace Client.ViewModels
     {
 
         private Bug _Bug;
+        
 
         private bool _IsSelected;
         private bool _IsValidating = false;
@@ -61,6 +63,7 @@ namespace Client.ViewModels
         public Bug ToBugModel()
         {
             Mapper.CreateMap<BugViewModel, Bug>();
+            Mapper.CreateMap<UserViewModel, User>();
 
             return Mapper.Map<BugViewModel, Bug>(this);
         }
@@ -139,10 +142,10 @@ namespace Client.ViewModels
             set { _Bug.Fixed = value; OnPropertyChanged("Fixed"); }
         }
 
-        public User CreatedBy
+        public UserViewModel CreatedBy
         {
-            get { return this._Bug.CreatedBy; }
-            set { _Bug.CreatedBy = value; OnPropertyChanged("CreatedBy"); }
+            get { return new UserViewModel(_Bug.CreatedBy); }
+            set { _Bug.CreatedBy = value.ToUserModel(); OnPropertyChanged("CreatedBy"); }
         }
 
         public Project Project
@@ -151,10 +154,10 @@ namespace Client.ViewModels
             set { _Bug.Project = value; OnPropertyChanged("Project"); }
         }
 
-        public User AssignedUser
+        public UserViewModel AssignedUser
         {
-            get { return this._Bug.AssignedUser; }
-            set { _Bug.AssignedUser = value; OnPropertyChanged("AssignedUser"); }
+            get { return new UserViewModel(_Bug.AssignedUser); }
+            set { _Bug.AssignedUser = value.ToUserModel(); OnPropertyChanged("AssignedUser"); }
         }
 
         // Tracks if the bug is selected in a view

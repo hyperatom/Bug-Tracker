@@ -420,6 +420,67 @@ namespace Client.ServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Role", Namespace="http://schemas.datacontract.org/2004/07/DataEntities.Entity")]
+    [System.SerializableAttribute()]
+    public partial class Role : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string RoleNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string RoleName {
+            get {
+                return this.RoleNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RoleNameField, value) != true)) {
+                    this.RoleNameField = value;
+                    this.RaisePropertyChanged("RoleName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.ITrackerService")]
     public interface ITrackerService {
@@ -477,6 +538,24 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/LeaveProject", ReplyAction="http://tempuri.org/ITrackerService/LeaveProjectResponse")]
         void LeaveProject(Client.ServiceReference.Project project, Client.ServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/RequestProjectAssignment", ReplyAction="http://tempuri.org/ITrackerService/RequestProjectAssignmentResponse")]
+        void RequestProjectAssignment(string code, Client.ServiceReference.User user, Client.ServiceReference.Role role);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetAllRoles", ReplyAction="http://tempuri.org/ITrackerService/GetAllRolesResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.Role> GetAllRoles();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetProjectByCode", ReplyAction="http://tempuri.org/ITrackerService/GetProjectByCodeResponse")]
+        Client.ServiceReference.Project GetProjectByCode(string projectCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetUsersPendingProjectJoin", ReplyAction="http://tempuri.org/ITrackerService/GetUsersPendingProjectJoinResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.User> GetUsersPendingProjectJoin(Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/AcceptUserOnProject", ReplyAction="http://tempuri.org/ITrackerService/AcceptUserOnProjectResponse")]
+        void AcceptUserOnProject(Client.ServiceReference.User user, Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/RejectUserFromProject", ReplyAction="http://tempuri.org/ITrackerService/RejectUserFromProjectResponse")]
+        void RejectUserFromProject(Client.ServiceReference.User user, Client.ServiceReference.Project project);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -576,6 +655,30 @@ namespace Client.ServiceReference {
         
         public void LeaveProject(Client.ServiceReference.Project project, Client.ServiceReference.User user) {
             base.Channel.LeaveProject(project, user);
+        }
+        
+        public void RequestProjectAssignment(string code, Client.ServiceReference.User user, Client.ServiceReference.Role role) {
+            base.Channel.RequestProjectAssignment(code, user, role);
+        }
+        
+        public System.Collections.Generic.List<Client.ServiceReference.Role> GetAllRoles() {
+            return base.Channel.GetAllRoles();
+        }
+        
+        public Client.ServiceReference.Project GetProjectByCode(string projectCode) {
+            return base.Channel.GetProjectByCode(projectCode);
+        }
+        
+        public System.Collections.Generic.List<Client.ServiceReference.User> GetUsersPendingProjectJoin(Client.ServiceReference.Project project) {
+            return base.Channel.GetUsersPendingProjectJoin(project);
+        }
+        
+        public void AcceptUserOnProject(Client.ServiceReference.User user, Client.ServiceReference.Project project) {
+            base.Channel.AcceptUserOnProject(user, project);
+        }
+        
+        public void RejectUserFromProject(Client.ServiceReference.User user, Client.ServiceReference.Project project) {
+            base.Channel.RejectUserFromProject(user, project);
         }
     }
 }

@@ -44,18 +44,11 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=Priority}" Header="Priority" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=CreatedBy.Username}" Header="Created By" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=CreatedBy.FirstName}" Header="Created By" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=DateFound.Date, StringFormat=dd/MM/yyyy}" Header="Date" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=LastModified.Date, StringFormat=dd/MM/yyyy}" Header="Modified" Width="*" />
                 <DataGridCheckBoxColumn Binding="{Binding Path=Fixed}" Header="Fixed" Width="*" />
-                
-                <DataGridTemplateColumn Header="Assigned To">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding AssignedUser.Username}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Path=AssignedUser.FirstName}" Header="Assigned To" Width="*" />
 
             </DataGrid.Columns>
         </DataGrid>

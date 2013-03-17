@@ -241,4 +241,84 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="RequestProjectAssignment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="code" nillable="true" type="xs:string" />
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q30:User" />
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="role" nillable="true" type="q31:Role" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RequestProjectAssignmentResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllRoles">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllRolesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetAllRolesResult" nillable="true" type="q32:ArrayOfRole" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProjectByCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="projectCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProjectByCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetProjectByCodeResult" nillable="true" type="q33:Project" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUsersPendingProjectJoin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q34:Project" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUsersPendingProjectJoinResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="GetUsersPendingProjectJoinResult" nillable="true" type="q35:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AcceptUserOnProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q36:User" />
+        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q37:Project" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AcceptUserOnProjectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RejectUserFromProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="user" nillable="true" type="q38:User" />
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/DataEntities.Entity" minOccurs="0" name="project" nillable="true" type="q39:Project" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RejectUserFromProjectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

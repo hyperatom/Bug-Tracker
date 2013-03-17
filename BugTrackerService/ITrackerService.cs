@@ -66,5 +66,23 @@ namespace BugTrackerService
 
         [OperationContract]
         void LeaveProject(Project project, User user);
+
+        [OperationContract]
+        void RequestProjectAssignment(String code, User user, Role role);
+
+        [OperationContract]
+        IList<Role> GetAllRoles();
+
+        [OperationContract]
+        Project GetProjectByCode(String projectCode);
+
+        [OperationContract]
+        IList<User> GetUsersPendingProjectJoin(Project project);
+
+        [OperationContract]
+        void AcceptUserOnProject(User user, Project project);
+
+        [OperationContract]
+        void RejectUserFromProject(User user, Project project);
     }
 }

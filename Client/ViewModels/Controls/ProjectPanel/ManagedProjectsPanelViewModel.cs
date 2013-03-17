@@ -23,7 +23,6 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private ICommand _NewProjectCommand;
         private ICommand _ShowDeleteDialogCommand;
         private ICommand _ViewProjectCommand;
-        private ICommand _SelectionChangedCommand;
 
         private ProjectViewModel _SelectedProject;
 
@@ -48,7 +47,14 @@ namespace Client.ViewModels.Controls.ProjectPanel
             set 
             { 
                 _SelectedProject = value;
-                _Messenger.NotifyColleagues(Messages.ProjectSelected, value);
+
+
+
+                if (value != null)
+                {
+                    _Messenger.NotifyColleagues(Messages.ManagedProjectSelected, value);
+                }
+
                 OnPropertyChanged("SelectedProject");
             }
         }
@@ -122,7 +128,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             _Messenger.Register<ProjectViewModel>(Messages.RequestDeleteProject, p => DeleteProject(p));  
             _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => SaveProjectToList(p));
-            _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ManagedProjects.Add(p));         
+            _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ManagedProjects.Add(p));
+            _Messenger.Register<ProjectViewModel>(Messages.AssignedProjectSelected, p => SelectedProject = null);
         }
 
 

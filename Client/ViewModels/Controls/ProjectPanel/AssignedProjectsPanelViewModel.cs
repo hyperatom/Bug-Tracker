@@ -32,6 +32,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
             _Messenger = mess;
             _CurrentUser = currentUser;
 
+            ListenForMessages();
+
             if (AssignedProjects.Count > 0)
                 IsVisible = true;
         }
@@ -68,7 +70,12 @@ namespace Client.ViewModels.Controls.ProjectPanel
             set 
             { 
                 _SelectedProject = value;
-                _Messenger.NotifyColleagues(Messages.ProjectSelected, value);
+
+                if (value != null)
+                {
+                    _Messenger.NotifyColleagues(Messages.AssignedProjectSelected, value);
+                }
+
                 OnPropertyChanged("SelectedProject"); 
             }
         }
@@ -89,6 +96,12 @@ namespace Client.ViewModels.Controls.ProjectPanel
             }
 
             set { _AssignedProjects = value; OnPropertyChanged("AssignedProjects"); }
+        }
+
+
+        private void ListenForMessages()
+        {
+            _Messenger.Register<ProjectViewModel>(Messages.ManagedProjectSelected, p => SelectedProject = null);
         }
 
 

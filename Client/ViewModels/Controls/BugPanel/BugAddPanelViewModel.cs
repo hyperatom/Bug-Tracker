@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Client.ViewModels;
+using Client.ViewModels.Controls.DTOs;
 
 namespace Client.ViewModels
 {
@@ -79,7 +80,7 @@ namespace Client.ViewModels
             {
                 try
                 {
-                    bug.CreatedBy = _Service.GetMyUser();
+                    bug.CreatedBy = new UserViewModel(_Service.GetMyUser());
                     bug.Project   = _ActiveProject.ToProjectModel();
 
                     // Convert bug view model to bug model service can accept

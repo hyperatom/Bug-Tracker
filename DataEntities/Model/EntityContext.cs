@@ -17,6 +17,7 @@ namespace DataEntities.Entity
         public ObjectSet<Project> Projects { get; set; }
         public ObjectSet<Role> Roles { get; set; }
         public ObjectSet<ProjectRole> ProjectRole { get; set; }
+        public ObjectSet<UserProjectSignup> UserProjectSignup { get; set; }
 
         public WcfEntityContext() : this("name=DataEntities") { }
 
@@ -24,6 +25,7 @@ namespace DataEntities.Entity
             : base(connectionString, "DataEntities")
         {
             ProjectRole = CreateObjectSet<ProjectRole>();
+            UserProjectSignup = CreateObjectSet<UserProjectSignup>();
             Users = CreateObjectSet<User>();
             Bugs = CreateObjectSet<Bug>();
             Projects = CreateObjectSet<Project>();

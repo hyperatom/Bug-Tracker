@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="228">
     <Grid>
 
-        <TextBlock Height="35" HorizontalAlignment="Left" Margin="24,23,0,0" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
+        <TextBlock Height="35" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
 
-        <Button Command="{Binding NewProjectCommand}"  Content="Add" HorizontalAlignment="Left" Margin="24,68,0,0" Name="button1" Width="63" Height="23" VerticalAlignment="Top" />
+        <Button Command="{Binding NewProjectCommand}"  Content="Add" HorizontalAlignment="Left" Margin="0,43,0,0" Name="button1" Width="63" Height="23" VerticalAlignment="Top" />
         
-        <ListView ItemsSource="{Binding ManagedProjects}" SelectionMode="Single" SelectedItem="{Binding SelectedProject}" Margin="24,106,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+        <ListView ItemsSource="{Binding ManagedProjects}" SelectionMode="Single" SelectedItem="{Binding SelectedProject}" Margin="0,83,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
 
             <ListView.View>
                 <GridView>

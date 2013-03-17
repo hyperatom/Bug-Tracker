@@ -30,5 +30,7 @@ namespace Client.Helpers
         public static readonly string ShowProjectAddPanel = "Show Project Add Panel";
         public static readonly string ShowProjectDeleteDialog = "Show Project Delete Dialog";
         public static readonly string ProjectSelected = "Project Selected";
+        public static readonly string ManagedProjectSelected = "Managed Project Selected";
+        public static readonly string AssignedProjectSelected = "Assigned Project Selected";
     }
 }

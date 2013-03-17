@@ -219,5 +219,64 @@ namespace BugTrackerService
                                         .Select(p => p.User).Distinct().ToList();
         }
 
+
+        public void RequestProjectAssignment(String code, User user, Role role)
+        {
+            Project proj = new ProjectRepository().GetAll().Where(p => p.Code == code).SingleOrDefault();
+
+            if (proj == null)
+                throw new FaultException("A project with this code does not exist.");
+
+            UserProjectSignup ass = new UserProjectSignup { ProjectId = proj.Id, UserId = user.Id, RoleId = role.Id };
+
+            new UserProjectSignupRepository().Create(ass);
+        }
+
+
+        public IList<Role> GetAllRoles()
+        {
+            RoleRepository roleRepo = new RoleRepository();
+
+            return roleRepo.GetAll();
+        }
+
+    
+        public Project GetProjectByCode(String projectCode)
+        {
+            return new ProjectRepository().GetAll().Where(p => p.Code == projectCode).SingleOrDefault();
+        }
+
+
+        public IList<User> GetUsersPendingProjectJoin(Project project)
+        {
+            return new UserProjectSignupRepository().GetAll()
+                .Where(p => p.ProjectId == project.Id).Select(p => p.User).Distinct().ToList();
+        }
+
+
+        public void AcceptUserOnProject(User user, Project project)
+        {
+            UserProjectSignupRepository signUpRepo = new UserProjectSignupRepository();
+
+            UserProjectSignup request = signUpRepo.GetAll()
+                .Where(p => p.UserId == user.Id && p.ProjectId == project.Id).SingleOrDefault();
+
+            new ProjectRoleRepository().Create
+                (new ProjectRole { UserId = request.UserId, ProjectId = request.ProjectId, RoleId = request.RoleId });
+
+            signUpRepo.Delete(request);
+        }
+
+
+        public void RejectUserFromProject(User user, Project project)
+        {
+            UserProjectSignupRepository signUpRepo = new UserProjectSignupRepository();
+
+            UserProjectSignup request = signUpRepo.GetAll()
+                .Where(p => p.UserId == user.Id && p.ProjectId == project.Id).SingleOrDefault();
+
+            signUpRepo.Delete(request);            
+        }
+
     }
 }

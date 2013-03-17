@@ -22,6 +22,7 @@ namespace Client.ViewModels.Controls
         private IAssignedProjectsPanelViewModel _AssignedProjectsPanel;
         private IManagedProjectsPanelViewModel _ManagedProjectsPanel;
         private IProjectUsersPanelViewModel _ProjectUsersPanel;
+        private IJoinProjectPanelViewModel _QuickJoinPanel;
 
         private IDeleteProjectDialogViewModel _DeleteDialog;
         
@@ -49,6 +50,20 @@ namespace Client.ViewModels.Controls
         {
             get { return _SouthViewPanel; }
             set { _SouthViewPanel = value; OnPropertyChanged("SouthViewPanel"); }
+        }
+
+
+        public IJoinProjectPanelViewModel QuickJoinPanel
+        {
+            get 
+            {
+                if (_QuickJoinPanel == null)
+                    _QuickJoinPanel = _Factory.CreateJoinProjectPanel();
+
+                return _QuickJoinPanel;
+            }
+
+            set { _QuickJoinPanel = value; OnPropertyChanged("QuickJoinPanel"); }
         }
 
 

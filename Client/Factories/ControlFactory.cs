@@ -94,5 +94,11 @@ namespace Client.Factories
             return _Container.Resolve<IProjectUsersPanelViewModel>(new ParameterOverride("proj", proj));
         }
 
+
+        public IJoinProjectPanelViewModel CreateJoinProjectPanel()
+        {
+            return _Container.Resolve<IJoinProjectPanelViewModel>();
+        }
+    
     }
 }

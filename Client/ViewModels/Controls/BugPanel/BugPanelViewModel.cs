@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Practices.Unity;
 using Client.Helpers;
 using Client.ViewModels;
+using Client.ViewModels.Controls.DTOs;
 
 namespace Client.ViewModels
 {
@@ -26,7 +27,7 @@ namespace Client.ViewModels
         protected User              _AssignedUser;
 
         protected List<String> _PriorityList;
-        protected List<User>   _UsersInActiveProject;
+        protected List<UserViewModel>   _UsersInActiveProject;
         protected List<String> _StatusList;
 
         protected IMessenger _Messenger;
@@ -88,8 +89,6 @@ namespace Client.ViewModels
             set 
             { 
                 _EditedBug = value;
-                if (value != null)
-                    AssignedUser = value.AssignedUser;
                 
                 OnPropertyChanged("EditedBug"); 
             }
@@ -99,7 +98,7 @@ namespace Client.ViewModels
         /// <summary>
         /// Gets the currently assigned user of the bug being viewed.
         /// </summary>
-        public User AssignedUser
+        public UserViewModel AssignedUser
         {
             get 
             {
@@ -130,14 +129,15 @@ namespace Client.ViewModels
         /// <summary>
         /// Gets a collection of all users associated with the active project.
         /// </summary>
-        public List<User> UsersInActiveProject
+        public List<UserViewModel> UsersInActiveProject
         {
             get
             {
                 if (_UsersInActiveProject == null && _ActiveProject != null)
                 {
-                    _UsersInActiveProject = _Service.GetUsersByProject
-                        (_ActiveProject.ToProjectModel());
+                    _UsersInActiveProject = new List<UserViewModel>();
+                    _Service.GetUsersByProject
+                        (_ActiveProject.ToProjectModel()).ForEach(p => _UsersInActiveProject.Add(new UserViewModel(p)));
                 }
 
                 return _UsersInActiveProject;

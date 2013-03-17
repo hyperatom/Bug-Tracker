@@ -31,6 +31,10 @@
             <Controls:ProjectUsersPanel />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type ViewModels:JoinProjectPanelViewModel}">
+            <Controls:JoinProjectPanel />
+        </DataTemplate>
+        
     </UserControl.Resources>
     
     <Grid>
@@ -43,15 +47,18 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Center" />
-        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Center" />
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding QuickJoinPanel}" Name="QuickJoinPanel" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        
+        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Center" />
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Center" />
 
-        <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
 
-        <ContentControl Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" />
+        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" HorizontalAlignment="Right" />
 
         <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="2" Content="{Binding DeleteDialog}" HorizontalAlignment="Center" VerticalAlignment="Center"  Name="contentControl1" />
 

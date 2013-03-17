@@ -13,9 +13,9 @@
     <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
         
         
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Projects I'm Assigned To" VerticalAlignment="Top" FontSize="18" FontWeight="Normal" />
+        <TextBlock Height="31" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Assigned To" VerticalAlignment="Top" FontSize="20" FontWeight="Normal" />
 
-        <ListView SelectedItem="{Binding SelectedProject}" ItemsSource="{Binding AssignedProjects}" Margin="12,86,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+        <ListView SelectedItem="{Binding SelectedProject}" ItemsSource="{Binding AssignedProjects}" Margin="0,76,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
 
             <ListView.View>
                 <GridView>
@@ -43,7 +43,7 @@
 
         </ListView>
 
-        <Button Command="{Binding LeaveProjectCommand}" Content="Leave" Height="23" HorizontalAlignment="Left" Margin="15,49,0,0" Name="buttonLeave" VerticalAlignment="Top" Width="66" />
+        <Button Command="{Binding LeaveProjectCommand}" Content="Leave" Height="23" HorizontalAlignment="Left" Margin="0,37,0,0" Name="buttonLeave" VerticalAlignment="Top" Width="66" />
     
         </Grid>
     

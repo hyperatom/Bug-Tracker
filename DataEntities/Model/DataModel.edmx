@@ -10,6 +10,7 @@
           <EntitySet Name="projects" EntityType="bugtrackerModel.Store.projects" store:Type="Tables" Schema="bugtracker" />
           <EntitySet Name="roles" EntityType="bugtrackerModel.Store.roles" store:Type="Tables" Schema="bugtracker" />
           <EntitySet Name="user_project_role" EntityType="bugtrackerModel.Store.user_project_role" store:Type="Tables" Schema="bugtracker" />
+          <EntitySet Name="user_project_signup" EntityType="bugtrackerModel.Store.user_project_signup" store:Type="Tables" Schema="bugtracker" />
           <EntitySet Name="users" EntityType="bugtrackerModel.Store.users" store:Type="Tables" Schema="bugtracker" />
           <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.Store.bugs_ibfk_1">
             <End Role="users" EntitySet="users" />
@@ -23,17 +24,29 @@
             <End Role="projects" EntitySet="projects" />
             <End Role="bugs" EntitySet="bugs" />
           </AssociationSet>
-          <AssociationSet Name="user_project_role_ibfk_1" Association="bugtrackerModel.Store.user_project_role_ibfk_1">
+          <AssociationSet Name="user_project_role_ibfk_2" Association="bugtrackerModel.Store.user_project_role_ibfk_2">
             <End Role="users" EntitySet="users" />
             <End Role="user_project_role" EntitySet="user_project_role" />
           </AssociationSet>
-          <AssociationSet Name="user_project_role_ibfk_2" Association="bugtrackerModel.Store.user_project_role_ibfk_2">
+          <AssociationSet Name="user_project_role_ibfk_3" Association="bugtrackerModel.Store.user_project_role_ibfk_3">
             <End Role="projects" EntitySet="projects" />
             <End Role="user_project_role" EntitySet="user_project_role" />
           </AssociationSet>
-          <AssociationSet Name="user_project_role_ibfk_3" Association="bugtrackerModel.Store.user_project_role_ibfk_3">
+          <AssociationSet Name="user_project_role_ibfk_4" Association="bugtrackerModel.Store.user_project_role_ibfk_4">
             <End Role="roles" EntitySet="roles" />
             <End Role="user_project_role" EntitySet="user_project_role" />
+          </AssociationSet>
+          <AssociationSet Name="user_project_role_ibfk_5" Association="bugtrackerModel.Store.user_project_role_ibfk_5">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_project_signup" EntitySet="user_project_signup" />
+          </AssociationSet>
+          <AssociationSet Name="user_project_role_ibfk_6" Association="bugtrackerModel.Store.user_project_role_ibfk_6">
+            <End Role="projects" EntitySet="projects" />
+            <End Role="user_project_signup" EntitySet="user_project_signup" />
+          </AssociationSet>
+          <AssociationSet Name="user_project_role_ibfk_7" Association="bugtrackerModel.Store.user_project_role_ibfk_7">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="user_project_signup" EntitySet="user_project_signup" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="bugs">
@@ -69,6 +82,16 @@
           <Property Name="Role" Type="varchar" Nullable="false" MaxLength="20" />
         </EntityType>
         <EntityType Name="user_project_role">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user_project_signup">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="ProjectId" />
@@ -126,8 +149,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="user_project_role_ibfk_1">
-          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1" />
+        <Association Name="user_project_role_ibfk_2">
+          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="user_project_role" Type="bugtrackerModel.Store.user_project_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="users">
@@ -138,8 +163,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="user_project_role_ibfk_2">
-          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1" />
+        <Association Name="user_project_role_ibfk_3">
+          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="user_project_role" Type="bugtrackerModel.Store.user_project_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="projects">
@@ -150,14 +177,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="user_project_role_ibfk_3">
-          <End Role="roles" Type="bugtrackerModel.Store.roles" Multiplicity="1" />
+        <Association Name="user_project_role_ibfk_4">
+          <End Role="roles" Type="bugtrackerModel.Store.roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="user_project_role" Type="bugtrackerModel.Store.user_project_role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="roles">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="user_project_role">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_project_role_ibfk_5">
+          <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user_project_signup" Type="bugtrackerModel.Store.user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_project_role_ibfk_6">
+          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user_project_signup" Type="bugtrackerModel.Store.user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_project_role_ibfk_7">
+          <End Role="roles" Type="bugtrackerModel.Store.roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="user_project_signup" Type="bugtrackerModel.Store.user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
               <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
@@ -195,6 +266,19 @@
           <AssociationSet Name="user_project_role_ibfk_1" Association="bugtrackerModel.user_project_role_ibfk_1">
             <End Role="User" EntitySet="Users" />
             <End Role="user_project_role" EntitySet="ProjectRoles" />
+          </AssociationSet>
+          <EntitySet Name="UserProjectSignups" EntityType="bugtrackerModel.UserProjectSignup" />
+          <AssociationSet Name="user_project_role_ibfk_6" Association="bugtrackerModel.user_project_role_ibfk_6">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="user_project_signup" EntitySet="UserProjectSignups" />
+          </AssociationSet>
+          <AssociationSet Name="user_project_role_ibfk_7" Association="bugtrackerModel.user_project_role_ibfk_7">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="user_project_signup" EntitySet="UserProjectSignups" />
+          </AssociationSet>
+          <AssociationSet Name="user_project_role_ibfk_5" Association="bugtrackerModel.user_project_role_ibfk_5">
+            <End Role="User" EntitySet="Users" />
+            <End Role="user_project_signup" EntitySet="UserProjectSignups" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Bug">
@@ -302,6 +386,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserProjectSignup">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="ProjectId" Nullable="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="bugtrackerModel.user_project_role_ibfk_6" FromRole="user_project_signup" ToRole="Project" />
+          <NavigationProperty Name="Role" Relationship="bugtrackerModel.user_project_role_ibfk_7" FromRole="user_project_signup" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="bugtrackerModel.user_project_role_ibfk_5" FromRole="user_project_signup" ToRole="User" />
+        </EntityType>
+        <Association Name="user_project_role_ibfk_6">
+          <End Type="bugtrackerModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="bugtrackerModel.UserProjectSignup" Role="user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_project_role_ibfk_7">
+          <End Type="bugtrackerModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="bugtrackerModel.UserProjectSignup" Role="user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="user_project_role_ibfk_5">
+          <End Type="bugtrackerModel.User" Role="User" Multiplicity="1" />
+          <End Type="bugtrackerModel.UserProjectSignup" Role="user_project_signup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="user_project_signup">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -385,6 +518,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserProjectSignups">
+            <EntityTypeMapping TypeName="bugtrackerModel.UserProjectSignup">
+              <MappingFragment StoreEntitySet="user_project_signup">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -410,33 +552,55 @@
         <EntityTypeShape EntityType="bugtrackerModel.Bug" Width="1.5" PointX="5.125" PointY="1.125" Height="2.9417936197916656" />
         <EntityTypeShape EntityType="bugtrackerModel.User" Width="1.5" PointX="2.875" PointY="1.375" Height="1.9802864583333331" />
         <AssociationConnector Association="bugtrackerModel.bugs_ibfk_1" >
-          <ConnectorPoint PointX="4.375" PointY="2.76756516456604" />
-          <ConnectorPoint PointX="5.125" PointY="2.76756516456604" />
+          <ConnectorPoint PointX="4.375" PointY="2.7613751230140529" />
+          <ConnectorPoint PointX="5.125" PointY="2.7613751230140529" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.Project" Width="1.5" PointX="5.125" PointY="4.875" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="bugtrackerModel.Project" Width="1.5" PointX="5.125" PointY="4.875" Height="1.7879850260416665" />
         <AssociationConnector Association="bugtrackerModel.fkey_project" >
           <ConnectorPoint PointX="5.875" PointY="4.875" />
           <ConnectorPoint PointX="5.875" PointY="4.2590950520833326" />
         </AssociationConnector>
         <EntityTypeShape EntityType="bugtrackerModel.Role" Width="1.5" PointX="2.875" PointY="4.5" Height="1.4033821614583326" />
         <AssociationConnector Association="bugtrackerModel.bugs_ibfk_2" >
-          <ConnectorPoint PointX="4.375" PointY="2.00878258228302" />
-          <ConnectorPoint PointX="5.125" PointY="2.00878258228302" />
+          <ConnectorPoint PointX="4.375" PointY="2.0056875615070267" />
+          <ConnectorPoint PointX="5.125" PointY="2.0056875615070267" />
         </AssociationConnector>
         <EntityTypeShape EntityType="bugtrackerModel.ProjectRole" Width="1.5" PointX="0.625" PointY="1.625" Height="2.172587890625" />
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_2" >
-          <ConnectorPoint PointX="5.125" PointY="6.2182828776041656" />
-          <ConnectorPoint PointX="1.108396796875" PointY="6.2182828776041656" />
-          <ConnectorPoint PointX="1.108396796875" PointY="3.797587890625" />
+          <ConnectorPoint PointX="5.125" PointY="6.31443359375" />
+          <ConnectorPoint PointX="1.10522294921875" PointY="6.31443359375" />
+          <ConnectorPoint PointX="1.10522294921875" PointY="3.797587890625" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_3" >
           <ConnectorPoint PointX="2.875" PointY="5.2016910807291659" />
-          <ConnectorPoint PointX="1.6542985937499999" PointY="5.2016910807291659" />
-          <ConnectorPoint PointX="1.6542985937499999" PointY="3.797587890625" />
+          <ConnectorPoint PointX="1.646363974609375" PointY="5.2016910807291659" />
+          <ConnectorPoint PointX="1.646363974609375" PointY="3.797587890625" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_1" >
           <ConnectorPoint PointX="2.875" PointY="2.4901432291666667" />
           <ConnectorPoint PointX="2.125" PointY="2.4901432291666667" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="bugtrackerModel.UserProjectSignup" Width="1.625" PointX="8.25" PointY="3.25" Height="2.1725878906249996" />
+        <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_6" >
+          <ConnectorPoint PointX="6.625" PointY="5.1487939453125" />
+          <ConnectorPoint PointX="8.25" PointY="5.1487939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_7" >
+          <ConnectorPoint PointX="4.375" PointY="4.65625" />
+          <ConnectorPoint PointX="5.791666666666667" PointY="4.6562499999999991" />
+          <ConnectorPoint PointX="5.958333333333333" PointY="4.65625" />
+          <ConnectorPoint PointX="8.25" PointY="4.65625" />
+        </AssociationConnector>
+        <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_5" >
+          <ConnectorPoint PointX="3.625" PointY="3.3552864583333331" />
+          <ConnectorPoint PointX="3.625" PointY="4.3362939453125" />
+          <ConnectorPoint PointX="4.875" PointY="4.3362939453125" />
+          <ConnectorPoint PointX="4.875" PointY="4.5090950520833326" />
+          <ConnectorPoint PointX="5.791666666666667" PointY="4.5090950520833317" />
+          <ConnectorPoint PointX="5.958333333333333" PointY="4.5090950520833326" />
+          <ConnectorPoint PointX="7.875" PointY="4.5090950520833326" />
+          <ConnectorPoint PointX="7.875" PointY="3.9218729999999993" />
+          <ConnectorPoint PointX="8.25" PointY="3.9218729999999993" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

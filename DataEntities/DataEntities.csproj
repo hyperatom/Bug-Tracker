@@ -58,6 +58,7 @@
     <Compile Include="Entity\ProjectRole.cs" />
     <Compile Include="Entity\Role.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\UserProjectSignup.cs" />
     <Compile Include="Model\DataModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,6 +71,7 @@
     <Compile Include="Repository\ProjectRoleRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\RoleRepository.cs" />
+    <Compile Include="Repository\UserProjectSignupRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -170,12 +170,7 @@ namespace Client.ViewModels
             {
                 BugList.Clear();
 
-                IList<Bug> bugList = _Service.GetBugsByProject(_ActiveProject.ToProjectModel());
-
-                foreach (Bug bug in bugList)
-                {
-                    BugList.Add(new BugViewModel(bug));
-                }
+                _Service.GetBugsByProject(_ActiveProject.ToProjectModel()).ForEach(p => BugList.Add(new BugViewModel(p)));
             }
         }
 
