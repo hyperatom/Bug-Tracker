@@ -157,6 +157,9 @@ namespace Client.ViewModels.Controls.ProjectPanel
                             else if (Code.Length != CodeLength)
                                 result = "Code must be exactly " + CodeLength + " characters.";
 
+                            else if (!_Service.IsValidProjectCode(Code))
+                                result = "A project with this code does not exist.";
+
                             break;
                         }
                 }

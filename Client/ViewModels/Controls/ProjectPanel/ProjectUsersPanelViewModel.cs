@@ -17,7 +17,9 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private IMessenger _Messenger;
 
         private ProjectViewModel _Project;
-        private ObservableCollection<UserViewModel> _UsersInProjectList;
+
+        private ObservableCollection<UserViewModel> _ProjectManagersList;
+        private ObservableCollection<UserViewModel> _AssignedUsersList;
         private ObservableCollection<UserViewModel> _PendingUsersList;
 
         private ICommand _RemoveUserCommand;
@@ -38,7 +40,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
         }
 
 
-        public bool IsDeleteButtonVisible
+        public bool IsAssignedUserButtonsVisible
         {
             get { return _IsDeleteButtonVisible; }
             set { _IsDeleteButtonVisible = value; OnPropertyChanged("IsDeleteButtonVisible"); }
@@ -66,17 +68,31 @@ namespace Client.ViewModels.Controls.ProjectPanel
         }
 
 
-        public ObservableCollection<UserViewModel> UsersInProjectList
+        public ObservableCollection<UserViewModel> AssignedUsersList
         {
             get 
             {
-                if (_UsersInProjectList == null)
-                    _UsersInProjectList = new ObservableCollection<UserViewModel>();
+                if (_AssignedUsersList == null)
+                    _AssignedUsersList = new ObservableCollection<UserViewModel>();
 
-                return _UsersInProjectList;
+                return _AssignedUsersList;
             }
 
-            set { _UsersInProjectList = value; OnPropertyChanged("UserList"); }
+            set { _AssignedUsersList = value; OnPropertyChanged("AssignedUsersList"); }
+        }
+
+
+        public ObservableCollection<UserViewModel> ProjectManagersList
+        {
+            get 
+            {
+                if (_ProjectManagersList == null)
+                    _ProjectManagersList = new ObservableCollection<UserViewModel>();
+
+                return _ProjectManagersList; 
+            }
+            
+            set { _ProjectManagersList = value; OnPropertyChanged("ProjectManagersList"); }
         }
 
 
@@ -136,8 +152,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             _Service.AcceptUserOnProject(user.ToUserModel(), _Project.ToProjectModel());
 
-            PendingUsersList.Remove(user);
-            UsersInProjectList.Add(user);
+            PopulateUserLists(_Project);
         }
 
 
@@ -145,14 +160,15 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             _Service.RejectUserFromProject(user.ToUserModel(), _Project.ToProjectModel());
 
-            PendingUsersList.Remove(user);
+            PopulateUserLists(_Project);
         }
 
 
         private void RemoveUserFromProject(UserViewModel user)
         {
             _Service.LeaveProject(_Project.ToProjectModel(), user.ToUserModel());
-            UsersInProjectList.Remove(user);
+
+            PopulateUserLists(_Project);
         }
 
 
@@ -160,11 +176,20 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             _Service.GetUsersPendingProjectJoin(project.ToProjectModel())
                 .ForEach(p => PendingUsersList.Add(new UserViewModel(p)));
+        }
 
-            if (IsManagerOfProject(project))
-                IsPendingUserButtonsVisible = true;
-            else
-                IsPendingUserButtonsVisible = false;
+
+        private void PopulateAssignedList(ProjectViewModel project)
+        {
+            _Service.GetAssignedUsersByProject(project.ToProjectModel())
+                .ForEach(p => AssignedUsersList.Add(new UserViewModel(p)));
+        }
+
+
+        private void PopulateManagerList(ProjectViewModel project)
+        {
+            _Service.GetManagerUsersByProject(project.ToProjectModel())
+                .ForEach(p => ProjectManagersList.Add(new UserViewModel(p)));
         }
 
 
@@ -180,21 +205,39 @@ namespace Client.ViewModels.Controls.ProjectPanel
         }
 
 
+        private void ClearUserLists()
+        {
+            PendingUsersList.Clear();
+            ProjectManagersList.Clear();
+            AssignedUsersList.Clear();
+        }
+
+
+        private void InitButtonVisibility(ProjectViewModel project)
+        {
+            if (IsManagerOfProject(project))
+                IsPendingUserButtonsVisible = true;
+            else
+                IsPendingUserButtonsVisible = false;
+
+            if (IsManagerOfProject(project))
+                IsAssignedUserButtonsVisible = true;
+            else
+                IsAssignedUserButtonsVisible = false;
+        }
+
+
         private void PopulateUserLists(ProjectViewModel project)
         {
             _Project = project;
 
+            ClearUserLists();
+
             PopulatePendingList(project);
+            PopulateAssignedList(project);
+            PopulateManagerList(project);
 
-            if (IsManagerOfProject(project))
-                IsDeleteButtonVisible = true;
-            else
-                IsDeleteButtonVisible = false;
-
-            UsersInProjectList.Clear();
-            
-            Project proj = project.ToProjectModel();
-            _Service.GetAssignedUsersByProject(proj).ForEach(p => UsersInProjectList.Add(new UserViewModel(p)));
+            InitButtonVisibility(project);
         }
 
     }

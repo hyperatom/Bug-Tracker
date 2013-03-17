@@ -278,5 +278,19 @@ namespace BugTrackerService
             signUpRepo.Delete(request);            
         }
 
+
+        public bool IsValidProjectCode(String code)
+        {
+            return new ProjectRepository().GetAll().Select(p => p.Code).Contains(code);
+        }
+
+
+        public IList<User> GetManagerUsersByProject(Project proj)
+        {
+            Role projMgr = new RoleRepository().GetAll().Where(p => p.RoleName == "Project Manager").SingleOrDefault();
+
+            return new ProjectRoleRepository().GetAll()
+                .Where(p => p.ProjectId == proj.Id && p.RoleId == projMgr.Id).Select(p => p.User).Distinct().ToList();
+        }
     }
 }

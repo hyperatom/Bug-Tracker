@@ -521,6 +521,9 @@ namespace Client.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetAssignedUsersByProject", ReplyAction="http://tempuri.org/ITrackerService/GetAssignedUsersByProjectResponse")]
         System.Collections.Generic.List<Client.ServiceReference.User> GetAssignedUsersByProject(Client.ServiceReference.Project proj);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetManagerUsersByProject", ReplyAction="http://tempuri.org/ITrackerService/GetManagerUsersByProjectResponse")]
+        System.Collections.Generic.List<Client.ServiceReference.User> GetManagerUsersByProject(Client.ServiceReference.Project proj);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetBugStatusList", ReplyAction="http://tempuri.org/ITrackerService/GetBugStatusListResponse")]
         System.Collections.Generic.List<string> GetBugStatusList();
         
@@ -556,6 +559,9 @@ namespace Client.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/RejectUserFromProject", ReplyAction="http://tempuri.org/ITrackerService/RejectUserFromProjectResponse")]
         void RejectUserFromProject(Client.ServiceReference.User user, Client.ServiceReference.Project project);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/IsValidProjectCode", ReplyAction="http://tempuri.org/ITrackerService/IsValidProjectCodeResponse")]
+        bool IsValidProjectCode(string code);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -633,6 +639,10 @@ namespace Client.ServiceReference {
             return base.Channel.GetAssignedUsersByProject(proj);
         }
         
+        public System.Collections.Generic.List<Client.ServiceReference.User> GetManagerUsersByProject(Client.ServiceReference.Project proj) {
+            return base.Channel.GetManagerUsersByProject(proj);
+        }
+        
         public System.Collections.Generic.List<string> GetBugStatusList() {
             return base.Channel.GetBugStatusList();
         }
@@ -679,6 +689,10 @@ namespace Client.ServiceReference {
         
         public void RejectUserFromProject(Client.ServiceReference.User user, Client.ServiceReference.Project project) {
             base.Channel.RejectUserFromProject(user, project);
+        }
+        
+        public bool IsValidProjectCode(string code) {
+            return base.Channel.IsValidProjectCode(code);
         }
     }
 }

@@ -11,6 +11,8 @@
     </UserControl.Resources>
     
     <StackPanel>
+        
+        <Label Margin="0,0,0,5" Content="Pending Requests" />
 
         <ListBox MinWidth="195" HorizontalAlignment="Stretch" ItemsSource="{Binding PendingUsersList}" Name="listBoxPendingUsers" Background="#1C1900AF">
 
@@ -48,15 +50,41 @@
             </DataTemplate>
         </ListBox.ItemTemplate>
 
-    </ListBox>
-    
-    
+        </ListBox>
 
-    <ListBox MinWidth="195" HorizontalAlignment="Stretch" ItemsSource="{Binding UsersInProjectList}" Name="listBox1" Background="#1C1900AF">
+        <Label Margin="0,0,0,5" Content="Project Managers" />
+
+        <ListBox MinWidth="195" HorizontalAlignment="Stretch" ItemsSource="{Binding ProjectManagersList}" Name="listBoxProjectManagers" Background="#1C1900AF">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="Aqua">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
+                        <TextBlock Grid.Row="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+
+        <Label Margin="0,0,0,5" Content="Assigned Users" />
+
+        <ListBox MinWidth="195" HorizontalAlignment="Stretch" ItemsSource="{Binding AssignedUsersList}" Name="listBoxAssignedUsers" Background="#1C1900AF">
 
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Grid Background="BlanchedAlmond">
+                <Grid Background="Aqua">
                     
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
@@ -72,7 +100,7 @@
                     <TextBlock Grid.Row="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
                     
                     <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
-                            Path=DataContext.IsDeleteButtonVisible, Converter={StaticResource BoolToVisiblity}}"
+                            Path=DataContext.IsAssignedUserButtonsVisible, Converter={StaticResource BoolToVisiblity}}"
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Content="X"
                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
                             Path=DataContext.RemoveUserCommand}" CommandParameter="{Binding}" />

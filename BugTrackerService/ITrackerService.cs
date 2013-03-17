@@ -50,6 +50,9 @@ namespace BugTrackerService
         IList<User> GetAssignedUsersByProject(Project proj);
 
         [OperationContract]
+        IList<User> GetManagerUsersByProject(Project proj);
+
+        [OperationContract]
         List<string> GetBugStatusList();
 
         [OperationContract]
@@ -84,5 +87,8 @@ namespace BugTrackerService
 
         [OperationContract]
         void RejectUserFromProject(User user, Project project);
+
+        [OperationContract]
+        bool IsValidProjectCode(String code);
     }
 }
