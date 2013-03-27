@@ -15,6 +15,9 @@ namespace BugTrackerService
     {
         [OperationContract]
         void Register(User user);
+
+        [OperationContract]
+        bool UserExists(String username);
     }
 
 }

@@ -24,41 +24,46 @@
         
     </Window.Resources>
     
-    <Grid>
+    <Grid Margin="5">
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Margin" Value="5,10,0,10" />
+            </Style>
+            <Style TargetType="{x:Type PasswordBox}">
+                <Setter Property="Margin" Value="5,10,0,10" />
+            </Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="5,10,0,5" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"  />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Register" Height="52" Name="labelRegisterTitle" FontSize="32" />
         
-        <Label Content="Register" Height="52" HorizontalAlignment="Left" Margin="22,5,0,0" Name="label1" VerticalAlignment="Top" FontSize="32" Width="135" />
-        
-        <Grid Margin="28,77,0,0" Name="grid1" Height="218" VerticalAlignment="Top" HorizontalAlignment="Left" Width="323">
-            
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50*" />
-                <RowDefinition Height="45*" />
-                <RowDefinition Height="45*" />
-                <RowDefinition Height="47" />
-                <RowDefinition Height="29" />
-            </Grid.RowDefinitions>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="111*" />
-                <ColumnDefinition Width="205*" />
-            </Grid.ColumnDefinitions>
-            
-            <Label Content="First &amp; Last Name:" Height="28" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="111" />
-            <Label Content="Email:" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="0,-1,0,0" Name="label3" VerticalAlignment="Top" />
-            <Label Content="Password:" Grid.Row="2" HorizontalAlignment="Left" Name="label4" Height="33" VerticalAlignment="Top" />
-            <Label Content="Organisation:" Grid.Row="3" Height="28" HorizontalAlignment="Left" Name="label5" VerticalAlignment="Top" />
-            
-            <TextBox Grid.Column="1" Name="textBoxName" Height="23" VerticalAlignment="Top" Text="{Binding Path=FirstAndLastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-            <TextBox Grid.Column="1" Grid.Row="1" Height="23" Name="textBoxEmail" VerticalAlignment="Top" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-            
-            <PasswordBox helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Grid.Column="1" Grid.Row="2" Height="23" Name="passwordBox" VerticalAlignment="Top" />
-           
-            <Button Content="Register" Height="27" HorizontalAlignment="Left" Name="buttonRegister" VerticalAlignment="Top" Width="74" Grid.Row="4" Command="{Binding Path=RegisterCommand}" IsEnabled="{Binding Path=IsRegisterButtonEnabled}" />
-            <Button Content="Cancel" Height="27" HorizontalAlignment="Left" Name="button2" VerticalAlignment="Top" Width="74" Grid.Column="1" Grid.Row="4" Command="{Binding Path=CancelCommand}" />
-            
-            <TextBox Grid.Column="1" Grid.Row="3" Height="23" Name="textBoxOrganisation" VerticalAlignment="Top" Text="{Binding Path=Organisation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-        
-        </Grid>
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="First &amp; Last Name:" Name="labelFirstAndLastNames" />
+            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Email:"  Name="labelEmail" />
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Password:" Name="labelPassword" />
+
+            <TextBox Grid.Row="1" Grid.Column="1" Name="textBoxFirstAndLastNames" Height="23" Text="{Binding Path=FirstAndLastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+            <TextBox Grid.Row="2" Grid.Column="1" Name="textBoxEmail" Height="23" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+
+            <PasswordBox Grid.Row="3" Grid.Column="1" Height="23" Width="150" Name="passwordBox" helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+
+        <Button HorizontalAlignment="Left" Grid.Row="4" Grid.Column="0" Content="Register" Height="27" Width="74" Name="buttonRegister"  Command="{Binding Path=RegisterCommand}" IsEnabled="{Binding Path=IsRegisterButtonEnabled}" />
+        <Button HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" Content="Cancel" Height="27" Width="74" Name="buttonCancel" Command="{Binding Path=CancelCommand}" />
         
     </Grid>
     

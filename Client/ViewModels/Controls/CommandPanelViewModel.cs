@@ -39,12 +39,11 @@ namespace Client.ViewModels
             if (svc == null)
                 throw new ArgumentNullException("Web service cannot be null.");
 
-            if (activeProj == null)
-                throw new ArgumentNullException("The active project cannot be null.");
-
             _Messenger = comm;
             _Service = svc;
-            _ActiveProject = activeProj;
+
+            if (!IsProjectNull(activeProj))
+                _ActiveProject = activeProj;
 
             ListenForMessages();
         }
@@ -126,6 +125,15 @@ namespace Client.ViewModels
         }
 
         #endregion Commands
+
+
+        private bool IsProjectNull(ProjectViewModel proj)
+        {
+            if (proj == null || proj.Id == 0)
+                return true;
+
+            return false;
+        }
 
 
         /// <summary>

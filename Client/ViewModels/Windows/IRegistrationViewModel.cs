@@ -12,7 +12,6 @@ namespace Client.ViewModels.Windows
         string Error { get; }
         string FirstAndLastName { get; set; }
         bool IsRegisterButtonEnabled { get; set; }
-        string Organisation { get; set; }
         string Password { get; set; }
         ICommand RegisterCommand { get; }
         void RegistrationComplete(IAsyncResult result);

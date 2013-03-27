@@ -111,7 +111,7 @@ namespace Client.ViewModels
             {
                 if (_CommandPanel == null)
                 {
-                    _CommandPanel = _ControlFactory.CreateCommandPanel(_SelectedActiveProject);
+                    _CommandPanel = _ControlFactory.CreateCommandPanel(SelectedActiveProject);
                 }
 
                 return _CommandPanel;

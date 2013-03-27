@@ -24,13 +24,15 @@ namespace BugTrackerService
     {
 
         /// <summary>
-        /// Creates a new system user with the role of project manager
-        /// and assigns the newly created organisation.
+        /// Creates a new system user.
         /// </summary>
-        /// <param name="user">New user object containing new organisation.</param>
+        /// <param name="user">New user object.</param>
         public void Register(User user)
         {
-            
+            if (!UserExists(user.Username))
+            {
+                new UserRepository().Create(user);
+            }
         }
 
 
@@ -38,13 +40,13 @@ namespace BugTrackerService
         /// Checks if a user with the same username already exists
         /// in the database.
         /// </summary>
-        /// <param name="user">The user to validate.</param>
+        /// <param name="username">The user to validate.</param>
         /// <returns></returns>
-        private bool UserExists(User user)
+        public bool UserExists(String username)
         {
             UserRepository repo = new UserRepository();
 
-            User userMatch = repo.GetAll().Where(p => p.Username == user.Username).SingleOrDefault();
+            User userMatch = repo.GetAll().Where(p => p.Username == username).SingleOrDefault();
 
             if (userMatch != null)
                 return true;

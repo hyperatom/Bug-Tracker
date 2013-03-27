@@ -58,11 +58,11 @@
         <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Center" />
         <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Center" />
 
-        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
-
         <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" HorizontalAlignment="Right" />
 
         <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="2" Content="{Binding DeleteDialog}" HorizontalAlignment="Center" VerticalAlignment="Center"  Name="contentControl1" />
 
+        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="-12,0,0,0" Grid.Row="2" />
     </Grid>
+    
 </UserControl>

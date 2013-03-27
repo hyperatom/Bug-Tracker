@@ -11,6 +11,7 @@ using BugTrackerService.Security;
 using System.Threading;
 using BugTrackerService.Faults;
 using DevTrends.WCFDataAnnotations;
+using System.Collections;
 
 namespace BugTrackerService
 {
@@ -292,5 +293,23 @@ namespace BugTrackerService
             return new ProjectRoleRepository().GetAll()
                 .Where(p => p.ProjectId == proj.Id && p.RoleId == projMgr.Id).Select(p => p.User).Distinct().ToList();
         }
+
+
+        /*public List<Bug> GetBugsByProjectAndSort(Project project, int start, int count, string sortField, string order)
+        {
+            order = order.ToLower();
+
+            List<Bug> bugList = new List<Bug>();
+
+            if (order == "asc")
+            {
+                List<Bug> bugList = new BugRepository().GetAll().Where(p => p.Project.Id == project.Id).OrderBy(sortField);
+            }
+            else if (order == "desc")
+            {
+                List<Bug> bugList = new BugRepository().GetAll().Where(p => p.Project.Id == project.Id).OrderBy(sortField);
+            }
+                
+        }*/
     }
 }

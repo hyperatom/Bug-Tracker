@@ -24,7 +24,6 @@ namespace Client.ViewModels
         private string _FirstAndLastName;
         private string _Email;
         private string _Password;
-        private string _Organisation;
         private bool _IsValidating = false;
         private bool _IsRegisterEnabled = true;
 
@@ -102,13 +101,6 @@ namespace Client.ViewModels
         }
 
 
-        public string Organisation
-        {
-            get { return _Organisation; }
-            set { _Organisation = value.Trim(); OnPropertyChanged("Organisation"); }
-        }
-
-
         public bool IsRegisterButtonEnabled
         {
             get { return _IsRegisterEnabled; }
@@ -138,7 +130,7 @@ namespace Client.ViewModels
             {
                 if (_CancelCommand == null)
                 {
-                    _CancelCommand = new RelayCommand(param => this.Cancel());
+                    _CancelCommand = new RelayCommand(param => this.NavigateToLoginWindow());
                 }
 
                 return _CancelCommand;
@@ -162,7 +154,7 @@ namespace Client.ViewModels
         /// <summary>
         /// Navigates the user back to the login window.
         /// </summary>
-        private void Cancel()
+        private void NavigateToLoginWindow()
         {
             _WindowFactory.CreateLoginWindow().Show();
 
@@ -184,7 +176,6 @@ namespace Client.ViewModels
                 OnPropertyChanged("FirstAndLastName");
                 OnPropertyChanged("Email");
                 OnPropertyChanged("Password");
-                OnPropertyChanged("Organisation");
             }
             finally
             {
@@ -210,10 +201,9 @@ namespace Client.ViewModels
                     User user = new User
                     {
                         FirstName = this.FirstName,
-                        Password = this.Password,
                         Surname = this.LastName,
+                        Password = this.Password,
                         Username = this.Email,
-                        Organisation = new Organisation { Name = Organisation }
                     };
 
                     // Execute registration operation concurrently
@@ -239,8 +229,6 @@ namespace Client.ViewModels
         /// <param name="result"></param>
         public void RegistrationComplete(IAsyncResult result)
         {
-            ((IRegistration)result.AsyncState).EndRegister(result);
-
             IsRegisterButtonEnabled = true;
         }
 
@@ -304,6 +292,9 @@ namespace Client.ViewModels
                         else if (Email.Length > MaxEmailLength)
                             result = "Email must be less than "+MaxEmailLength+" characters long.";
 
+                        else if (_Service.UserExists(Email))
+                            result = "This email address is already in use, please choose another one.";
+
                         break;
                     }
 
@@ -316,19 +307,6 @@ namespace Client.ViewModels
 
                         else if (Password.Length > MaxPasswordLength)
                             result = "Password can be at most " +MaxPasswordLength+ " characters long.";
-
-                        break;
-                    }
-
-                    case "Organisation":
-                    {
-                        const int MaxOrgLength = 25;
-
-                        if (String.IsNullOrEmpty(Organisation))
-                            result = "This field cannot be left blank!";
-
-                        else if (Organisation.Length > MaxOrgLength)
-                            result = "Organisation name can be at most "+MaxOrgLength+" characters long.";
 
                         break;
                     }

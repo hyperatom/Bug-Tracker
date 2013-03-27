@@ -34,8 +34,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
 
             ListenForMessages();
 
-            if (AssignedProjects.Count > 0)
-                IsVisible = true;
+            IsVisible = true;
         }
 
 

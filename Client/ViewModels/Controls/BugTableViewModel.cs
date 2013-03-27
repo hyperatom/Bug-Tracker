@@ -6,6 +6,12 @@ using Client.Helpers;
 using Client.ServiceReference;
 using Client.Factories;
 using Client.ViewModels.Controls;
+using System.ComponentModel;
+using System.Windows.Data;
+using Client.Helpers.Paging;
+using System.Collections.Specialized;
+using System.Windows;
+using System.Reflection;
 
 namespace Client.ViewModels
 {
@@ -14,6 +20,15 @@ namespace Client.ViewModels
     /// </summary>
     public class BugTableViewModel : ObservableObject, IBugTableViewModel
     {
+
+        private const int _PageSize = 2;
+
+        private static SortDescription DefaultSortOrder = new SortDescription("Id", ListSortDirection.Ascending);
+
+        private ObservableRangeCollection<BugViewModel> bugs = new ObservableRangeCollection<BugViewModel>();
+
+        private CollectionViewSource bugsViewSource = new CollectionViewSource();
+
 
         private String _ProjectTitle;
 
@@ -41,27 +56,109 @@ namespace Client.ViewModels
         public BugTableViewModel(IMessenger comm, ITrackerService svc, 
                                  IControlFactory ctrlfactory, ProjectViewModel activeProj)
         {
-            if (comm == null)
-                throw new ArgumentNullException("The messenger cannot be null.");
-
-            if (svc == null)
-                throw new ArgumentNullException("The active project cannot be null.");
-
-            if (ctrlfactory == null)
-                throw new ArgumentNullException("The control factory cannot be null.");
-
-            if (activeProj == null)
-                throw new ArgumentNullException("The active project cannot be null.");
-
             _Messenger = comm;
             _Service = svc;
             _ActiveProject = activeProj;
             _ControlFactory = ctrlfactory;
 
             ProjectTitle = activeProj.Name;
-            PopulateBugTable();
+
+            this.bugsViewSource.Source = this.bugs;
+
+            var sortDescriptions = (INotifyCollectionChanged)this.bugsViewSource.View.SortDescriptions;
+            sortDescriptions.CollectionChanged += this.OnSortOrderChanged;
+
+            // The 5000 here is the total number of reservations
+            this.Pager = new PagingController(4, _PageSize);
+            this.Pager.CurrentPageChanged += (s, e) => this.UpdateData();
+
+            this.UpdateData();
 
             ListenForMessages();
+        }
+
+
+        public PagingController Pager { get; private set; }
+
+        private void UpdateData()
+        {
+            var currentSort = this.bugsViewSource.View.SortDescriptions.DefaultIfEmpty(DefaultSortOrder).ToArray();
+
+            var data = _Service.GetBugsByProject(_ActiveProject.ToProjectModel());
+            IList<BugViewModel> vmList = new List<BugViewModel>();
+
+            IEnumerable<BugViewModel> orderedList = new List<BugViewModel>();
+
+            data.ForEach(p => vmList.Add(new BugViewModel(p)));
+
+            foreach (SortDescription sortDescription in currentSort)
+            {
+                PropertyInfo propertyInfo = typeof(BugViewModel).GetProperty(sortDescription.PropertyName);
+                Func<BugViewModel, object> keySelector = item => GetPropValue<object>(item, sortDescription.PropertyName);
+
+                switch (sortDescription.Direction)
+                {
+                    case ListSortDirection.Ascending:
+                        orderedList = vmList.OrderBy(keySelector);
+                        break;
+                    case ListSortDirection.Descending:
+                        orderedList = vmList.OrderByDescending(keySelector);
+                        break;
+                    default:
+                        continue;
+                }
+            }
+
+            this.bugs.Clear();
+
+            bugs.AddRange(orderedList.ToList().GetRange(Pager.CurrentPageStartIndex, Pager.PageSize));
+        }
+
+
+        public PropertyInfo GetProp(Type baseType, string propertyName)
+        {
+            string[] parts = propertyName.Split('.');
+
+            return (parts.Length > 1) ? GetProp(baseType.GetProperty(parts[0]).PropertyType, parts.Skip(1).Aggregate((a, i) => a + "." + i)) : baseType.GetProperty(propertyName);
+        }
+
+
+        public static Object GetPropValue(Object obj, String name)
+        {
+            foreach (String part in name.Split('.'))
+            {
+                if (obj == null) { return null; }
+
+                Type type = obj.GetType();
+                PropertyInfo info = type.GetProperty(part);
+                if (info == null) { return null; }
+
+                obj = info.GetValue(obj, null);
+            }
+            return obj;
+        }
+
+        public static T GetPropValue<T>(Object obj, String name)
+        {
+            Object retval = GetPropValue(obj, name);
+            if (retval == null) { return default(T); }
+
+            // throws InvalidCastException if types are incompatible
+            return (T)retval;
+        }
+
+
+        public ICollectionView MyBugList
+        {
+            get { return this.bugsViewSource.View; }
+        }
+
+        private void OnSortOrderChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                this.UpdateData();
+            }
         }
 
 
@@ -262,6 +359,6 @@ namespace Client.ViewModels
             PopulateBugTable();
             ProjectTitle = proj.Name;
         }
-
+        
     }
 }

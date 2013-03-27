@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using DataEntities.Entity;
 using BugTrackerService.Faults;
+using System.Collections;
 
 namespace BugTrackerService
 {
@@ -30,6 +31,9 @@ namespace BugTrackerService
 
         [OperationContract]
         List<Bug> GetBugsByProject(Project project);
+
+        //[OperationContract]
+        //List<Bug> GetBugsByProjectAndSort(Project project, int start, int count, String sortField, String order);
 
         [OperationContract]
         Bug SaveBug(Bug bug);

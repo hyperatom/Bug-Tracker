@@ -22,8 +22,18 @@
 
     <Grid>
         <Label Content="{Binding ProjectTitle}" Height="58" Margin="54,28,67,0" Name="labelProjectTitle" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" />
-        
-        <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,67,66" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding BugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}">
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Top">
+            <Button Content="&lt;&lt;" Command="{Binding Path=Pager.GotoFirstPageCommand}" />
+            <Button Content="&lt;" Command="{Binding Path=Pager.GotoPreviousPageCommand}" />
+            <TextBlock Text="Page" />
+            <TextBox Text="{Binding Path=Pager.CurrentPage, ValidatesOnExceptions=True}" />
+            <TextBlock Text="{Binding Path=Pager.PageCount, StringFormat=of {0}}" />
+            <Button Content=">" Command="{Binding Path=Pager.GotoNextPageCommand}" />
+            <Button Content=">>" Command="{Binding Path=Pager.GotoLastPageCommand}" />
+        </StackPanel>
+
+        <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,67,66" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding MyBugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}">
 
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -32,7 +42,7 @@
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" Width="Auto" />
+                <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" Width="Auto" SortDirection="Ascending" />
                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Title" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" Width="*" >
                     <DataGridTextColumn.ElementStyle>
@@ -44,11 +54,11 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=Priority}" Header="Priority" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=CreatedBy.FirstName}" Header="Created By" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=CreatedBy.AbreviatedFullName}" Header="Created By" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=DateFound.Date, StringFormat=dd/MM/yyyy}" Header="Date" Width="*" />
                 <DataGridTextColumn Binding="{Binding Path=LastModified.Date, StringFormat=dd/MM/yyyy}" Header="Modified" Width="*" />
                 <DataGridCheckBoxColumn Binding="{Binding Path=Fixed}" Header="Fixed" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=AssignedUser.FirstName}" Header="Assigned To" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=AssignedUser.AbreviatedFullName}" Header="Assigned To" Width="*" />
 
             </DataGrid.Columns>
         </DataGrid>

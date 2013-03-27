@@ -124,6 +124,9 @@
     <Compile Include="Factories\WindowFactory.cs" />
     <Compile Include="Helpers\IMessenger.cs" />
     <Compile Include="Helpers\Messages.cs" />
+    <Compile Include="Helpers\ObservableRangeCollection.cs" />
+    <Compile Include="Helpers\Paging\CurrentPageChangedEventArgs.cs" />
+    <Compile Include="Helpers\Paging\PagingController.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Mediator.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugAddPanelViewModel.cs" />

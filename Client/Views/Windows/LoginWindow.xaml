@@ -8,7 +8,7 @@
     <Grid>
         <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoginCommand}" />
 
-        <Label Content="Username:" Height="28" HorizontalAlignment="Left" Margin="34,80,0,0" Name="label1" VerticalAlignment="Top" />
+        <Label Content="Email:" Height="28" HorizontalAlignment="Left" Margin="34,80,0,0" Name="label1" VerticalAlignment="Top" />
         <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="34,128,0,0" Name="label2" VerticalAlignment="Top" />
         <Label Content="Login" Height="28" HorizontalAlignment="Left" Margin="34,30,0,0" Name="label3" VerticalAlignment="Top" />
         
