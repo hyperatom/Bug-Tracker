@@ -96,7 +96,7 @@ namespace Client.ViewModels
                 }
                 catch (FaultException e)
                 {
-                    MessageBox.Show(e.InnerException.Message);
+                    MessageBox.Show(e.Message);
                 }
             }
         }

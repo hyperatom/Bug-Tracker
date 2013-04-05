@@ -32,5 +32,8 @@ namespace Client.Helpers
         public static readonly string ProjectSelected = "Project Selected";
         public static readonly string ManagedProjectSelected = "Managed Project Selected";
         public static readonly string AssignedProjectSelected = "Assigned Project Selected";
+        public static readonly string BugTableDisplaying = "Bug Table Displaying";
+        public static readonly string ShowAssignedBugs = "Show Assigned Bugs";
+        public static readonly string DeleteSelectedBugs = "Delete Selected Bugs";
     }
 }

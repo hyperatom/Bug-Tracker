@@ -12,6 +12,8 @@ using Client.Helpers.Paging;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Reflection;
+using System.Windows.Input;
+using Client.Properties;
 
 namespace Client.ViewModels
 {
@@ -21,27 +23,28 @@ namespace Client.ViewModels
     public class BugTableViewModel : ObservableObject, IBugTableViewModel
     {
 
-        private const int _PageSize = 2;
+        private int _PageSize;
 
-        private static SortDescription DefaultSortOrder = new SortDescription("Id", ListSortDirection.Ascending);
+        private static SortDescription _DefaultTableSortOrder;
 
-        private ObservableRangeCollection<BugViewModel> bugs = new ObservableRangeCollection<BugViewModel>();
-
-        private CollectionViewSource bugsViewSource = new CollectionViewSource();
+        private ObservableRangeCollection<BugViewModel> _BugList = new ObservableRangeCollection<BugViewModel>();
+        private CollectionViewSource                    _BugListViewSource = new CollectionViewSource();
 
 
         private String _ProjectTitle;
-
-        private BugViewModel _SelectedBug;
-        private List<BugViewModel> _SelectedBugs;
-
-        private ObservableCollection<BugViewModel> _BugList;
+        
         private BugPanelViewModel _SouthViewPanel;
+        private ProjectViewModel  _ActiveProject;
 
-        private ProjectViewModel _ActiveProject;
+        private BugViewModel       _SelectedBug;
+        private List<BugViewModel> _SelectedBugs;
+        private IList<String>      _FilterList;
+
+        private String _SelectedFilter;
+        private String _SearchText;
 
         // Dependencies
-        private IMessenger _Messenger;
+        private IMessenger      _Messenger;
         private ITrackerService _Service;
         private IControlFactory _ControlFactory;
 
@@ -63,102 +66,77 @@ namespace Client.ViewModels
 
             ProjectTitle = activeProj.Name;
 
-            this.bugsViewSource.Source = this.bugs;
+            _SearchText = "";
 
-            var sortDescriptions = (INotifyCollectionChanged)this.bugsViewSource.View.SortDescriptions;
-            sortDescriptions.CollectionChanged += this.OnSortOrderChanged;
+            _PageSize = GetPageSizeFromSettings();
 
-            // The 5000 here is the total number of reservations
-            this.Pager = new PagingController(4, _PageSize);
-            this.Pager.CurrentPageChanged += (s, e) => this.UpdateData();
+            _DefaultTableSortOrder = new SortDescription("Id", ListSortDirection.Ascending);
+            _BugListViewSource.Source = _BugList;
 
-            this.UpdateData();
+            InitSortingAndPaging();
+
+            UpdateTableData();
 
             ListenForMessages();
         }
 
 
-        public PagingController Pager { get; private set; }
-
-        private void UpdateData()
+        public String SelectedFilter
         {
-            var currentSort = this.bugsViewSource.View.SortDescriptions.DefaultIfEmpty(DefaultSortOrder).ToArray();
-
-            var data = _Service.GetBugsByProject(_ActiveProject.ToProjectModel());
-            IList<BugViewModel> vmList = new List<BugViewModel>();
-
-            IEnumerable<BugViewModel> orderedList = new List<BugViewModel>();
-
-            data.ForEach(p => vmList.Add(new BugViewModel(p)));
-
-            foreach (SortDescription sortDescription in currentSort)
+            get 
             {
-                PropertyInfo propertyInfo = typeof(BugViewModel).GetProperty(sortDescription.PropertyName);
-                Func<BugViewModel, object> keySelector = item => GetPropValue<object>(item, sortDescription.PropertyName);
+                if (_SelectedFilter == null)
+                    _SelectedFilter = FilterList[0];
 
-                switch (sortDescription.Direction)
+                return _SelectedFilter;
+            }
+            set 
+            { 
+                _SelectedFilter = value;
+
+                UpdateTableData(); 
+                OnPropertyChanged("SelectedFilter");
+            }
+        }
+
+
+        public IList<String> FilterList
+        {
+            get 
+            {
+                if (_FilterList == null)
+                    _FilterList = new List<String>() { "All", "Assigned To Me", "Open", "In Progress", "Closed" };
+
+                return _FilterList;
+            }
+            set { _FilterList = value; OnPropertyChanged("FilterList"); }
+        }
+
+
+        public String PageSizeTextBox
+        {
+            get { return _PageSize.ToString(); }
+            set 
+            {
+                try
                 {
-                    case ListSortDirection.Ascending:
-                        orderedList = vmList.OrderBy(keySelector);
-                        break;
-                    case ListSortDirection.Descending:
-                        orderedList = vmList.OrderByDescending(keySelector);
-                        break;
-                    default:
-                        continue;
+                    Pager.PageSize = Int32.Parse(value);
+                    Settings.Default["PageCount"] = Pager.PageSize;
+                }
+                catch (FormatException)
+                {
+                    Pager.PageSize = 20;
                 }
             }
-
-            this.bugs.Clear();
-
-            bugs.AddRange(orderedList.ToList().GetRange(Pager.CurrentPageStartIndex, Pager.PageSize));
         }
 
 
-        public PropertyInfo GetProp(Type baseType, string propertyName)
-        {
-            string[] parts = propertyName.Split('.');
-
-            return (parts.Length > 1) ? GetProp(baseType.GetProperty(parts[0]).PropertyType, parts.Skip(1).Aggregate((a, i) => a + "." + i)) : baseType.GetProperty(propertyName);
-        }
-
-
-        public static Object GetPropValue(Object obj, String name)
-        {
-            foreach (String part in name.Split('.'))
-            {
-                if (obj == null) { return null; }
-
-                Type type = obj.GetType();
-                PropertyInfo info = type.GetProperty(part);
-                if (info == null) { return null; }
-
-                obj = info.GetValue(obj, null);
-            }
-            return obj;
-        }
-
-        public static T GetPropValue<T>(Object obj, String name)
-        {
-            Object retval = GetPropValue(obj, name);
-            if (retval == null) { return default(T); }
-
-            // throws InvalidCastException if types are incompatible
-            return (T)retval;
-        }
+        public PagingController Pager { get; private set; }
 
 
         public ICollectionView MyBugList
         {
-            get { return this.bugsViewSource.View; }
-        }
-
-        private void OnSortOrderChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                this.UpdateData();
-            }
+            get { return this._BugListViewSource.View; }
         }
 
 
@@ -223,7 +201,7 @@ namespace Client.ViewModels
             {
                 _SelectedBugs = new List<BugViewModel>();
 
-                foreach (BugViewModel bug in BugList)
+                foreach (BugViewModel bug in _BugList)
                 {
                     if (bug.IsSelected)
                         _SelectedBugs.Add(bug);
@@ -234,40 +212,15 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Observable collection of bug view models contained
-        /// within the bug table.
-        /// </summary>
-        public ObservableCollection<BugViewModel> BugList
+        public String SearchText
         {
-            get
+            get { return _SearchText; }
+            set 
             {
-                if (_BugList == null)
-                {
-                    _BugList = new ObservableCollection<BugViewModel>();
-                }
+                _SearchText = value;
 
-                return _BugList;
-            }
-
-            set
-            {
-                _BugList = value;
-                OnPropertyChanged("BugList");
-            }
-        }
-
-
-        /// <summary>
-        /// Populates the table of bugs according to currently selected project.
-        /// </summary>
-        public void PopulateBugTable()
-        {
-            if (_ActiveProject != null)
-            {
-                BugList.Clear();
-
-                _Service.GetBugsByProject(_ActiveProject.ToProjectModel()).ForEach(p => BugList.Add(new BugViewModel(p)));
+                UpdateTableData();
+                OnPropertyChanged("SearchText");
             }
         }
 
@@ -279,13 +232,158 @@ namespace Client.ViewModels
         private void ListenForMessages()
         {            
             _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, ActiveProjectChanged);
-            _Messenger.Register<BugViewModel>(Messages.AddPanelSavedBug, p => _BugList.Add(p));
-            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, RemoveBugFromTable);
-            _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, SaveBugToTable);
+            _Messenger.Register<BugViewModel>(Messages.AddPanelSavedBug, p => UpdateTableData());
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, p => UpdateTableData());
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, p => UpdateTableData());
 
             _Messenger.Register(Messages.ShowBugViewPanel, ShowBugViewPanel);
             _Messenger.Register(Messages.ShowBugAddPanel, ShowBugAddPanel);
-            _Messenger.Register(Messages.RequestSelectedBugs, SendSelectedBugs);
+            _Messenger.Register(Messages.DeleteSelectedBugs, DeleteSelectedBugs);
+            _Messenger.Register(Messages.ShowAssignedBugs, ShowAssignedBugs);
+        }
+
+
+        private void ShowAssignedBugs()
+        {
+
+            UpdateTableData();
+        }
+
+
+        private void InitSortingAndPaging()
+        {
+            var sortDescriptions = (INotifyCollectionChanged)_BugListViewSource.View.SortDescriptions;
+            sortDescriptions.CollectionChanged += OnSortOrderChanged;
+
+            Pager = new PagingController(_Service.CountBugsInProject(_ActiveProject.ToProjectModel()), _PageSize);
+            Pager.CurrentPageChanged += (s, e) => UpdateTableData();
+        }
+
+
+        private void UpdateTableData()
+        {
+            if (SouthViewPanel != null)
+                SouthViewPanel.IsVisible = false;
+            
+            var currentSort = _BugListViewSource.View.SortDescriptions.DefaultIfEmpty(_DefaultTableSortOrder).ToArray();
+
+            IList<BugViewModel> bugList = GetProjectBugs();
+
+            bugList = OrderListBySortDescription(currentSort, bugList);
+
+            Pager.ItemCount = bugList.Count;
+
+            this._BugList.Clear();
+
+            if (ListNotEmpty(bugList))
+            {
+                if (Pager.ItemCount - Pager.CurrentPageStartIndex < Pager.PageSize)
+                {
+                    _BugList.AddRange(bugList.ToList().GetRange(Pager.CurrentPageStartIndex, Pager.ItemCount - Pager.CurrentPageStartIndex));
+                }
+                else if (BugsLessThanPageSize(bugList))
+                {
+                    _BugList.AddRange(bugList.ToList().GetRange(0, bugList.Count()));
+                }
+                else if (Pager.CurrentPageStartIndex < 0)
+                {
+                    _BugList.AddRange(bugList.ToList().GetRange(0, Pager.PageSize));
+                }
+                else
+                {
+                    _BugList.AddRange(bugList.ToList().GetRange(Pager.CurrentPageStartIndex, Pager.PageSize));
+                }
+            }
+        }
+
+
+        private static bool ListNotEmpty(IList<BugViewModel> bugList)
+        {
+            return bugList.Count() > 0;
+        }
+
+
+        private bool BugsLessThanPageSize(IList<BugViewModel> bugList)
+        {
+            return bugList.Count() < Pager.PageSize;
+        }
+
+
+        private int GetPageSizeFromSettings()
+        {
+            return (int) Settings.Default["PageCount"];
+        }
+
+
+        private IList<BugViewModel> GetProjectBugs()
+        {
+            var data = new List<Bug>();
+            int myId = _Service.GetMyUser().Id;
+
+            data = _Service.SearchAllProjectBugsAttributes(_ActiveProject.ToProjectModel(), SearchText);
+            
+            switch (SelectedFilter)
+            {
+                case "Assigned To Me":
+
+                    if (data.Count > 0)
+                        data = data.Where(p => p.AssignedUser != null && p.AssignedUser.Id == myId).ToList();
+
+                    break;
+
+                case "Open":
+
+                    if (data.Count > 0)
+                        data = data.Where(p => p.Status == "Open").ToList();
+
+                    break;
+
+                case "Closed":
+                    
+                    if (data.Count > 0)
+                        data = data.Where(p => p.Status == "Closed").ToList();
+
+                    break;
+            }
+            
+           
+            IList<BugViewModel> vmList = new List<BugViewModel>();
+
+            data.ForEach(p => vmList.Add(new BugViewModel(p)));
+
+            return vmList;
+        }
+
+
+        private static IList<BugViewModel> OrderListBySortDescription(SortDescription[] currentSort, IList<BugViewModel> vmList)
+        {
+            foreach (SortDescription sortDescription in currentSort)
+            {
+                PropertyInfo propertyInfo = typeof(BugViewModel).GetProperty(sortDescription.PropertyName);
+                Func<BugViewModel, object> keySelector = item => GetPropValue<object>(item, sortDescription.PropertyName);
+
+                switch (sortDescription.Direction)
+                {
+                    case ListSortDirection.Ascending:
+                        vmList = vmList.OrderBy(keySelector).ToList();
+                        break;
+                    case ListSortDirection.Descending:
+                        vmList = vmList.OrderByDescending(keySelector).ToList();
+                        break;
+                    default:
+                        continue;
+                }
+            }
+            return vmList;
+        }
+
+
+        private void OnSortOrderChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                UpdateTableData();
+            }
         }
 
 
@@ -296,35 +394,10 @@ namespace Client.ViewModels
         /// <param name="bug">The bug to remove from the table.</param>
         private void RemoveBugFromTable(BugViewModel bug)
         {
-            _BugList.Remove(bug);
-
             if (SouthViewPanel != null && SouthViewPanel.IsVisible)
                 SouthViewPanel.IsVisible = false;
-        }
 
-
-        /// <summary>
-        /// Notifies listeners when the selected bug list changes.
-        /// </summary>
-        private void SendSelectedBugs()
-        {
-            _Messenger.NotifyColleagues(Messages.SelectedBugsChanged, SelectedBugs);
-        }
-
-
-        /// <summary>
-        /// Saves a bug object to the table.
-        /// </summary>
-        /// <param name="bug">The bug object to save.</param>
-        private void SaveBugToTable(BugViewModel bug)
-        {
-            BugViewModel selectedBug = BugList.Where(p => p.Id == bug.Id).SingleOrDefault();
-
-            int index = BugList.IndexOf(selectedBug);
-
-            BugList.Remove(selectedBug);
-            BugList.Insert(index, bug);
-            SelectedBug = BugList.ElementAt(index);
+            UpdateTableData();
         }
 
 
@@ -356,8 +429,50 @@ namespace Client.ViewModels
         private void ActiveProjectChanged(ProjectViewModel proj)
         {
             _ActiveProject = proj;
-            PopulateBugTable();
             ProjectTitle = proj.Name;
+
+            UpdateTableData();
+        }
+
+
+        /// <summary>
+        /// Deletes the user selected bugs from the web service and bug table.
+        /// </summary>
+        private void DeleteSelectedBugs()
+        {
+            // For each selected bug, remove it from the service and view
+            foreach (BugViewModel bug in SelectedBugs)
+            {
+                // Delete using web service
+                _Service.DeleteBug(bug.ToBugModel());
+                // Notify listeners of delete operation
+                _Messenger.NotifyColleagues(Messages.SelectedBugDeleted, bug);
+            }
+        }
+
+
+        public static Object GetPropValue(Object obj, String name)
+        {
+            foreach (String part in name.Split('.'))
+            {
+                if (obj == null) { return null; }
+
+                Type type = obj.GetType();
+                PropertyInfo info = type.GetProperty(part);
+                if (info == null) { return null; }
+
+                obj = info.GetValue(obj, null);
+            }
+            return obj;
+        }
+
+
+        public static T GetPropValue<T>(Object obj, String name)
+        {
+            Object retval = GetPropValue(obj, name);
+            if (retval == null) { return default(T); }
+
+            return (T)retval;
         }
         
     }

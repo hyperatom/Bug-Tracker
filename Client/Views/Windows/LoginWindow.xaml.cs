@@ -2,6 +2,7 @@
 using Client.ViewModels.Windows;
 using Client.Views.Windows;
 using System;
+using Client.ViewModels;
 
 namespace Client
 {

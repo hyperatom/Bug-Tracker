@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using Client.ViewModels.Controls;
 using Client.ViewModels.Controls.ProjectPanel;
 using Client.ViewModels.Controls.Dialogs;
+using MediatorLib;
 
 namespace Client
 {
@@ -92,6 +93,8 @@ namespace Client
             container.RegisterType<IManagedProjectsPanelViewModel, ManagedProjectsPanelViewModel>();
             container.RegisterType<IProjectUsersPanelViewModel, ProjectUsersPanelViewModel>();
             container.RegisterType<IJoinProjectPanelViewModel, JoinProjectPanelViewModel>();
+            container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>();
+            container.RegisterType<IWestSideBarViewModel, WestSideBarViewModel>();
 
             // Factories
             container.RegisterType<IServiceFactory, ServiceFactory>();

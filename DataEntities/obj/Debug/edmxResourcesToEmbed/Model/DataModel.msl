@@ -87,5 +87,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="bugtrackerModel.Action">
+        <MappingFragment StoreEntitySet="actions">
+          <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BugActionLogs">
+      <EntityTypeMapping TypeName="bugtrackerModel.BugActionLog">
+        <MappingFragment StoreEntitySet="bug_action_logs">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="BugName" ColumnName="BugName" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="bug_action_logs_ibfk_1" TypeName="bugtrackerModel.bug_action_logs_ibfk_1" StoreEntitySet="bug_action_logs">
+      <EndProperty Name="bug_action_logs">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="action">
+        <ScalarProperty Name="Id" ColumnName="ActionId" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

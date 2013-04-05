@@ -1,12 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="bugtrackerModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="bugtrackerModelStoreContainer">
+    <EntitySet Name="actions" EntityType="bugtrackerModel.Store.actions" store:Type="Tables" Schema="bugtracker" />
+    <EntitySet Name="bug_action_logs" EntityType="bugtrackerModel.Store.bug_action_logs" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="bugs" EntityType="bugtrackerModel.Store.bugs" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="projects" EntityType="bugtrackerModel.Store.projects" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="roles" EntityType="bugtrackerModel.Store.roles" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="user_project_role" EntityType="bugtrackerModel.Store.user_project_role" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="user_project_signup" EntityType="bugtrackerModel.Store.user_project_signup" store:Type="Tables" Schema="bugtracker" />
     <EntitySet Name="users" EntityType="bugtrackerModel.Store.users" store:Type="Tables" Schema="bugtracker" />
+    <AssociationSet Name="bug_action_logs_ibfk_1" Association="bugtrackerModel.Store.bug_action_logs_ibfk_1">
+      <End Role="actions" EntitySet="actions" />
+      <End Role="bug_action_logs" EntitySet="bug_action_logs" />
+    </AssociationSet>
     <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.Store.bugs_ibfk_1">
       <End Role="users" EntitySet="users" />
       <End Role="bugs" EntitySet="bugs" />
@@ -44,6 +50,23 @@
       <End Role="user_project_signup" EntitySet="user_project_signup" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="actions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ActionName" Type="varchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="bug_action_logs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ActionId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="BugName" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="42" />
+  </EntityType>
   <EntityType Name="bugs">
     <Key>
       <PropertyRef Name="Id" />
@@ -106,6 +129,18 @@
     <Property Name="Username" Type="varchar" Nullable="false" MaxLength="254" />
     <Property Name="Password" Type="varchar" Nullable="false" MaxLength="60" />
   </EntityType>
+  <Association Name="bug_action_logs_ibfk_1">
+    <End Role="actions" Type="bugtrackerModel.Store.actions" Multiplicity="1" />
+    <End Role="bug_action_logs" Type="bugtrackerModel.Store.bug_action_logs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="actions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bug_action_logs">
+        <PropertyRef Name="ActionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="bugs_ibfk_1">
     <End Role="users" Type="bugtrackerModel.Store.users" Multiplicity="1" />
     <End Role="bugs" Type="bugtrackerModel.Store.bugs" Multiplicity="*" />

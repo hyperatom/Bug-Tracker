@@ -1,17 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
-using DataEntities.Entity;
-using DataEntities.Repository;
-using System.Security.Permissions;
 using BugTrackerService.Security;
-using System.Threading;
-using BugTrackerService.Faults;
+using DataEntities.Entity;
+using DataEntities.Model;
+using DataEntities.Repository;
 using DevTrends.WCFDataAnnotations;
-using System.Collections;
 
 namespace BugTrackerService
 {
@@ -33,8 +29,7 @@ namespace BugTrackerService
         {
             foreach (Bug bug in bugList)
             {
-                BugRepository repo = new BugRepository();
-                repo.Delete(bug);
+                DeleteBug(bug);
             }
 
             return true;
@@ -48,6 +43,8 @@ namespace BugTrackerService
         {
             BugRepository repo = new BugRepository();
             repo.Delete(bug);
+
+            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Delete_Action, bug);
         }
 
 
@@ -80,7 +77,11 @@ namespace BugTrackerService
 
             BugRepository bugRepo = new BugRepository();
 
-            return bugRepo.Update(bug);
+            var savedbug = bugRepo.Update(bug);
+
+            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Update_Action, savedbug);
+
+            return bug;
         }
 
 
@@ -88,10 +89,12 @@ namespace BugTrackerService
         {
             bug.DateFound = DateTime.Now;
             bug.LastModified = DateTime.Now;
+            
+            var savedbug = new BugRepository().Create(bug);
 
-            BugRepository bugRepo = new BugRepository();
+            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Create_Action, savedbug);
 
-            return bugRepo.Create(bug);
+            return savedbug;
         }
 
 
@@ -295,21 +298,93 @@ namespace BugTrackerService
         }
 
 
-        /*public List<Bug> GetBugsByProjectAndSort(Project project, int start, int count, string sortField, string order)
+        public int CountBugsInProject(Project project)
         {
-            order = order.ToLower();
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id).Count();
+        }
 
-            List<Bug> bugList = new List<Bug>();
 
-            if (order == "asc")
-            {
-                List<Bug> bugList = new BugRepository().GetAll().Where(p => p.Project.Id == project.Id).OrderBy(sortField);
-            }
-            else if (order == "desc")
-            {
-                List<Bug> bugList = new BugRepository().GetAll().Where(p => p.Project.Id == project.Id).OrderBy(sortField);
-            }
-                
-        }*/
+        public IList<Bug> SearchAllProjectBugsAttributes(Project project, string searchText)
+        {
+            searchText = searchText.Trim();
+
+           // if (searchText == null || searchText == "")
+             //   return GetBugsByProject(project);
+
+            IList<int> associatedUserIds = new UserRepository().GetAll().FullTextSearch(searchText, true).Select(p => p.Id).ToList();
+            IList<int> fullTextSearch    = new BugRepository() .GetAll().FullTextSearch(searchText, true).Select(p => p.Id).ToList();
+
+            if (associatedUserIds.Count == 0 && fullTextSearch.Count == 0)
+                return new List<Bug>();
+
+            int id = 0;
+            DateTime date = DateTime.MinValue;
+            
+            try { id = Int32.Parse(searchText); } 
+            catch (Exception e) { Console.WriteLine(e.Message); }
+
+            try { date = DateTime.Parse(searchText); }
+            catch (Exception e) { Console.WriteLine(e.Message); }
+
+            
+            return new BugRepository().GetAll()
+                    .Where(p => associatedUserIds.Contains(p.AssignedUser.Id) ||
+                                associatedUserIds.Contains(p.CreatedBy.Id) ||
+                                p.Id == id ||
+                                (p.DateFound.Year == date.Year && p.DateFound.Month == date.Month && p.DateFound.Day == date.Day) ||
+                                (p.LastModified.Year == date.Year && p.LastModified.Month == date.Month && p.LastModified.Day == date.Day) ||
+                                fullTextSearch.Contains(p.Id)).Where(p => p.Project.Id == project.Id).ToList();
+
+        }
+
+
+
+        public int GetNumberOfBugsAssignedToUserInProject(Project project, User user)
+        {
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id && p.AssignedUser.Id == user.Id).Count();
+        }
+
+
+        public IList<Bug> GetBugsAssignedToProjectAndUser(Project project, User user)
+        {
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id && p.AssignedUser.Id == user.Id).ToList();
+        }
+
+
+        public void SaveUserCredentials(User user)
+        {
+            new UserRepository().Update(user);
+        }
+
+
+        public bool UserExists(String user)
+        {
+            if (GetMyUser().Username == user)
+                return false;
+
+            return new Registration().UserExists(user);
+        }
+
+
+        public IList<Bug> GetOpenBugsInProject(Project project)
+        {
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id && p.Status == "Open").ToList();
+        }
+
+        public IList<Bug> GetBugsInProgressFromProject(Project project)
+        {
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id && p.Status == "In Progress").ToList();
+        }
+
+        public IList<Bug> GetClosedBugsInProject(Project project)
+        {
+            return new BugRepository().GetAll().Where(p => p.Project.Id == project.Id && p.Status == "Closed").ToList();
+        }
+
+
+        public IList<BugActionLog> GetAllBugActionLogsInProject(Project project)
+        {
+            return new BugActionLogRepository().GetAll().OrderByDescending(p => p.Date).ToList();
+        }
     }
 }

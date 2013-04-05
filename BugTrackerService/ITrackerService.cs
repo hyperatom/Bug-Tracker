@@ -32,8 +32,11 @@ namespace BugTrackerService
         [OperationContract]
         List<Bug> GetBugsByProject(Project project);
 
-        //[OperationContract]
-        //List<Bug> GetBugsByProjectAndSort(Project project, int start, int count, String sortField, String order);
+        [OperationContract]
+        IList<Bug> SearchAllProjectBugsAttributes(Project project, String searchText);
+
+        [OperationContract]
+        int CountBugsInProject(Project project);
 
         [OperationContract]
         Bug SaveBug(Bug bug);
@@ -94,5 +97,29 @@ namespace BugTrackerService
 
         [OperationContract]
         bool IsValidProjectCode(String code);
+
+        [OperationContract]
+        int GetNumberOfBugsAssignedToUserInProject(Project project, User user);
+
+        [OperationContract]
+        IList<Bug> GetBugsAssignedToProjectAndUser(Project project, User user);
+
+        [OperationContract]
+        void SaveUserCredentials(User user);
+
+        [OperationContract]
+        bool UserExists(String username);
+
+        [OperationContract]
+        IList<Bug> GetOpenBugsInProject(Project project);
+
+        [OperationContract]
+        IList<Bug> GetBugsInProgressFromProject(Project project);
+
+        [OperationContract]
+        IList<Bug> GetClosedBugsInProject(Project project);
+
+        [OperationContract]
+        IList<BugActionLog> GetAllBugActionLogsInProject(Project project);
     }
 }

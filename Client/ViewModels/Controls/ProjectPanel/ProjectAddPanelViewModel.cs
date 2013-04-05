@@ -14,7 +14,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
         public ProjectAddPanelViewModel(ITrackerService svc, IMessenger mess)
             : base(svc, mess)
         {
-            ButtonName = "Add";
+            ButtonName = "Add & Close";
         }
 
 

@@ -43,6 +43,12 @@
       <End Role="User" EntitySet="Users" />
       <End Role="user_project_signup" EntitySet="UserProjectSignups" />
     </AssociationSet>
+    <EntitySet Name="Actions" EntityType="bugtrackerModel.Action" />
+    <EntitySet Name="BugActionLogs" EntityType="bugtrackerModel.BugActionLog" />
+    <AssociationSet Name="bug_action_logs_ibfk_1" Association="bugtrackerModel.bug_action_logs_ibfk_1">
+      <End Role="action" EntitySet="Actions" />
+      <End Role="bug_action_logs" EntitySet="BugActionLogs" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Bug">
     <Key>
@@ -195,5 +201,26 @@
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Action">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="ActionName" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BugActionLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="Date" Nullable="false" />
+    <NavigationProperty Name="Action" Relationship="bugtrackerModel.bug_action_logs_ibfk_1" FromRole="bug_action_logs" ToRole="action" />
+    <Property Type="String" Name="BugName" Nullable="false" />
+    <Property Type="String" Name="UserName" Nullable="false" />
+  </EntityType>
+  <Association Name="bug_action_logs_ibfk_1">
+    <End Type="bugtrackerModel.Action" Role="action" Multiplicity="1" />
+    <End Type="bugtrackerModel.BugActionLog" Role="bug_action_logs" Multiplicity="*" />
   </Association>
 </Schema>

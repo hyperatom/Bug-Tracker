@@ -51,7 +51,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         
-        <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="513,136,0,0" Name="buttonSave" VerticalAlignment="Top" Width="75" Command="{Binding Path=SaveBugCommand}" CommandParameter="{Binding EditedBug}" />
-        
+        <Button Content="Save &amp; Close" Height="23" HorizontalAlignment="Left" Margin="513,136,0,0" Name="buttonSave" VerticalAlignment="Top" Width="75" Command="{Binding Path=SaveBugCommand}" CommandParameter="{Binding EditedBug}" />
+        <Button Command="{Binding CloseCommand}" Content="Close" Height="23" HorizontalAlignment="Left" Margin="610,136,0,0" Name="button1" VerticalAlignment="Top" Width="55" />
     </Grid>
 </UserControl>

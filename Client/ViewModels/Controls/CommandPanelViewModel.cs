@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Client.Helpers;
 using Client.ServiceReference;
 using Client.ViewModels.Controls;
+using System.Windows;
 
 namespace Client.ViewModels
 {
@@ -20,9 +21,11 @@ namespace Client.ViewModels
         private RelayCommand _EditBugCommand;
         private RelayCommand _AddBugCommand;
 
+        private bool _IsBugTableDisplaying = true;
+
         private ITrackerService _Service;
         private ProjectViewModel _ActiveProject;
-        private IList<BugViewModel> _SelectedBugs;
+        private BugViewModel _SelectedBug;
 
 
         /// <summary>
@@ -53,14 +56,11 @@ namespace Client.ViewModels
         /// Requests a collection of currently selected bugs and
         /// returns true or false depending if any are selected.
         /// </summary>
-        private bool IsBugsSelected
+        private bool IsBugSelected
         {
             get
             {
-                // Request currently selected bugs
-                _Messenger.NotifyColleagues(Messages.RequestSelectedBugs);
-
-                if (_SelectedBugs != null && _SelectedBugs.Count > 0)
+                if (_SelectedBug != null && _IsBugTableDisplaying)
                     return true;
                 else
                     return false;
@@ -75,7 +75,7 @@ namespace Client.ViewModels
         {
             get
             {
-                if (_ActiveProject == null)
+                if (_ActiveProject == null || !_IsBugTableDisplaying)
                     return false;
 
                 return true;
@@ -91,7 +91,7 @@ namespace Client.ViewModels
             {
                 if (_DeleteSelectedBugsCommand == null)
                 {
-                    _DeleteSelectedBugsCommand = new RelayCommand(p => this.DeleteSelectedBugs(), p => IsBugsSelected);
+                    _DeleteSelectedBugsCommand = new RelayCommand(p => this.DeleteSelectedBugs(), p => IsBugSelected);
                 }
 
                 return _DeleteSelectedBugsCommand;
@@ -117,7 +117,7 @@ namespace Client.ViewModels
             {
                 if (_EditBugCommand == null)
                 {
-                    _EditBugCommand = new RelayCommand(param => ShowEditBugView(), param => IsBugsSelected);
+                    _EditBugCommand = new RelayCommand(param => ShowEditBugView(), p => IsBugSelected);
                 }
 
                 return _EditBugCommand;
@@ -141,8 +141,9 @@ namespace Client.ViewModels
         /// </summary>
         private void ListenForMessages()
         {
-            _Messenger.Register<IList<BugViewModel>>(Messages.SelectedBugsChanged, p => _SelectedBugs = p);
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugChanged, p => _SelectedBug = p);
             _Messenger.Register<ProjectViewModel>(Messages.ActiveProjectChanged, p => _ActiveProject = p);
+            _Messenger.Register<bool>(Messages.BugTableDisplaying, p => _IsBugTableDisplaying = p);
         }
 
 
@@ -164,19 +165,9 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Deletes the user selected bugs from the web service and bug table.
-        /// </summary>
         private void DeleteSelectedBugs()
         {
-            // For each selected bug, remove it from the service and view
-            foreach (BugViewModel bug in _SelectedBugs)
-            {
-                // Delete using web service
-                _Service.DeleteBug(bug.ToBugModel());
-                // Notify listeners of delete operation
-                _Messenger.NotifyColleagues(Messages.SelectedBugDeleted, bug);
-            }
+            _Messenger.NotifyColleagues(Messages.DeleteSelectedBugs);
         }
 
     }

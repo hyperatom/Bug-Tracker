@@ -21,5 +21,7 @@ namespace Client.Factories
         IManagedProjectsPanelViewModel CreateManagedProjectsPanel(User currentUser);
         IProjectUsersPanelViewModel CreateProjectUsersPanel(ProjectViewModel proj);
         IJoinProjectPanelViewModel CreateJoinProjectPanel();
+        IAccountSettingsViewModel CreateAccountSettingsPanel();
+        IWestSideBarViewModel CreateWestSideBar(ProjectViewModel proj);
     }
 }

@@ -165,6 +165,8 @@ namespace Client.Helpers
             /// <returns>Returns a list of actions that are registered to the specified message</returns>
             internal List<Delegate> GetActions(string message)
             {
+                GC.Collect();
+
                 if (message == null)
                     throw new ArgumentNullException("message");
 
@@ -173,7 +175,7 @@ namespace Client.Helpers
                 {
                     if (!_map.ContainsKey(message))
                         return null;
-
+                    
                     List<WeakAction> weakActions = _map[message];
                     actions = new List<Delegate>(weakActions.Count);
                     for (int i = weakActions.Count - 1; i > -1; --i)

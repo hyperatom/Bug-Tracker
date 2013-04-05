@@ -98,6 +98,10 @@
                 {
                     this.CurrentPage = this.PageCount;
                 }
+                else if (CurrentPage == 0 && PageCount > 0)
+                {
+                    this.CurrentPage = 1;
+                }
             }
         }
 

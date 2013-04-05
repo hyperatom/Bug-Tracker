@@ -5,6 +5,26 @@
         xmlns:local="clr-namespace:Client"
         xmlns:helpers="clr-namespace:Client.Helpers">
 
+    <Window.Resources>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Storyboard x:Key="Storyboard1" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="360"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        
+    </Window.Resources>
+   
+    <Window.Triggers>
+        
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource Storyboard1}"/>
+        </EventTrigger>
+        
+    </Window.Triggers>
+
     <Grid>
         <Button Content="Login" Height="27" HorizontalAlignment="Left" Margin="34,183,0,0" Name="button1" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoginCommand}" />
 
@@ -15,11 +35,33 @@
         <TextBox Height="23" HorizontalAlignment="Left" Margin="114,80,0,0" Name="textBoxUsername" VerticalAlignment="Top" Width="120" Text="{Binding Path=Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <PasswordBox x:Name="PasswordBox" helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="114,128,61,104" />
         
-        <CheckBox Content="Remember me" Height="16" HorizontalAlignment="Left" Margin="136,194,0,0" Name="checkBoxRememberMe" VerticalAlignment="Top" IsChecked="{Binding Path=IsRememberMeChecked}" />
+        <CheckBox Content="Remember me" Height="16" HorizontalAlignment="Left" Margin="34,230,0,0" Name="checkBoxRememberMe" VerticalAlignment="Top" IsChecked="{Binding Path=IsRememberMeChecked}" />
         
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="34,229,0,0" Name="RegisterTextBox" VerticalAlignment="Top">
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="240,228,0,0" Name="RegisterTextBox" VerticalAlignment="Top">
             <Hyperlink Command="{Binding Path=RegistrationCommand}">Register</Hyperlink>
         </TextBlock>
+
+        <StackPanel Orientation="Vertical" Margin="131,174,0,0" HorizontalAlignment="Left" Width="65" Height="50" VerticalAlignment="Top" Visibility="{Binding IsLoadingVisible, Converter={StaticResource BoolToVisibility}}" >
         
+            <Ellipse Width="20" Height="20" x:Name="ellipse" StrokeThickness="4" RenderTransformOrigin="0.5,0.5" >
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.445,0.997" StartPoint="0.555,0.003">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="DarkGreen" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+            </Ellipse>
+            
+            <TextBlock Text="Logging In..." />
+
+        </StackPanel>
+
     </Grid>
 </Window>

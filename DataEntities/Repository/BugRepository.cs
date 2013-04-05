@@ -5,6 +5,7 @@ using System.Text;
 using DataEntities.Entity;
 using System.Data.Objects;
 using System.Data;
+using DataEntities.Model;
 
 namespace DataEntities.Repository
 {
@@ -89,6 +90,12 @@ namespace DataEntities.Repository
 
                 ctx.SaveChanges();
             }
+        }
+
+
+        public IQueryable<Bug> FullTextSearch(String searchText)
+        {
+           return Context.Bugs.Include("CreatedBy").Include("Project").Include("AssignedUser").FullTextSearch(searchText);
         }
 
     }

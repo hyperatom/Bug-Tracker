@@ -55,5 +55,14 @@ namespace DataEntities.Entity
 
         [DataMember]
         public virtual User AssignedUser { get; set; }
+
+
+        public override string ToString()
+        {
+            return Id + "," + Name + "," + Description + "," +
+                   Priority + "," + Status + "," + DateFound.ToShortDateString() + "," +
+                   LastModified.ToShortDateString() + "," + CreatedBy.Surname + "," + AssignedUser.Surname;
+        }
+
     }
 }

@@ -44,7 +44,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="499,129,0,0" Name="buttonAdd" VerticalAlignment="Top" Width="75" Command="{Binding Path=AddBugCommand}" CommandParameter="{Binding EditedBug}" Visibility="Visible" />
-
+        <Button Content="Add &amp; Close" Height="23" HorizontalAlignment="Left" Margin="499,129,0,0" Name="buttonAdd" VerticalAlignment="Top" Width="75" Command="{Binding Path=AddBugCommand}" CommandParameter="{Binding EditedBug}" Visibility="Visible" />
+        <Button Command="{Binding CloseCommand}" Content="Close" Height="23" HorizontalAlignment="Left" Margin="593,129,0,0" Name="button1" VerticalAlignment="Top" Width="53" />
     </Grid>
 </UserControl>

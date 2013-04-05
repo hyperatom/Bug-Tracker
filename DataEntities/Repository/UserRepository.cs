@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DataEntities.Entity;
+using DataEntities.Model;
 
 namespace DataEntities.Repository
 {
@@ -16,20 +17,6 @@ namespace DataEntities.Repository
         {
             using (var ctx = new WcfEntityContext())
             {
-
-                /*foreach (ProjectRole projRole in user.ProjectRoles)
-                {
-                    ctx.AttachTo("Roles", projRole.);
-                }
-
-                if (user.Projects != null)
-                {
-                    foreach (Project proj in user.Projects)
-                    {
-                        ctx.AttachTo("Projects", proj);
-                    }
-                }*/
-
                 ctx.Users.AddObject(user);
 
                 ctx.SaveChanges();
@@ -39,14 +26,9 @@ namespace DataEntities.Repository
         }
 
 
-        public IList<User> GetAll()
+        public IQueryable<User> GetAll()
         {
-            using (var ctx = new WcfEntityContext())
-            {
-                IList<User> users = ctx.Users.ToList();
-
-                return users;
-            }
+            return Context.Users;
         }
 
 
@@ -55,6 +37,7 @@ namespace DataEntities.Repository
             using (var ctx = new WcfEntityContext())
             {
                 ctx.AttachModify("Users", user);
+
                 ctx.SaveChanges();
 
                 return user;
@@ -71,6 +54,12 @@ namespace DataEntities.Repository
 
                 ctx.SaveChanges();
             }
+        }
+
+
+        public IQueryable<User> FullTextSearch(String searchText)
+        {
+            return Context.Users.FullTextSearch(searchText);
         }
 
     }

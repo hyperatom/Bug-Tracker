@@ -14,7 +14,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
             : base(svc, mess)
         {
             Project = selectedProj.Clone();
-            ButtonName = "Save";
+            ButtonName = "Save & Close";
         }
 
 
@@ -25,6 +25,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
                 ProjectViewModel savedProject = new ProjectViewModel(_Service.SaveProject(project.ToProjectModel()));
 
                 _Messenger.NotifyColleagues(Messages.SavedProject, savedProject);
+
+                IsVisible = false;
             }
         }
 

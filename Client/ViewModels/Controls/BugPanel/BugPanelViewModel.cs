@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using Client.Helpers;
 using Client.ViewModels;
 using Client.ViewModels.Controls.DTOs;
+using System.Windows.Input;
 
 namespace Client.ViewModels
 {
@@ -33,6 +34,8 @@ namespace Client.ViewModels
         protected IMessenger _Messenger;
         protected ITrackerService _Service;
         protected ProjectViewModel _ActiveProject;
+
+        public ICommand _CloseCommand;
 
 
         /// <summary>
@@ -58,6 +61,24 @@ namespace Client.ViewModels
 
             ListenForMessages();
         }
+
+
+        #region Commands
+
+        public ICommand CloseCommand
+        {
+            get
+            {
+                if (_CloseCommand == null)
+                {
+                    _CloseCommand = new RelayCommand(p => this.IsVisible = false);
+                }
+
+                return _CloseCommand;
+            }
+        }
+
+        #endregion Commands
 
 
         /// <summary>
@@ -105,7 +126,7 @@ namespace Client.ViewModels
                 return UsersInActiveProject.Where(p => p.Id == EditedBug.AssignedUser.Id).FirstOrDefault();
             }
 
-            set { EditedBug.AssignedUser = value; OnPropertyChanged("AssignedUser"); }
+            set { EditedBug.AssignedUser = value; OnPropertyChanged("AssignedUser"); OnPropertyChanged("EditedBug"); }
         }
 
 
@@ -136,6 +157,8 @@ namespace Client.ViewModels
                 if (_UsersInActiveProject == null && _ActiveProject != null)
                 {
                     _UsersInActiveProject = new List<UserViewModel>();
+                    _UsersInActiveProject.Add(new UserViewModel() { Id = 0, Surname = "--No-One--" });
+
                     _Service.GetUsersByProject
                         (_ActiveProject.ToProjectModel()).ForEach(p => _UsersInActiveProject.Add(new UserViewModel(p)));
                 }

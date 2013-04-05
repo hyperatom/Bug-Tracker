@@ -12,6 +12,18 @@ using Client.ViewModels.Windows;
 
 namespace Client.ViewModels
 {
+
+    public interface ILoginViewModel : IWindow
+    {
+        bool IsRememberMeChecked { get; set; }
+        void Login();
+        ICommand LoginCommand { get; }
+        string Password { get; set; }
+        ICommand RegistrationCommand { get; }
+        string Username { get; set; }
+    }
+
+
     /// <summary>
     /// This view model controls the login user interface. It is responsible
     /// for setting up the web service with valid credentials.
@@ -24,6 +36,8 @@ namespace Client.ViewModels
         private IWindowFactory _WindowFactory;
 
         private bool _IsRememberMeChecked;
+        private bool _IsLoadingVisible;
+        private bool _CanLogin;
         private string _username;
         private string _password;
 
@@ -48,6 +62,8 @@ namespace Client.ViewModels
             _Messenger = messenger;
             _ServiceFactory = svcfactory;
             _WindowFactory = winfactory;
+
+            _IsLoadingVisible = false;
 
             Username = GetStoredUsername();
             Password = GetStoredPassword();
@@ -104,7 +120,7 @@ namespace Client.ViewModels
         /// </summary>
         private void InitialiseRememberMeCheckBox()
         {
-            if (CanLogin())
+            if (CanLogin)
             {
                 IsRememberMeChecked = true;
             }
@@ -127,7 +143,7 @@ namespace Client.ViewModels
             {
                 if (_loginCommand == null)
                 {
-                    _loginCommand = new RelayCommand(param => this.Login(), param => this.CanLogin());
+                    _loginCommand = new RelayCommand(param => this.Login(), param => CanLogin);
                 }
 
                 return _loginCommand;
@@ -164,19 +180,36 @@ namespace Client.ViewModels
         }
 
 
-        /// <summary>
-        /// Checks if the user has populated both username and password text blocks.
-        /// </summary>
-        /// <returns>True if both fields populated, false otherwise</returns>
-        private bool CanLogin()
+        public bool CanLogin
         {
-            if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password))
+            get
             {
-                return false;
+                if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password))
+                {
+                    return false;
+                }
+
+                return true;
             }
-            
-            return true;
+            set
+            {
+                _CanLogin = value; OnPropertyChanged("CanLogin");
+            }
         }
+
+
+        public bool IsLoadingVisible
+        {
+            get
+            {
+                return _IsLoadingVisible;
+            }
+            set
+            {
+                _IsLoadingVisible = value; OnPropertyChanged("IsLoadingVisible");
+            }
+        }
+
 
 
         /// <summary>
@@ -201,8 +234,10 @@ namespace Client.ViewModels
 
             try
             {
+                IsLoadingVisible = true;
+
                 // Test if we can open the communication channel
-                svc.Open();
+                //svc.InnerChannel.BeginOpen(svc)
 
                 // If we can then show the main window
                 _WindowFactory.CreateMainWindow().Show();
@@ -218,6 +253,9 @@ namespace Client.ViewModels
                 MessageBox.Show(fault.Message);
             }
         }
+
+
+        private void 
 
 
         /// <summary>

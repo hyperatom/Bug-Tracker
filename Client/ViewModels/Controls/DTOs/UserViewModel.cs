@@ -89,6 +89,9 @@ namespace Client.ViewModels.Controls.DTOs
         {
             get
             {
+                if (String.IsNullOrWhiteSpace(FirstName))
+                    return Surname;
+
                 return FirstName.Substring(0, 1) + ". " + Surname;
             }
         }

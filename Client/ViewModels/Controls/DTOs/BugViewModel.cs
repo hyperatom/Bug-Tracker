@@ -24,7 +24,6 @@ namespace Client.ViewModels
 
         private Bug _Bug;
         
-
         private bool _IsSelected;
         private bool _IsValidating = false;
 
@@ -144,19 +143,37 @@ namespace Client.ViewModels
 
         public UserViewModel CreatedBy
         {
-            get { return new UserViewModel(_Bug.CreatedBy); }
+            get 
+            {
+                if (_Bug.CreatedBy == null)
+                    return null;
+
+                return new UserViewModel(_Bug.CreatedBy); 
+            }
             set { _Bug.CreatedBy = value.ToUserModel(); OnPropertyChanged("CreatedBy"); }
         }
 
         public Project Project
         {
-            get { return this._Bug.Project; }
+            get 
+            {
+                if (_Bug.Project == null)
+                    return null;
+
+                return this._Bug.Project;
+            }
             set { _Bug.Project = value; OnPropertyChanged("Project"); }
         }
 
         public UserViewModel AssignedUser
         {
-            get { return new UserViewModel(_Bug.AssignedUser); }
+            get 
+            {
+                if (_Bug.AssignedUser == null)
+                    return null;
+
+                return new UserViewModel(_Bug.AssignedUser);
+            }
             set { _Bug.AssignedUser = value.ToUserModel(); OnPropertyChanged("AssignedUser"); }
         }
 

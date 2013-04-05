@@ -99,6 +99,20 @@ namespace Client.Factories
         {
             return _Container.Resolve<IJoinProjectPanelViewModel>();
         }
-    
+
+
+        public IAccountSettingsViewModel CreateAccountSettingsPanel()
+        {
+            return _Container.Resolve<IAccountSettingsViewModel>();
+        }
+
+
+        public IWestSideBarViewModel CreateWestSideBar(ProjectViewModel project)
+        {
+            if (project == null)
+                return _Container.Resolve<IWestSideBarViewModel>();
+
+            return _Container.Resolve<IWestSideBarViewModel>(new ParameterOverride("activeProj", project));
+        }
     }
 }

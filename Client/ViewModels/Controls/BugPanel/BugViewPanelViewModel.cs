@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Client.Helpers;
 using Client.ServiceReference;
 using Client.ViewModels;
+using Client.ViewModels.Controls.DTOs;
 
 namespace Client.ViewModels
 {
@@ -36,7 +37,7 @@ namespace Client.ViewModels
             if (selectedBug == null)
                 throw new ArgumentNullException("The selected bug cannot be null.");
 
-            EditedBug = selectedBug.Clone();
+            UpdateBugView(selectedBug);
 
             ListenForMessages();
         }
@@ -47,7 +48,7 @@ namespace Client.ViewModels
         /// </summary>
         private void ListenForMessages()
         {
-            _Messenger.Register<BugViewModel>(Messages.SelectedBugChanged, p => EditedBug = new BugViewModel(p.ToBugModel()));
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugChanged, p => UpdateBugView(p));
         }
 
 
@@ -69,6 +70,17 @@ namespace Client.ViewModels
         #endregion
 
 
+        private void UpdateBugView(BugViewModel bug)
+        {
+            EditedBug = bug.Clone();
+
+            if (EditedBug.AssignedUser != null)
+                AssignedUser = UsersInActiveProject.Where(p => p.Id == EditedBug.AssignedUser.Id).SingleOrDefault();
+            else
+                AssignedUser = UsersInActiveProject.Where(p => p.Id == 0).SingleOrDefault();
+        }
+
+
         /// <summary>
         /// Saves a bug which has been editied.
         /// </summary>
@@ -84,6 +96,8 @@ namespace Client.ViewModels
                     _Messenger.NotifyColleagues(Messages.SelectedBugSaved, new BugViewModel(savedBug));
 
                     EditedBug = new BugViewModel(savedBug);
+
+                    IsVisible = false;
                 }
                 catch (FaultException e)
                 {

@@ -12,6 +12,17 @@ using Client.ViewModels.Windows;
 
 namespace Client.ViewModels
 {
+
+    public interface IMainWindowViewModel : IWindow
+    {
+        IContentPanel ContentPanel { get; set; }
+        ICommandPanelViewModel CommandPanel { get; set; }
+        ICommand DeBugCommand { get; }
+
+        ObservableCollection<ProjectViewModel> ProjectComboBox { get; set; }
+        ProjectViewModel SelectedActiveProject { get; set; }
+    }
+
     /// <summary>
     /// This class is the view model which controls the main bug
     /// view window. This class is concerned with controlling
@@ -29,15 +40,21 @@ namespace Client.ViewModels
         // Child Panels
         private ICommandPanelViewModel _CommandPanel;
         private IContentPanel          _ContentPanel;
+        private IWestSideBarViewModel _WestSideBar;
 
         private User _CurrentUser;
         private ProjectViewModel _SelectedActiveProject;
+
+        private String _AssignedBugsButtonText;
 
         private ObservableCollection<ProjectViewModel> _ProjectComboBox;
 
         private ICommand _DeBugCommand;
         private ICommand _ShowProjectManagerPanelCommand;
+        private ICommand _ShowBugTablePanelCommand;
         private ICommand _LogoutCommand;
+        private ICommand _ShowAssignedBugsCommand;
+        private ICommand _ShowAccountSettingsCommand;
 
 
         /// <summary>
@@ -50,18 +67,6 @@ namespace Client.ViewModels
         public MainWindowViewModel(IMessenger comm, ITrackerService svc, 
                                    IWindowFactory winfactory, IControlFactory ctrlfactory)
         {
-            if (comm == null)
-                throw new ArgumentNullException("The messenger cannot be null.");
-
-            if (svc == null)
-                throw new ArgumentNullException("The service factory cannot be null.");
-
-            if (ctrlfactory == null)
-                throw new ArgumentNullException("The control factory cannot be null.");
-
-            if (winfactory == null)
-                throw new ArgumentNullException("The window factory cannot be null.");
-
             _Messenger = comm;
             _Service = svc;
             _ControlFactory = ctrlfactory;
@@ -77,9 +82,17 @@ namespace Client.ViewModels
         public EventHandler RequestClose { get; set; }
 
 
-        public String Username
+        public IWestSideBarViewModel WestSideBar
         {
-            get { return _CurrentUser.FirstName; }
+            get 
+            {
+                if (_WestSideBar == null)
+                    _WestSideBar = _ControlFactory.CreateWestSideBar(_SelectedActiveProject);
+
+                return _WestSideBar;
+            }
+
+            set { _WestSideBar = value; OnPropertyChanged("WestSideBar"); }
         }
 
 
@@ -165,6 +178,18 @@ namespace Client.ViewModels
         }
 
 
+        public String AssignedBugsButtonText
+        {
+            get 
+            {
+                _AssignedBugsButtonText = "Bugs Assigned To Me (" + GetNumberOfBugsAssignedToUser() + ")";
+
+                return _AssignedBugsButtonText;
+            }
+            set { _AssignedBugsButtonText = value; OnPropertyChanged("AssignedBugsButtonText"); }
+        }
+
+
         #region Commands
 
         public ICommand DeBugCommand
@@ -206,6 +231,45 @@ namespace Client.ViewModels
             }
         }
 
+        public ICommand ShowBugTablePanelCommand
+        {
+            get
+            {
+                if (_ShowBugTablePanelCommand == null)
+                {
+                    _ShowBugTablePanelCommand = new RelayCommand(param => this.ShowBugTablePanel());
+                }
+
+                return _ShowBugTablePanelCommand;
+            }
+        }
+
+        public ICommand ShowAssignedBugsCommand
+        {
+            get
+            {
+                if (_ShowAssignedBugsCommand == null)
+                {
+                    _ShowAssignedBugsCommand = new RelayCommand(param => this.ShowAssignedBugs());
+                }
+
+                return _ShowAssignedBugsCommand;
+            }
+        }
+
+        public ICommand ShowAccountSettingsCommand
+        {
+            get
+            {
+                if (_ShowAccountSettingsCommand == null)
+                {
+                    _ShowAccountSettingsCommand = new RelayCommand(param => this.ShowAccountSettingsPanel());
+                }
+
+                return _ShowAccountSettingsCommand;
+            }
+        }
+
         #endregion
 
 
@@ -213,14 +277,35 @@ namespace Client.ViewModels
         {
             _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ProjectComboBox.Add(p));
             _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => UpdateProjectInComboBox(p));
-
             _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => ProjectDeletedAction(p));
+
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, delegate { OnPropertyChanged("AssignedBugsButtonText"); });
+            _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, delegate { OnPropertyChanged("AssignedBugsButtonText"); });
+        }
+
+
+        private void ShowAssignedBugs()
+        {
+            if (_ContentPanel.GetType() != typeof(IBugTableViewModel))
+                ShowBugTablePanel();
+
+            _Messenger.NotifyColleagues(Messages.ShowAssignedBugs);
+        }
+
+
+        private int GetNumberOfBugsAssignedToUser()
+        {
+            if (SelectedActiveProject == null)
+                return 0;
+
+            return _Service.GetNumberOfBugsAssignedToUserInProject
+                (SelectedActiveProject.ToProjectModel(), _CurrentUser);
         }
 
 
         private void ProjectDeletedAction(ProjectViewModel project)
         {
-            if (SelectedActiveProject.Id == project.Id && ProjectComboBox.Count > 1)
+            if (ActiveProjectUpdated(project))
             {
                 if (ProjectComboBox.IndexOf(SelectedActiveProject) != 0)
                     SelectedActiveProject = ProjectComboBox[0];
@@ -232,20 +317,45 @@ namespace Client.ViewModels
         }
 
 
+        private bool ActiveProjectUpdated(ProjectViewModel project)
+        {
+            return SelectedActiveProject.Id == project.Id && ProjectComboBox.Count > 1;
+        }
+
+
         private void UpdateProjectInComboBox(ProjectViewModel proj)
         {
             var project = ProjectComboBox.Where(p => p.Id == proj.Id).SingleOrDefault();
 
             int index = ProjectComboBox.IndexOf(project);
 
-            ProjectComboBox.RemoveAt(index);
-            ProjectComboBox.Insert(index, proj);
+            ProjectComboBox[index] = proj;
+            SelectedActiveProject = ProjectComboBox[index];
         }
 
 
         private void ShowProjectManagerPanel()
         {
             ContentPanel = _ControlFactory.CreateProjectManagerPanel(_CurrentUser);
+
+            _Messenger.NotifyColleagues(Messages.BugTableDisplaying, false);
+        }
+
+
+        private void ShowBugTablePanel()
+        {
+            ContentPanel = null;
+            ContentPanel = _ControlFactory.CreateBugTablePanel(_SelectedActiveProject);
+
+            _Messenger.NotifyColleagues(Messages.BugTableDisplaying, true);
+        }
+
+
+        private void ShowAccountSettingsPanel()
+        {
+            ContentPanel = _ControlFactory.CreateAccountSettingsPanel();
+
+            _Messenger.NotifyColleagues(Messages.BugTableDisplaying, false);
         }
 
 

@@ -63,6 +63,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BugActionLogger.cs" />
     <Compile Include="Faults\BadLoginFault.cs" />
     <Compile Include="IRegistration.cs" />
     <Compile Include="ITrackerService.cs" />

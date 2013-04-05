@@ -18,6 +18,8 @@ namespace DataEntities.Entity
         public ObjectSet<Role> Roles { get; set; }
         public ObjectSet<ProjectRole> ProjectRole { get; set; }
         public ObjectSet<UserProjectSignup> UserProjectSignup { get; set; }
+        public ObjectSet<BugActionLog> BugActionLogs { get; set; }
+        public ObjectSet<Action> Actions { get; set; }
 
         public WcfEntityContext() : this("name=DataEntities") { }
 
@@ -30,6 +32,8 @@ namespace DataEntities.Entity
             Bugs = CreateObjectSet<Bug>();
             Projects = CreateObjectSet<Project>();
             Roles = CreateObjectSet<Role>();
+            BugActionLogs = CreateObjectSet<BugActionLog>();
+            Actions = CreateObjectSet<Action>();
 
             //Turned off to avoid problems with serialization
             ContextOptions.ProxyCreationEnabled = false;

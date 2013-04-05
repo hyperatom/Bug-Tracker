@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Client.Views.Windows;
 using Client.ViewModels.Windows;
+using Client.ViewModels;
 
 namespace Client
 {
@@ -35,6 +36,7 @@ namespace Client
 
             InitializeComponent();
         }
+
 
     }
 }

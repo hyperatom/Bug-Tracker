@@ -66,4 +66,27 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfRole" nillable="true" type="tns:ArrayOfRole" />
+  <xs:complexType name="ArrayOfBugActionLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BugActionLog" nillable="true" type="tns:BugActionLog" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBugActionLog" nillable="true" type="tns:ArrayOfBugActionLog" />
+  <xs:complexType name="BugActionLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Action" nillable="true" type="tns:Action" />
+      <xs:element minOccurs="0" name="BugName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BugActionLog" nillable="true" type="tns:BugActionLog" />
+  <xs:complexType name="Action">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActionName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Action" nillable="true" type="tns:Action" />
 </xs:schema>
