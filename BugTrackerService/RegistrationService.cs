@@ -20,7 +20,7 @@ namespace BugTrackerService
     /// registration method to create a new user and organisation.
     /// </summary>
     [ValidateDataAnnotationsBehavior]
-    public class Registration : IRegistration
+    public class RegistrationService : IRegistrationService
     {
 
         /// <summary>

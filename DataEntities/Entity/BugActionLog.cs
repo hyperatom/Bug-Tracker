@@ -16,7 +16,7 @@ namespace DataEntities.Entity
 
         [DataMember]
         [Required]
-        public virtual Action Action { get; set; }
+        public virtual BugAction Action { get; set; }
 
         [DataMember]
         [Required(AllowEmptyStrings = false)]
@@ -29,5 +29,9 @@ namespace DataEntities.Entity
         [DataMember]
         [Required]
         public String UserName { get; set; }
+
+        [DataMember]
+        [Required]
+        public Project Project { get; set; }
     }
 }

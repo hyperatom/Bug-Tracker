@@ -7,7 +7,13 @@
         xmlns:controls="clr-namespace:Client.Views.Controls">
     
     <Window.Resources>
+
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\ButtonStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         
+
         <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
         
         <DataTemplate DataType="{x:Type viewmodels:CommandPanelViewModel}">
@@ -25,38 +31,61 @@
         <DataTemplate DataType="{x:Type controlviewmodels:WestSideBarViewModel}">
             <controls:WestSideBar />
         </DataTemplate>
-        
+
+        </ResourceDictionary>
+
     </Window.Resources>
     
     <Grid>
         
-        <Grid Height="116" Name="grid1" VerticalAlignment="Top">
+        <Grid Height="131" Name="grid1" VerticalAlignment="Top">
+            <ContentControl Content="{Binding CommandPanel}" Margin="244,11,0,14" Name="CommandPanel" HorizontalAlignment="Left" Width="281" />
+            
+            <Label Content="Active Project" Height="28" HorizontalAlignment="Right" Margin="0,25,381,0" Name="label1" VerticalAlignment="Top" Width="145" FontSize="14" />
+            
+            <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,58,394,0" Name="comboBox1" VerticalAlignment="Top" Width="126" ItemsSource="{Binding ProjectComboBox}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedActiveProject}" SelectedIndex="0" DataContext="{Binding}" />
 
-            <Image Height="93" HorizontalAlignment="Left" Margin="33,9,0,0" Name="Logo" Stretch="Fill" VerticalAlignment="Top" Width="118" Source="/Client;component/Images/ladybird.png" />
-            
-            <ContentControl Content="{Binding CommandPanel}" Margin="215,11,684,14" Name="CommandPanel" />
-            
-            <Label Content="Select an active project." Height="28" HorizontalAlignment="Left" Margin="706,23,0,0" Name="label1" VerticalAlignment="Top" Width="145" />
-            
-            <ComboBox Height="23" HorizontalAlignment="Left" Margin="711,56,0,0" Name="comboBox1" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ProjectComboBox}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedActiveProject}" SelectedIndex="0" DataContext="{Binding}" />
-            <Button Command="{Binding LogoutCommand}" Content="Logout" Height="69" HorizontalAlignment="Left" Margin="1053,23,0,0" Name="button1" VerticalAlignment="Top" Width="53" />
-            <Button Content="My Projects" Command="{Binding Path=ShowProjectManagerPanelCommand}" Height="56" HorizontalAlignment="Left" Margin="946,36,0,0" Name="button2" VerticalAlignment="Top" Width="74" />
-            <Button Command="{Binding ShowBugTablePanelCommand}" Content="My Bugs" Height="56" HorizontalAlignment="Left" Margin="865,36,0,0" Name="buttonBugTable" VerticalAlignment="Top" Width="75" />
-            <Button Command="{Binding ShowAccountSettingsCommand}" Content="My Account" Height="56" HorizontalAlignment="Left" Margin="565,36,0,0" Name="buttonCredentials" VerticalAlignment="Top" Width="84" />
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="White" Offset="0" />
-                    <GradientStop Color="BurlyWood" Offset="1" />
-                </LinearGradientBrush>
-            </Grid.Background>
-            
+            <Button Style="{StaticResource RoundCorner}" Command="{Binding LogoutCommand}" Height="69" HorizontalAlignment="Right" Margin="0,23,6,0" Name="button1" VerticalAlignment="Top" Width="53">
+                <StackPanel Orientation="Vertical">
+                    <Image Margin="0,5,0,0" Source="/Client;component/Resources/gnome_application_exit.png" Height="42" Width="44" />
+                    <Label Content="Logout" Margin="0,-5,0,0"/>
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource RoundCorner}" Command="{Binding ShowAccountSettingsCommand}" Height="69" HorizontalAlignment="Right" Margin="0,23,76,0" Name="buttonCredentials" VerticalAlignment="Top" Width="84">
+                <StackPanel Orientation="Vertical">
+                    <Image Margin="0,5,0,0" Source="/Client;component/Resources/user_male.png" Height="42" Width="68" />
+                    <Label Content="My Account" Margin="0,-5,0,0"/>
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource RoundCorner}" Command="{Binding Path=ShowProjectManagerPanelCommand}" Height="69" HorizontalAlignment="Right" Margin="0,23,277,0" Name="button2" VerticalAlignment="Top" Width="84">
+                <StackPanel Orientation="Vertical">
+                    <Image Margin="0,5,0,0" Source="/Client;component/Resources/projects_folder.png" Height="42" Width="68" />
+                    <Label Content="My Projects" Margin="0,-5,0,0"/>
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource RoundCorner}" Command="{Binding ShowBugTablePanelCommand}" Height="69" HorizontalAlignment="Right" Margin="0,23,177,0" Name="buttonBugTable" VerticalAlignment="Top" Width="84">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" >
+                    <Image Margin="0,2,0,0" Source="/Client;component/Resources/mybugs.png" Height="46" Width="64" />
+                    <Label Content="My Bugs" Margin="0,-5,0,0" Width="55" />
+                </StackPanel>
+            </Button>
+
+            <Image Height="116" HorizontalAlignment="Left" Margin="13,6,0,0" Name="image1" Stretch="Uniform" VerticalAlignment="Top" Width="219" Source="/Client;component/Resources/logo.png" />
+            <Label Content="v1.0" Height="28" HorizontalAlignment="Left" Margin="109,95,0,0" Name="label2" VerticalAlignment="Top" FontWeight="Bold" />
         </Grid>
         
         <ContentControl Content="{Binding ContentPanel}" Margin="198,116,0,0" Name="ContentPanel" />
-        
-        <ContentControl Content="{Binding WestSideBar}"  Width="200"  VerticalAlignment="Stretch"  HorizontalAlignment="Left" Margin="0,172,0,5" Name="westSideBar" />
-        
-        <TextBox Height="28" HorizontalAlignment="Left" Margin="0,130,0,0" Name="textBoxFeedLabel" VerticalAlignment="Top" Width="135" Text="Latest Activities" FontSize="18" />
-    
+
+        <Border Background="Transparent" Margin="-12,0,920,31" BorderBrush="#FF000000" BorderThickness="1,1,1,1" CornerRadius="8,8,8,8" Height="532" VerticalAlignment="Bottom">
+            <StackPanel Width="180">
+                <Label Name="textBoxFeedLabel" VerticalAlignment="Top" Content="Latest Activities" FontSize="18" />
+                <ContentControl Content="{Binding WestSideBar}"  Width="200"  VerticalAlignment="Stretch"  HorizontalAlignment="Left" Name="westSideBar" />
+            </StackPanel>
+        </Border>
     </Grid>
+    
+    
 </Window>

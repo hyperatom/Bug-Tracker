@@ -4,10 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="67" d:DesignWidth="230">
+             d:DesignHeight="93" d:DesignWidth="253">
+    
+    <UserControl.Resources>
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/ButtonStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        
     <Grid>
-        <Button Content="Delete" Height="44" HorizontalAlignment="Left" Margin="149,12,0,0" VerticalAlignment="Top" Width="55" Command="{Binding Path=DeleteSelectedBugsCommand}" />
-        <Button Content="Add" Height="44" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Width="55" Command="{Binding Path=AddBugCommand}" />
-        <Button Content="Edit" Height="44" HorizontalAlignment="Left" Margin="80,12,0,0" VerticalAlignment="Top" Width="55" Command="{Binding Path=EditBugCommand}" />
+
+        <Button Style="{StaticResource RoundCorner}" Height="69" HorizontalAlignment="Left" Margin="170,12,0,0" VerticalAlignment="Top" Width="70" Command="{Binding Path=DeleteSelectedBugsCommand}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" >
+                <Image Margin="0,5,0,2" Source="../../Resources/delete_bug.png" Height="35" Width="54" />
+                <Label Content="Delete" Margin="0,-5,0,0" Width="44" />
+            </StackPanel>
+        </Button>
+
+        <Button Style="{StaticResource RoundCorner}" Height="69" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Width="70" Command="{Binding Path=AddBugCommand}" >
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" >
+                <Image Margin="0,5,0,0" Source="../../Resources/add_bug.png" Height="37" Width="64" />
+                <Label Content="Add" Margin="0,-5,0,0" Width="33" />
+            </StackPanel>
+        </Button>
+
+        <Button Style="{StaticResource RoundCorner}" Height="69" HorizontalAlignment="Left" Margin="91,12,0,0" VerticalAlignment="Top" Width="70" Command="{Binding Path=EditBugCommand}" >
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" >
+                <Image Margin="0,5,0,0" Source="../../Resources/edit_bug.png" Height="35" Width="45" />
+                <Label Content="Edit" Margin="0,-5,0,0" Width="30" />
+            </StackPanel>
+        </Button>
+
     </Grid>
 </UserControl>

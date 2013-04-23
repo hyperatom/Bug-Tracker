@@ -16,12 +16,13 @@ namespace BugTrackerService
         public const int Delete_Action = 3;
 
 
-        public static void LogEvent(User user, int actionConst, Bug bug)
+        public static void LogEvent(Project project, User user, int actionConst, Bug bug)
         {
-            var action = new ActionRepository().GetAll().Where(p => p.Id == actionConst).SingleOrDefault();
+            var action = new BugActionRepository().GetAll().Where(p => p.Id == actionConst).SingleOrDefault();
+            var proj = new ProjectRepository().GetAll().Where(p => p.Id == project.Id).SingleOrDefault();
 
             new BugActionLogRepository().Create(new BugActionLog 
-                { Action = action, BugName = bug.Name, UserName = user.FirstName.Substring(0, 1) + "." + user.Surname });
+                { Project = proj, Action = action, BugName = bug.Name, UserName = user.FirstName.Substring(0, 1) + "." + user.Surname });
         }
 
     }

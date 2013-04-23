@@ -10,13 +10,13 @@ using DataEntities.Model;
 namespace DataEntities.Repository
 {
 
-    public class ActionRepository : Repository
+    public class BugActionRepository : Repository
     {
 
-        public ActionRepository() : base() { }
+        public BugActionRepository() : base() { }
 
 
-        public IQueryable<DataEntities.Entity.Action> GetAll()
+        public IQueryable<BugAction> GetAll()
         {
             return Context.Actions;
         }

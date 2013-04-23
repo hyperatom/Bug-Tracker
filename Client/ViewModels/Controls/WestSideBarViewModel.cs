@@ -37,7 +37,7 @@ namespace Client.ViewModels.Controls
         {
             get
             {
-                if (_ActivityList == null)
+                if (_ActivityList == null && _ActiveProject.Id != 0)
                 {
                     var activities = _Service.GetAllBugActionLogsInProject(_ActiveProject.ToProjectModel()).Take(15).ToList();
 

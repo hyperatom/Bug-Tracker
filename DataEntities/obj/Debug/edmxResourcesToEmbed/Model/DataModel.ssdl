@@ -13,6 +13,10 @@
       <End Role="actions" EntitySet="actions" />
       <End Role="bug_action_logs" EntitySet="bug_action_logs" />
     </AssociationSet>
+    <AssociationSet Name="bug_action_logs_ibfk_2" Association="bugtrackerModel.Store.bug_action_logs_ibfk_2">
+      <End Role="projects" EntitySet="projects" />
+      <End Role="bug_action_logs" EntitySet="bug_action_logs" />
+    </AssociationSet>
     <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.Store.bugs_ibfk_1">
       <End Role="users" EntitySet="users" />
       <End Role="bugs" EntitySet="bugs" />
@@ -66,6 +70,7 @@
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="BugName" Type="varchar" Nullable="false" MaxLength="30" />
     <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="42" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="bugs">
     <Key>
@@ -138,6 +143,18 @@
       </Principal>
       <Dependent Role="bug_action_logs">
         <PropertyRef Name="ActionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="bug_action_logs_ibfk_2">
+    <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1" />
+    <End Role="bug_action_logs" Type="bugtrackerModel.Store.bug_action_logs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="bug_action_logs">
+        <PropertyRef Name="ProjectId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

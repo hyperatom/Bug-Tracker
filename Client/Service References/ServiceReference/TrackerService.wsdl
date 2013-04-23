@@ -1321,6 +1321,82 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_ProjectCodeExistsExcludingProject_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_ProjectCodeExistsExcludingProject_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_ProjectCodeExists_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="Service_ProjectCodeExists_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="Service_GetOpenBugsInProject_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -1673,6 +1749,18 @@
   <wsdl:message name="ITrackerService_UserExists_OutputMessage">
     <wsdl:part name="parameters" element="tns:UserExistsResponse" />
   </wsdl:message>
+  <wsdl:message name="ITrackerService_ProjectCodeExistsExcludingProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProjectCodeExistsExcludingProject" />
+  </wsdl:message>
+  <wsdl:message name="ITrackerService_ProjectCodeExistsExcludingProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProjectCodeExistsExcludingProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITrackerService_ProjectCodeExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProjectCodeExists" />
+  </wsdl:message>
+  <wsdl:message name="ITrackerService_ProjectCodeExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProjectCodeExistsResponse" />
+  </wsdl:message>
   <wsdl:message name="ITrackerService_GetOpenBugsInProject_InputMessage">
     <wsdl:part name="parameters" element="tns:GetOpenBugsInProject" />
   </wsdl:message>
@@ -1825,6 +1913,14 @@
     <wsdl:operation name="UserExists">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/UserExists" message="tns:ITrackerService_UserExists_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/UserExistsResponse" message="tns:ITrackerService_UserExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProjectCodeExistsExcludingProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProject" message="tns:ITrackerService_ProjectCodeExistsExcludingProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProjectResponse" message="tns:ITrackerService_ProjectCodeExistsExcludingProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProjectCodeExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/ProjectCodeExists" message="tns:ITrackerService_ProjectCodeExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITrackerService/ProjectCodeExistsResponse" message="tns:ITrackerService_ProjectCodeExists_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetOpenBugsInProject">
       <wsdl:input wsaw:Action="http://tempuri.org/ITrackerService/GetOpenBugsInProject" message="tns:ITrackerService_GetOpenBugsInProject_InputMessage" />
@@ -2195,6 +2291,28 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#Service_UserExists_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProjectCodeExistsExcludingProject">
+      <soap12:operation soapAction="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProject" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#Service_ProjectCodeExistsExcludingProject_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#Service_ProjectCodeExistsExcludingProject_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProjectCodeExists">
+      <soap12:operation soapAction="http://tempuri.org/ITrackerService/ProjectCodeExists" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#Service_ProjectCodeExists_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#Service_ProjectCodeExists_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

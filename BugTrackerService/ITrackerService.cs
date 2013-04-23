@@ -111,6 +111,12 @@ namespace BugTrackerService
         bool UserExists(String username);
 
         [OperationContract]
+        bool ProjectCodeExistsExcludingProject(Project proj);
+
+        [OperationContract]
+        bool ProjectCodeExists(String code);
+
+        [OperationContract]
         IList<Bug> GetOpenBugsInProject(Project project);
 
         [OperationContract]

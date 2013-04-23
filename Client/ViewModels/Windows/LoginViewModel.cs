@@ -9,6 +9,9 @@ using Client.Helpers;
 using Client.ServiceReference;
 using Client.Factories;
 using Client.ViewModels.Windows;
+using System.Threading;
+using System.Diagnostics; 
+using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
@@ -184,7 +187,7 @@ namespace Client.ViewModels
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password))
+                if (String.IsNullOrWhiteSpace(Username) || String.IsNullOrWhiteSpace(Password) || IsLoadingVisible)
                 {
                     return false;
                 }
@@ -232,30 +235,50 @@ namespace Client.ViewModels
             // Tell the service container to create a new service with these credentials
             ClientBase<ITrackerService> svc = _ServiceFactory.CreateService(Username, Password);
 
-            try
-            {
-                IsLoadingVisible = true;
+            IsLoadingVisible = true;
+        
+            Task openConnection = new Task(() => {
 
-                // Test if we can open the communication channel
-                //svc.InnerChannel.BeginOpen(svc)
+                try
+                {
+                    // Test if we can open the communication channel
+                    svc.Open();
+                }
+                // Display message if invalid credentials.
+                catch (MessageSecurityException)
+                {
+                    IsLoadingVisible = false;
+                    MessageBox.Show("Invalid username or password!");
+                }
+                catch (FaultException fault)
+                {
+                    IsLoadingVisible = false;
+                    MessageBox.Show(fault.Message);
+                }
+            });
 
-                // If we can then show the main window
-                _WindowFactory.CreateMainWindow().Show();
-                RequestClose(this, null);
-            }
-            // Display message if invalid credentials.
-            catch (MessageSecurityException)
+            Task openWindow = openConnection.ContinueWith(p =>
             {
-                MessageBox.Show("Invalid username or password!");
-            }
-            catch (FaultException fault)
-            {
-                MessageBox.Show(fault.Message);
-            }
+                if (p.Exception == null)
+                {
+                    _WindowFactory.CreateMainWindow().Show();
+                    RequestClose(this, null);
+                }
+                else
+                {
+                    IsLoadingVisible = false;
+                }
+
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            openConnection.Start();     
         }
 
 
-        private void 
+        private void showMessage()
+        {
+            _WindowFactory.CreateMainWindow().Show();
+        }
 
 
         /// <summary>

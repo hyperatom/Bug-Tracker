@@ -15,6 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -81,6 +81,14 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
@@ -188,6 +196,13 @@
     <Compile Include="Views\Controls\ManagedProjectsPanel.xaml.cs">
       <DependentUpon>ManagedProjectsPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Notifications\GrowlNotifiactions.xaml.cs">
+      <DependentUpon>GrowlNotifiactions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Notifications\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Notifications\Notification.cs" />
     <Compile Include="Views\Controls\ProjectManagerPanel.xaml.cs">
       <DependentUpon>ProjectManagerPanel.xaml</DependentUpon>
     </Compile>
@@ -224,6 +239,14 @@
     <Compile Include="ViewModels\Controls\DTOs\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Windows\RegistrationViewModel.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
+    <Page Include="Resources\ButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\AccountSettingsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +282,18 @@
     <Page Include="Views\Controls\ManagedProjectsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Notifications\DesignTimeNotificationData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Notifications\GrowlNotifiactions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\Notifications\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\ProjectManagerPanel.xaml">
       <SubType>Designer</SubType>
@@ -316,12 +351,18 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\add_bug.xcf" />
+    <None Include="Resources\delete_bug.xcf" />
+    <None Include="Resources\edit_bug.xcf" />
+    <None Include="Resources\logo.xcf" />
+    <None Include="Resources\mybugs.xcf" />
     <None Include="Service References\ServiceReference\Client.ServiceReference.Bug.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -416,8 +457,30 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ladybird.png" />
+    <Resource Include="Resources\add_bug.png" />
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\delete_bug.png" />
+    <Resource Include="Resources\edit_bug.png" />
+    <Resource Include="Resources\facebook-button.png" />
+    <Resource Include="Resources\filter_icon.png" />
+    <Resource Include="Resources\gnome_application_exit.png" />
+    <Resource Include="Resources\Ladybug.ico" />
+    <Resource Include="Resources\Ladybug.png" />
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\microsoft-windows-8-logo.png" />
+    <Resource Include="Resources\mybugs.png" />
+    <Resource Include="Resources\notification-icon.png" />
+    <Resource Include="Resources\projects_folder.png" />
+    <Resource Include="Resources\Radiation_warning_symbol.png" />
+    <Resource Include="Resources\search_icon.png" />
+    <Resource Include="Resources\user_male.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\first_arrow.png" />
+    <Resource Include="Resources\last_arrow.png" />
+    <Resource Include="Resources\next_arrow.png" />
+    <Resource Include="Resources\previous_arrow.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -87,8 +87,8 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Actions">
-      <EntityTypeMapping TypeName="bugtrackerModel.Action">
+    <EntitySetMapping Name="BugActions">
+      <EntityTypeMapping TypeName="bugtrackerModel.BugAction">
         <MappingFragment StoreEntitySet="actions">
           <ScalarProperty Name="ActionName" ColumnName="ActionName" />
           <ScalarProperty Name="Id" ColumnName="Id" />
@@ -111,6 +111,14 @@
       </EndProperty>
       <EndProperty Name="action">
         <ScalarProperty Name="Id" ColumnName="ActionId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="bug_action_logs_ibfk_2" TypeName="bugtrackerModel.bug_action_logs_ibfk_2" StoreEntitySet="bug_action_logs">
+      <EndProperty Name="BugActionLog">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="Project">
+        <ScalarProperty Name="Id" ColumnName="ProjectId" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

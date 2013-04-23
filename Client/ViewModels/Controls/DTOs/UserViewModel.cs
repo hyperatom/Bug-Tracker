@@ -5,10 +5,11 @@ using System.Text;
 using Client.ServiceReference;
 using AutoMapper;
 using Client.Helpers;
+using System.ComponentModel;
 
 namespace Client.ViewModels.Controls.DTOs
 {
-    public class UserViewModel : ObservableObject
+    public class UserViewModel : ObservableObject, IDataErrorInfo
     {
 
         private User _User;

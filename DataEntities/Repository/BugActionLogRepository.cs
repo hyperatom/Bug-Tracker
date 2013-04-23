@@ -46,7 +46,7 @@ namespace DataEntities.Repository
 
         public IQueryable<BugActionLog> GetAll()
         {
-            IQueryable<BugActionLog> bugs = Context.BugActionLogs.Include("Action");
+            IQueryable<BugActionLog> bugs = Context.BugActionLogs.Include("Action").Include("Project");
 
             return bugs;
         }
@@ -67,7 +67,7 @@ namespace DataEntities.Repository
 
         public IQueryable<BugActionLog> FullTextSearch(String searchText)
         {
-            return Context.BugActionLogs.Include("Action").FullTextSearch(searchText);
+            return Context.BugActionLogs.Include("Action").Include("Project").FullTextSearch(searchText);
         }
 
     }

@@ -8,6 +8,8 @@ using DataEntities.Entity;
 using DataEntities.Model;
 using DataEntities.Repository;
 using DevTrends.WCFDataAnnotations;
+using System.Security.Permissions;
+using System.Threading;
 
 namespace BugTrackerService
 {
@@ -44,7 +46,7 @@ namespace BugTrackerService
             BugRepository repo = new BugRepository();
             repo.Delete(bug);
 
-            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Delete_Action, bug);
+            BugActionLogger.LogEvent(bug.Project, GetMyUser(), BugActionLogger.Delete_Action, bug);
         }
 
 
@@ -79,7 +81,7 @@ namespace BugTrackerService
 
             var savedbug = bugRepo.Update(bug);
 
-            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Update_Action, savedbug);
+            BugActionLogger.LogEvent(bug.Project, GetMyUser(), BugActionLogger.Update_Action, savedbug);
 
             return bug;
         }
@@ -92,7 +94,7 @@ namespace BugTrackerService
             
             var savedbug = new BugRepository().Create(bug);
 
-            BugActionLogger.LogEvent(GetMyUser(), BugActionLogger.Create_Action, savedbug);
+            BugActionLogger.LogEvent(bug.Project, GetMyUser(), BugActionLogger.Create_Action, savedbug);
 
             return savedbug;
         }
@@ -231,6 +233,14 @@ namespace BugTrackerService
             if (proj == null)
                 throw new FaultException("A project with this code does not exist.");
 
+            var existingRequest = new UserProjectSignupRepository().GetAll().Where(
+                p => p.ProjectId == proj.Id && p.UserId == user.Id).SingleOrDefault();
+
+            if (existingRequest != null)
+            {
+                new UserProjectSignupRepository().Delete(existingRequest);
+            }
+
             UserProjectSignup ass = new UserProjectSignup { ProjectId = proj.Id, UserId = user.Id, RoleId = role.Id };
 
             new UserProjectSignupRepository().Create(ass);
@@ -258,6 +268,7 @@ namespace BugTrackerService
         }
 
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "Project Manager")]
         public void AcceptUserOnProject(User user, Project project)
         {
             UserProjectSignupRepository signUpRepo = new UserProjectSignupRepository();
@@ -353,7 +364,10 @@ namespace BugTrackerService
 
         public void SaveUserCredentials(User user)
         {
-            new UserRepository().Update(user);
+            if (CustomPrincipal.Current.Identity.Name == user.Username)
+            {
+                new UserRepository().Update(user);
+            }
         }
 
 
@@ -362,7 +376,7 @@ namespace BugTrackerService
             if (GetMyUser().Username == user)
                 return false;
 
-            return new Registration().UserExists(user);
+            return new RegistrationService().UserExists(user);
         }
 
 
@@ -384,7 +398,19 @@ namespace BugTrackerService
 
         public IList<BugActionLog> GetAllBugActionLogsInProject(Project project)
         {
-            return new BugActionLogRepository().GetAll().OrderByDescending(p => p.Date).ToList();
+            return new BugActionLogRepository().GetAll().Where(p => p.Project.Id == project.Id).OrderByDescending(p => p.Date).ToList();
+        }
+
+
+        public bool ProjectCodeExists(string code)
+        {
+            return (new ProjectRepository().GetAll().Where(p => p.Code == code).SingleOrDefault() != null);
+        }
+
+
+        public bool ProjectCodeExistsExcludingProject(Project proj)
+        {
+            return (new ProjectRepository().GetAll().Where(p => p.Id != proj.Id && p.Code == proj.Code).SingleOrDefault() != null);
         }
     }
 }

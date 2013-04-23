@@ -12,6 +12,7 @@ namespace BugTrackerService.Security
     public class CustomPrincipal : IPrincipal
     {
 
+        private int _UserId = 0;
         IIdentity _identity;
         string[] _roles;
 
@@ -34,6 +35,12 @@ namespace BugTrackerService.Security
         public IIdentity Identity
         {
             get { return _identity; }
+        }
+
+
+        public int UserId
+        {
+            get { return _UserId; }
         }
 
         
@@ -61,6 +68,7 @@ namespace BugTrackerService.Security
             ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
 
             User user = repo.GetAll().Where(p => p.Username == _identity.Name).Single();
+
             IList<Role> userRoles = new List<Role>();
             IList<ProjectRole> projRoles = projRoleRepo.GetAll().Where(p => p.User.Id == user.Id).ToList();
             

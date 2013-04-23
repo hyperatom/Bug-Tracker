@@ -18,6 +18,10 @@
             <End Role="actions" EntitySet="actions" />
             <End Role="bug_action_logs" EntitySet="bug_action_logs" />
           </AssociationSet>
+          <AssociationSet Name="bug_action_logs_ibfk_2" Association="bugtrackerModel.Store.bug_action_logs_ibfk_2">
+            <End Role="projects" EntitySet="projects" />
+            <End Role="bug_action_logs" EntitySet="bug_action_logs" />
+          </AssociationSet>
           <AssociationSet Name="bugs_ibfk_1" Association="bugtrackerModel.Store.bugs_ibfk_1">
             <End Role="users" EntitySet="users" />
             <End Role="bugs" EntitySet="bugs" />
@@ -71,6 +75,7 @@
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="BugName" Type="varchar" Nullable="false" MaxLength="30" />
           <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="42" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="bugs">
           <Key>
@@ -143,6 +148,18 @@
             </Principal>
             <Dependent Role="bug_action_logs">
               <PropertyRef Name="ActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="bug_action_logs_ibfk_2">
+          <End Role="projects" Type="bugtrackerModel.Store.projects" Multiplicity="1" />
+          <End Role="bug_action_logs" Type="bugtrackerModel.Store.bug_action_logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="bug_action_logs">
+              <PropertyRef Name="ProjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -315,11 +332,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="user_project_signup" EntitySet="UserProjectSignups" />
           </AssociationSet>
-          <EntitySet Name="Actions" EntityType="bugtrackerModel.Action" />
+          <EntitySet Name="BugActions" EntityType="bugtrackerModel.BugAction" />
           <EntitySet Name="BugActionLogs" EntityType="bugtrackerModel.BugActionLog" />
           <AssociationSet Name="bug_action_logs_ibfk_1" Association="bugtrackerModel.bug_action_logs_ibfk_1">
-            <End Role="action" EntitySet="Actions" />
+            <End Role="action" EntitySet="BugActions" />
             <End Role="bug_action_logs" EntitySet="BugActionLogs" />
+          </AssociationSet>
+          <AssociationSet Name="bug_action_logs_ibfk_2" Association="bugtrackerModel.bug_action_logs_ibfk_2">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="BugActionLog" EntitySet="BugActionLogs" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Bug">
@@ -476,7 +497,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Action">
+        <EntityType Name="BugAction">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -492,10 +513,15 @@
           <NavigationProperty Name="Action" Relationship="bugtrackerModel.bug_action_logs_ibfk_1" FromRole="bug_action_logs" ToRole="action" />
           <Property Type="String" Name="BugName" Nullable="false" />
           <Property Type="String" Name="UserName" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="bugtrackerModel.bug_action_logs_ibfk_2" FromRole="BugActionLog" ToRole="Project" />
         </EntityType>
         <Association Name="bug_action_logs_ibfk_1">
-          <End Type="bugtrackerModel.Action" Role="action" Multiplicity="1" />
+          <End Type="bugtrackerModel.BugAction" Role="action" Multiplicity="1" />
           <End Type="bugtrackerModel.BugActionLog" Role="bug_action_logs" Multiplicity="*" />
+        </Association>
+        <Association Name="bug_action_logs_ibfk_2">
+          <End Type="bugtrackerModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="bugtrackerModel.BugActionLog" Role="BugActionLog" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -589,8 +615,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Actions">
-            <EntityTypeMapping TypeName="bugtrackerModel.Action">
+          <EntitySetMapping Name="BugActions">
+            <EntityTypeMapping TypeName="bugtrackerModel.BugAction">
               <MappingFragment StoreEntitySet="actions">
                 <ScalarProperty Name="ActionName" ColumnName="ActionName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -615,6 +641,14 @@
               <ScalarProperty Name="Id" ColumnName="ActionId" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="bug_action_logs_ibfk_2" TypeName="bugtrackerModel.bug_action_logs_ibfk_2" StoreEntitySet="bug_action_logs">
+            <EndProperty Name="BugActionLog">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Project">
+              <ScalarProperty Name="Id" ColumnName="ProjectId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -637,64 +671,70 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="DataModel">
-        <EntityTypeShape EntityType="bugtrackerModel.Bug" Width="1.5" PointX="5.125" PointY="1.125" Height="3.1340950520833326" />
-        <EntityTypeShape EntityType="bugtrackerModel.User" Width="1.5" PointX="2.875" PointY="1.375" Height="1.9802864583333331" />
+        <EntityTypeShape EntityType="bugtrackerModel.Bug" Width="1.5" PointX="5.625" PointY="0.5" Height="3.1340950520833326" />
+        <EntityTypeShape EntityType="bugtrackerModel.User" Width="1.5" PointX="2.375" PointY="0.875" Height="1.9802864583333331" />
         <AssociationConnector Association="bugtrackerModel.bugs_ibfk_1" >
-          <ConnectorPoint PointX="4.375" PointY="2.75616784356511" />
-          <ConnectorPoint PointX="5.125" PointY="2.75616784356511" />
+          <ConnectorPoint PointX="3.875" PointY="1.8651432291666665" />
+          <ConnectorPoint PointX="5.625" PointY="1.8651432291666665" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.Project" Width="1.5" PointX="5.125" PointY="4.875" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="bugtrackerModel.Project" Width="1.5" PointX="5.25" PointY="4.75" Height="1.7879850260416665" />
         <AssociationConnector Association="bugtrackerModel.fkey_project" >
-          <ConnectorPoint PointX="5.875" PointY="4.875" />
-          <ConnectorPoint PointX="5.875" PointY="4.2590950520833326" />
+          <ConnectorPoint PointX="6.1875" PointY="4.75" />
+          <ConnectorPoint PointX="6.1875" PointY="3.6340950520833326" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.Role" Width="1.5" PointX="2.875" PointY="4.5" Height="1.4033821614583326" />
+        <EntityTypeShape EntityType="bugtrackerModel.Role" Width="1.5" PointX="10.25" PointY="5.125" Height="1.4033821614583326" />
         <AssociationConnector Association="bugtrackerModel.bugs_ibfk_2" >
-          <ConnectorPoint PointX="4.375" PointY="2.0030839217825549" />
-          <ConnectorPoint PointX="5.125" PointY="2.0030839217825549" />
+          <ConnectorPoint PointX="3.875" PointY="1.3075716145833334" />
+          <ConnectorPoint PointX="5.625" PointY="1.3075716145833334" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.ProjectRole" Width="1.5" PointX="0.625" PointY="1.625" Height="2.172587890625" />
+        <EntityTypeShape EntityType="bugtrackerModel.ProjectRole" Width="1.5" PointX="2.375" PointY="4.375" Height="2.172587890625" />
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_2" >
-          <ConnectorPoint PointX="5.125" PointY="6.31443359375" />
-          <ConnectorPoint PointX="1.10522294921875" PointY="6.31443359375" />
-          <ConnectorPoint PointX="1.10522294921875" PointY="3.797587890625" />
+          <ConnectorPoint PointX="5.25" PointY="5.6439925130208337" />
+          <ConnectorPoint PointX="3.875" PointY="5.6439925130208337" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_3" >
-          <ConnectorPoint PointX="2.875" PointY="5.2016910807291659" />
-          <ConnectorPoint PointX="1.646363974609375" PointY="5.2016910807291659" />
-          <ConnectorPoint PointX="1.646363974609375" PointY="3.797587890625" />
+          <ConnectorPoint PointX="10.25" PointY="6.5283821614583326" />
+          <ConnectorPoint PointX="9.875" PointY="6.9033821614583317" />
+          <ConnectorPoint PointX="4.25" PointY="6.9033821614583317" />
+          <ConnectorPoint PointX="4.25" PointY="6.922587890625" />
+          <ConnectorPoint PointX="3.8750000000000004" PointY="6.547587890625" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_1" >
-          <ConnectorPoint PointX="2.875" PointY="2.4901432291666667" />
-          <ConnectorPoint PointX="2.125" PointY="2.4901432291666667" />
+          <ConnectorPoint PointX="3.5625" PointY="2.8552864583333331" />
+          <ConnectorPoint PointX="3.5625" PointY="4.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.UserProjectSignup" Width="1.625" PointX="8.25" PointY="3.25" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="bugtrackerModel.UserProjectSignup" Width="1.625" PointX="8" PointY="4.375" Height="2.1725878906249996" />
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_6" >
-          <ConnectorPoint PointX="6.625" PointY="5.1487939453125" />
-          <ConnectorPoint PointX="8.25" PointY="5.1487939453125" />
+          <ConnectorPoint PointX="6.75" PointY="5.6439925130208337" />
+          <ConnectorPoint PointX="8" PointY="5.6439925130208337" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_7" >
-          <ConnectorPoint PointX="4.375" PointY="4.65625" />
-          <ConnectorPoint PointX="5.791666666666667" PointY="4.6562499999999991" />
-          <ConnectorPoint PointX="5.958333333333333" PointY="4.65625" />
-          <ConnectorPoint PointX="8.25" PointY="4.65625" />
+          <ConnectorPoint PointX="10.25" PointY="5.7954385807291668" />
+          <ConnectorPoint PointX="9.625" PointY="5.7954385807291668" />
         </AssociationConnector>
         <AssociationConnector Association="bugtrackerModel.user_project_role_ibfk_5" >
-          <ConnectorPoint PointX="3.625" PointY="3.3552864583333331" />
-          <ConnectorPoint PointX="3.625" PointY="4.3362939453125" />
-          <ConnectorPoint PointX="4.875" PointY="4.3362939453125" />
-          <ConnectorPoint PointX="4.875" PointY="4.5090950520833326" />
-          <ConnectorPoint PointX="5.791666666666667" PointY="4.5090950520833317" />
-          <ConnectorPoint PointX="5.958333333333333" PointY="4.5090950520833326" />
-          <ConnectorPoint PointX="7.875" PointY="4.5090950520833326" />
-          <ConnectorPoint PointX="7.875" PointY="4.3362939453125" />
-          <ConnectorPoint PointX="8.25" PointY="4.3362939453125" />
+          <ConnectorPoint PointX="3.875" PointY="2.8552864583333331" />
+          <ConnectorPoint PointX="4.25" PointY="3.2302864583333331" />
+          <ConnectorPoint PointX="4.25" PointY="4" />
+          <ConnectorPoint PointX="5.322916666666667" PointY="3.9999999999999996" />
+          <ConnectorPoint PointX="5.489583333333333" PointY="4" />
+          <ConnectorPoint PointX="6.104166666666667" PointY="3.9999999999999996" />
+          <ConnectorPoint PointX="6.270833333333333" PointY="4" />
+          <ConnectorPoint PointX="7.6262490000000014" PointY="4" />
+          <ConnectorPoint PointX="8.0012490000000014" PointY="4.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="bugtrackerModel.Action" Width="1.5" PointX="9.25" PointY="0.875" Height="1.4033821614583335" />
-        <EntityTypeShape EntityType="bugtrackerModel.BugActionLog" Width="1.5" PointX="7.375" PointY="0.75" Height="1.9802864583333339" />
+        <EntityTypeShape EntityType="bugtrackerModel.BugAction" Width="1.5" PointX="10.25" PointY="1.875" Height="1.4033821614583331" IsExpanded="true" />
+        <EntityTypeShape EntityType="bugtrackerModel.BugActionLog" Width="1.5" PointX="8" PointY="1.625" Height="1.9802864583333339" />
         <AssociationConnector Association="bugtrackerModel.bug_action_logs_ibfk_1" >
-          <ConnectorPoint PointX="9.25" PointY="1.5766910807291668" />
-          <ConnectorPoint PointX="8.875" PointY="1.5766910807291668" />
+          <ConnectorPoint PointX="10.25" PointY="2.5766910807291667" />
+          <ConnectorPoint PointX="9.5" PointY="2.5766910807291667" />
+        </AssociationConnector>
+        <AssociationConnector Association="bugtrackerModel.bug_action_logs_ibfk_2" >
+          <ConnectorPoint PointX="5.40625" PointY="4.75" />
+          <ConnectorPoint PointX="5.40625" PointY="3.7470914713541661" />
+          <ConnectorPoint PointX="6.104166666666667" PointY="3.7470914713541656" />
+          <ConnectorPoint PointX="6.270833333333333" PointY="3.7470914713541661" />
+          <ConnectorPoint PointX="8" PointY="3.7470914713541661" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

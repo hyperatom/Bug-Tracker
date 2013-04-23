@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="123" d:DesignWidth="470">
     
-    <UserControl.Resources>
+    <UserControl.Resources>        
         <Style TargetType="TextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
@@ -22,8 +22,8 @@
         <Label Content="Quick Join" Height="39" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" FontSize="20" Width="111" />
         <Label Content="Code:" Height="28" HorizontalAlignment="Left" Margin="0,77,0,0" Name="label2" VerticalAlignment="Top" />
         <Label Content="Role:" Height="28" HorizontalAlignment="Left" Margin="131,77,0,0" Name="label3" VerticalAlignment="Top" />
-        
-        <TextBox Text="{Binding Code, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Height="23" HorizontalAlignment="Left" Margin="46,80,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="71" />
+
+        <TextBox Text="{Binding Code, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="46,80,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="71" />
         <ComboBox ItemsSource="{Binding RoleList}" SelectedItem="{Binding SelectedRole}" DisplayMemberPath="RoleName" Height="23" HorizontalAlignment="Left" Margin="173,80,0,0" Name="comboBoxRoles" VerticalAlignment="Top" Width="112" />
         
         <Button Command="{Binding JoinProjectCommand}" Content="Join" Height="23" HorizontalAlignment="Left" Margin="320,80,0,0" Name="buttonJoin" VerticalAlignment="Top" Width="47" />

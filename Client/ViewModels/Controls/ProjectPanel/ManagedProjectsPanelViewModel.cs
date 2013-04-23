@@ -23,6 +23,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private ICommand _NewProjectCommand;
         private ICommand _ShowDeleteDialogCommand;
         private ICommand _ViewProjectCommand;
+        private ICommand _DeleteProjectCommand;
 
         private ProjectViewModel _SelectedProject;
 
@@ -47,8 +48,6 @@ namespace Client.ViewModels.Controls.ProjectPanel
             set 
             { 
                 _SelectedProject = value;
-
-
 
                 if (value != null)
                 {
@@ -87,7 +86,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
                 if (_ViewProjectCommand == null)
                 {
                     _ViewProjectCommand = new RelayCommand
-                        (p => ShowProjectViewPanel((ProjectViewModel)p));
+                        (p => ShowProjectViewPanel(SelectedProject), p => (SelectedProject != null));
                 }
 
                 return _ViewProjectCommand;
@@ -108,16 +107,16 @@ namespace Client.ViewModels.Controls.ProjectPanel
             }
         }
 
-        public ICommand ShowDeleteDialogCommand
+        public ICommand DeleteProjectCommand
         {
             get
             {
-                if (_ShowDeleteDialogCommand == null)
+                if (_DeleteProjectCommand == null)
                 {
-                    _ShowDeleteDialogCommand = new RelayCommand(p => _Messenger.NotifyColleagues(Messages.ShowProjectDeleteDialog, (ProjectViewModel)p));
+                    _DeleteProjectCommand = new RelayCommand(p => ShowDeleteDialog(), p => SelectedProject != null);
                 }
 
-                return _ShowDeleteDialogCommand;
+                return _DeleteProjectCommand;
             }
         }
 
@@ -130,6 +129,18 @@ namespace Client.ViewModels.Controls.ProjectPanel
             _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => SaveProjectToList(p));
             _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ManagedProjects.Add(p));
             _Messenger.Register<ProjectViewModel>(Messages.AssignedProjectSelected, p => SelectedProject = null);
+        }
+
+
+        private void ShowDeleteDialog()
+        {
+            MessageBoxResult dialogResult = MessageBox.Show
+                ("Delete " + SelectedProject.Name + " this project and all of its bugs?", "Delete Project", MessageBoxButton.YesNo);
+
+            if (dialogResult == MessageBoxResult.Yes)
+            {
+                DeleteProject(SelectedProject);
+            }
         }
 
 
@@ -159,7 +170,6 @@ namespace Client.ViewModels.Controls.ProjectPanel
                 ManagedProjects.Remove(project);
 
                 _Messenger.NotifyColleagues(Messages.DeletedProject, project);
-                _Messenger.NotifyColleagues(Messages.CloseDeleteProjectDialog);
             }
             catch (Exception e)
             {

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DataEntities.Entity
 {
     [DataContract]
-    public class Action
+    public class BugAction
     {
         [DataMember]
         [Range(0, 99)]

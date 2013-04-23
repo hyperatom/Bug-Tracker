@@ -123,28 +123,28 @@ namespace Client.ServiceRegistration {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceRegistration.IRegistration")]
-    public interface IRegistration {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceRegistration.IRegistrationService")]
+    public interface IRegistrationService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistration/Register", ReplyAction="http://tempuri.org/IRegistration/RegisterResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistrationService/Register", ReplyAction="http://tempuri.org/IRegistrationService/RegisterResponse")]
         void Register(Client.ServiceRegistration.User user);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistration/Register", ReplyAction="http://tempuri.org/IRegistration/RegisterResponse")]
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistrationService/Register", ReplyAction="http://tempuri.org/IRegistrationService/RegisterResponse")]
         System.IAsyncResult BeginRegister(Client.ServiceRegistration.User user, System.AsyncCallback callback, object asyncState);
         
         void EndRegister(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistration/UserExists", ReplyAction="http://tempuri.org/IRegistration/UserExistsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistrationService/UserExists", ReplyAction="http://tempuri.org/IRegistrationService/UserExistsResponse")]
         bool UserExists(string username);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistration/UserExists", ReplyAction="http://tempuri.org/IRegistration/UserExistsResponse")]
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistrationService/UserExists", ReplyAction="http://tempuri.org/IRegistrationService/UserExistsResponse")]
         System.IAsyncResult BeginUserExists(string username, System.AsyncCallback callback, object asyncState);
         
         bool EndUserExists(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IRegistrationChannel : Client.ServiceRegistration.IRegistration, System.ServiceModel.IClientChannel {
+    public interface IRegistrationServiceChannel : Client.ServiceRegistration.IRegistrationService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -168,7 +168,7 @@ namespace Client.ServiceRegistration {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class RegistrationClient : System.ServiceModel.ClientBase<Client.ServiceRegistration.IRegistration>, Client.ServiceRegistration.IRegistration {
+    public partial class RegistrationServiceClient : System.ServiceModel.ClientBase<Client.ServiceRegistration.IRegistrationService>, Client.ServiceRegistration.IRegistrationService {
         
         private BeginOperationDelegate onBeginRegisterDelegate;
         
@@ -182,22 +182,22 @@ namespace Client.ServiceRegistration {
         
         private System.Threading.SendOrPostCallback onUserExistsCompletedDelegate;
         
-        public RegistrationClient() {
+        public RegistrationServiceClient() {
         }
         
-        public RegistrationClient(string endpointConfigurationName) : 
+        public RegistrationServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public RegistrationClient(string endpointConfigurationName, string remoteAddress) : 
+        public RegistrationServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public RegistrationClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public RegistrationServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public RegistrationClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public RegistrationServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         

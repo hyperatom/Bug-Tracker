@@ -30,7 +30,6 @@ namespace Client.ViewModels
         private ObservableRangeCollection<BugViewModel> _BugList = new ObservableRangeCollection<BugViewModel>();
         private CollectionViewSource                    _BugListViewSource = new CollectionViewSource();
 
-
         private String _ProjectTitle;
         
         private BugPanelViewModel _SouthViewPanel;
@@ -61,21 +60,25 @@ namespace Client.ViewModels
         {
             _Messenger = comm;
             _Service = svc;
-            _ActiveProject = activeProj;
             _ControlFactory = ctrlfactory;
 
-            ProjectTitle = activeProj.Name;
+            if (activeProj != null && activeProj.Id != 0)
+            {
+                _ActiveProject = activeProj;
+                ProjectTitle = activeProj.Name;
+            }
 
             _SearchText = "";
 
             _PageSize = GetPageSizeFromSettings();
 
-            _DefaultTableSortOrder = new SortDescription("Id", ListSortDirection.Ascending);
+            _DefaultTableSortOrder = new SortDescription("Id", ListSortDirection.Descending);
             _BugListViewSource.Source = _BugList;
 
             InitSortingAndPaging();
 
-            UpdateTableData();
+            if (_ActiveProject != null)
+                UpdateTableData();
 
             ListenForMessages();
         }
@@ -255,7 +258,15 @@ namespace Client.ViewModels
             var sortDescriptions = (INotifyCollectionChanged)_BugListViewSource.View.SortDescriptions;
             sortDescriptions.CollectionChanged += OnSortOrderChanged;
 
-            Pager = new PagingController(_Service.CountBugsInProject(_ActiveProject.ToProjectModel()), _PageSize);
+            if (_ActiveProject == null || _ActiveProject.Id == 0)
+            {
+                Pager = new PagingController(0, _PageSize);
+            }
+            else
+            {
+                Pager = new PagingController(_Service.CountBugsInProject(_ActiveProject.ToProjectModel()), _PageSize);
+            }
+            
             Pager.CurrentPageChanged += (s, e) => UpdateTableData();
         }
 

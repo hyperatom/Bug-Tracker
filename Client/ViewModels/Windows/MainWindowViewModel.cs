@@ -9,6 +9,7 @@ using Client.Helpers;
 using Client.ServiceReference;
 using Client.ViewModels.Controls;
 using Client.ViewModels.Windows;
+using Microsoft.Practices.Unity;
 
 namespace Client.ViewModels
 {
@@ -64,7 +65,7 @@ namespace Client.ViewModels
         /// <param name="comm">Messenger to communciate with other view models.</param>
         /// <param name="svc">Web service allowing remote procedures to be called.</param>
         /// <param name="ctrlfactory">Factory to create controls on the main window.</param>
-        public MainWindowViewModel(IMessenger comm, ITrackerService svc, 
+        public MainWindowViewModel(IMessenger comm, ITrackerService svc,
                                    IWindowFactory winfactory, IControlFactory ctrlfactory)
         {
             _Messenger = comm;

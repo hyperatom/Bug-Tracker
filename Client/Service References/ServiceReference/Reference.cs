@@ -491,7 +491,7 @@ namespace Client.ServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Client.ServiceReference.Action ActionField;
+        private Client.ServiceReference.BugAction ActionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string BugNameField;
@@ -501,6 +501,9 @@ namespace Client.ServiceReference {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.ServiceReference.Project ProjectField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string UserNameField;
@@ -516,7 +519,7 @@ namespace Client.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Client.ServiceReference.Action Action {
+        public Client.ServiceReference.BugAction Action {
             get {
                 return this.ActionField;
             }
@@ -568,6 +571,19 @@ namespace Client.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.ServiceReference.Project Project {
+            get {
+                return this.ProjectField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProjectField, value) != true)) {
+                    this.ProjectField = value;
+                    this.RaisePropertyChanged("Project");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string UserName {
             get {
                 return this.UserNameField;
@@ -592,9 +608,9 @@ namespace Client.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Action", Namespace="http://schemas.datacontract.org/2004/07/DataEntities.Entity")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BugAction", Namespace="http://schemas.datacontract.org/2004/07/DataEntities.Entity")]
     [System.SerializableAttribute()]
-    public partial class Action : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class BugAction : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -912,6 +928,22 @@ namespace Client.ServiceReference {
         System.IAsyncResult BeginUserExists(string username, System.AsyncCallback callback, object asyncState);
         
         bool EndUserExists(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProject", ReplyAction="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProjectResponse")]
+        bool ProjectCodeExistsExcludingProject(Client.ServiceReference.Project proj);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProject", ReplyAction="http://tempuri.org/ITrackerService/ProjectCodeExistsExcludingProjectResponse")]
+        System.IAsyncResult BeginProjectCodeExistsExcludingProject(Client.ServiceReference.Project proj, System.AsyncCallback callback, object asyncState);
+        
+        bool EndProjectCodeExistsExcludingProject(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/ProjectCodeExists", ReplyAction="http://tempuri.org/ITrackerService/ProjectCodeExistsResponse")]
+        bool ProjectCodeExists(string code);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/ITrackerService/ProjectCodeExists", ReplyAction="http://tempuri.org/ITrackerService/ProjectCodeExistsResponse")]
+        System.IAsyncResult BeginProjectCodeExists(string code, System.AsyncCallback callback, object asyncState);
+        
+        bool EndProjectCodeExists(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITrackerService/GetOpenBugsInProject", ReplyAction="http://tempuri.org/ITrackerService/GetOpenBugsInProjectResponse")]
         System.Collections.Generic.List<Client.ServiceReference.Bug> GetOpenBugsInProject(Client.ServiceReference.Project project);
@@ -1427,6 +1459,44 @@ namespace Client.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class ProjectCodeExistsExcludingProjectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public ProjectCodeExistsExcludingProjectCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public bool Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class ProjectCodeExistsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public ProjectCodeExistsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public bool Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class GetOpenBugsInProjectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -1697,6 +1767,18 @@ namespace Client.ServiceReference {
         
         private System.Threading.SendOrPostCallback onUserExistsCompletedDelegate;
         
+        private BeginOperationDelegate onBeginProjectCodeExistsExcludingProjectDelegate;
+        
+        private EndOperationDelegate onEndProjectCodeExistsExcludingProjectDelegate;
+        
+        private System.Threading.SendOrPostCallback onProjectCodeExistsExcludingProjectCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginProjectCodeExistsDelegate;
+        
+        private EndOperationDelegate onEndProjectCodeExistsDelegate;
+        
+        private System.Threading.SendOrPostCallback onProjectCodeExistsCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetOpenBugsInProjectDelegate;
         
         private EndOperationDelegate onEndGetOpenBugsInProjectDelegate;
@@ -1803,6 +1885,10 @@ namespace Client.ServiceReference {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> SaveUserCredentialsCompleted;
         
         public event System.EventHandler<UserExistsCompletedEventArgs> UserExistsCompleted;
+        
+        public event System.EventHandler<ProjectCodeExistsExcludingProjectCompletedEventArgs> ProjectCodeExistsExcludingProjectCompleted;
+        
+        public event System.EventHandler<ProjectCodeExistsCompletedEventArgs> ProjectCodeExistsCompleted;
         
         public event System.EventHandler<GetOpenBugsInProjectCompletedEventArgs> GetOpenBugsInProjectCompleted;
         
@@ -3409,6 +3495,106 @@ namespace Client.ServiceReference {
             }
             base.InvokeAsync(this.onBeginUserExistsDelegate, new object[] {
                         username}, this.onEndUserExistsDelegate, this.onUserExistsCompletedDelegate, userState);
+        }
+        
+        public bool ProjectCodeExistsExcludingProject(Client.ServiceReference.Project proj) {
+            return base.Channel.ProjectCodeExistsExcludingProject(proj);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.IAsyncResult BeginProjectCodeExistsExcludingProject(Client.ServiceReference.Project proj, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginProjectCodeExistsExcludingProject(proj, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public bool EndProjectCodeExistsExcludingProject(System.IAsyncResult result) {
+            return base.Channel.EndProjectCodeExistsExcludingProject(result);
+        }
+        
+        private System.IAsyncResult OnBeginProjectCodeExistsExcludingProject(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            Client.ServiceReference.Project proj = ((Client.ServiceReference.Project)(inValues[0]));
+            return this.BeginProjectCodeExistsExcludingProject(proj, callback, asyncState);
+        }
+        
+        private object[] OnEndProjectCodeExistsExcludingProject(System.IAsyncResult result) {
+            bool retVal = this.EndProjectCodeExistsExcludingProject(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnProjectCodeExistsExcludingProjectCompleted(object state) {
+            if ((this.ProjectCodeExistsExcludingProjectCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.ProjectCodeExistsExcludingProjectCompleted(this, new ProjectCodeExistsExcludingProjectCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void ProjectCodeExistsExcludingProjectAsync(Client.ServiceReference.Project proj) {
+            this.ProjectCodeExistsExcludingProjectAsync(proj, null);
+        }
+        
+        public void ProjectCodeExistsExcludingProjectAsync(Client.ServiceReference.Project proj, object userState) {
+            if ((this.onBeginProjectCodeExistsExcludingProjectDelegate == null)) {
+                this.onBeginProjectCodeExistsExcludingProjectDelegate = new BeginOperationDelegate(this.OnBeginProjectCodeExistsExcludingProject);
+            }
+            if ((this.onEndProjectCodeExistsExcludingProjectDelegate == null)) {
+                this.onEndProjectCodeExistsExcludingProjectDelegate = new EndOperationDelegate(this.OnEndProjectCodeExistsExcludingProject);
+            }
+            if ((this.onProjectCodeExistsExcludingProjectCompletedDelegate == null)) {
+                this.onProjectCodeExistsExcludingProjectCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnProjectCodeExistsExcludingProjectCompleted);
+            }
+            base.InvokeAsync(this.onBeginProjectCodeExistsExcludingProjectDelegate, new object[] {
+                        proj}, this.onEndProjectCodeExistsExcludingProjectDelegate, this.onProjectCodeExistsExcludingProjectCompletedDelegate, userState);
+        }
+        
+        public bool ProjectCodeExists(string code) {
+            return base.Channel.ProjectCodeExists(code);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.IAsyncResult BeginProjectCodeExists(string code, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginProjectCodeExists(code, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public bool EndProjectCodeExists(System.IAsyncResult result) {
+            return base.Channel.EndProjectCodeExists(result);
+        }
+        
+        private System.IAsyncResult OnBeginProjectCodeExists(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string code = ((string)(inValues[0]));
+            return this.BeginProjectCodeExists(code, callback, asyncState);
+        }
+        
+        private object[] OnEndProjectCodeExists(System.IAsyncResult result) {
+            bool retVal = this.EndProjectCodeExists(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnProjectCodeExistsCompleted(object state) {
+            if ((this.ProjectCodeExistsCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.ProjectCodeExistsCompleted(this, new ProjectCodeExistsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void ProjectCodeExistsAsync(string code) {
+            this.ProjectCodeExistsAsync(code, null);
+        }
+        
+        public void ProjectCodeExistsAsync(string code, object userState) {
+            if ((this.onBeginProjectCodeExistsDelegate == null)) {
+                this.onBeginProjectCodeExistsDelegate = new BeginOperationDelegate(this.OnBeginProjectCodeExists);
+            }
+            if ((this.onEndProjectCodeExistsDelegate == null)) {
+                this.onEndProjectCodeExistsDelegate = new EndOperationDelegate(this.OnEndProjectCodeExists);
+            }
+            if ((this.onProjectCodeExistsCompletedDelegate == null)) {
+                this.onProjectCodeExistsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnProjectCodeExistsCompleted);
+            }
+            base.InvokeAsync(this.onBeginProjectCodeExistsDelegate, new object[] {
+                        code}, this.onEndProjectCodeExistsDelegate, this.onProjectCodeExistsCompletedDelegate, userState);
         }
         
         public System.Collections.Generic.List<Client.ServiceReference.Bug> GetOpenBugsInProject(Client.ServiceReference.Project project) {

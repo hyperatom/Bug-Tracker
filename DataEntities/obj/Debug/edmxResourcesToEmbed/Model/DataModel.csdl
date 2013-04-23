@@ -43,11 +43,15 @@
       <End Role="User" EntitySet="Users" />
       <End Role="user_project_signup" EntitySet="UserProjectSignups" />
     </AssociationSet>
-    <EntitySet Name="Actions" EntityType="bugtrackerModel.Action" />
+    <EntitySet Name="BugActions" EntityType="bugtrackerModel.BugAction" />
     <EntitySet Name="BugActionLogs" EntityType="bugtrackerModel.BugActionLog" />
     <AssociationSet Name="bug_action_logs_ibfk_1" Association="bugtrackerModel.bug_action_logs_ibfk_1">
-      <End Role="action" EntitySet="Actions" />
+      <End Role="action" EntitySet="BugActions" />
       <End Role="bug_action_logs" EntitySet="BugActionLogs" />
+    </AssociationSet>
+    <AssociationSet Name="bug_action_logs_ibfk_2" Association="bugtrackerModel.bug_action_logs_ibfk_2">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="BugActionLog" EntitySet="BugActionLogs" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Bug">
@@ -202,7 +206,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="Action">
+  <EntityType Name="BugAction">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -218,9 +222,14 @@
     <NavigationProperty Name="Action" Relationship="bugtrackerModel.bug_action_logs_ibfk_1" FromRole="bug_action_logs" ToRole="action" />
     <Property Type="String" Name="BugName" Nullable="false" />
     <Property Type="String" Name="UserName" Nullable="false" />
+    <NavigationProperty Name="Project" Relationship="bugtrackerModel.bug_action_logs_ibfk_2" FromRole="BugActionLog" ToRole="Project" />
   </EntityType>
   <Association Name="bug_action_logs_ibfk_1">
-    <End Type="bugtrackerModel.Action" Role="action" Multiplicity="1" />
+    <End Type="bugtrackerModel.BugAction" Role="action" Multiplicity="1" />
     <End Type="bugtrackerModel.BugActionLog" Role="bug_action_logs" Multiplicity="*" />
+  </Association>
+  <Association Name="bug_action_logs_ibfk_2">
+    <End Type="bugtrackerModel.Project" Role="Project" Multiplicity="1" />
+    <End Type="bugtrackerModel.BugActionLog" Role="BugActionLog" Multiplicity="*" />
   </Association>
 </Schema>

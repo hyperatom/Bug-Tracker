@@ -22,12 +22,18 @@ namespace Client.Factories
 
         public IBugTableViewModel CreateBugTablePanel(ProjectViewModel project)
         {
+            if (project == null)
+                return _Container.Resolve<IBugTableViewModel>();
+
             return _Container.Resolve<IBugTableViewModel>(new ParameterOverride("activeProj", project));
         }
 
 
         public ICommandPanelViewModel CreateCommandPanel(ProjectViewModel project)
         {
+            if (project == null)
+                return _Container.Resolve<ICommandPanelViewModel>();
+
             return _Container.Resolve<ICommandPanelViewModel>(new ParameterOverride("activeProj", project));
         }
 

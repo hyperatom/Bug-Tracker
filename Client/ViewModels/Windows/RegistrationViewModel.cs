@@ -10,6 +10,7 @@ using Client.Factories;
 using Client.Helpers;
 using Client.ServiceRegistration;
 using Client.ViewModels.Windows;
+using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
@@ -26,12 +27,13 @@ namespace Client.ViewModels
         private string _Password;
         private bool _IsValidating = false;
         private bool _IsRegisterEnabled = true;
+        private bool _IsLoadingVisible = false;
 
         private RelayCommand _RegisterCommand;
         private RelayCommand _CancelCommand;
 
         private IWindowFactory _WindowFactory;
-        private IRegistration _Service;
+        private IRegistrationService _Service;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
@@ -41,7 +43,7 @@ namespace Client.ViewModels
         /// </summary>
         /// <param name="loader">The window loader.</param>
         /// <param name="svc">The registration web service.</param>
-        public RegistrationViewModel(IRegistration svc, IWindowFactory winfactory) 
+        public RegistrationViewModel(IRegistrationService svc, IWindowFactory winfactory) 
         {
             if (svc == null)
                 throw new ArgumentNullException("Registration service cannot be null");
@@ -55,6 +57,13 @@ namespace Client.ViewModels
 
 
         public EventHandler RequestClose { get; set; }
+
+
+        public bool IsLoadingVisible
+        {
+            get { return _IsLoadingVisible; }
+            set { _IsLoadingVisible = value; OnPropertyChanged("IsLoadingVisible"); }
+        }
 
 
         private string FirstName
@@ -192,7 +201,64 @@ namespace Client.ViewModels
         /// </summary>
         private void Register()
         {
+            IsLoadingVisible = true;
             IsRegisterButtonEnabled = false;
+
+            if (CanRegister())
+            {
+
+                Task openConnection = new Task(() =>
+                {
+
+                    try
+                    {
+                        User user = new User
+                        {
+                            FirstName = this.FirstName,
+                            Surname = this.LastName,
+                            Password = this.Password,
+                            Username = this.Email,
+                        };
+
+                        // Execute registration operation concurrently
+                        _Service.Register(user);
+                    }
+                    catch (FaultException e)
+                    {
+                        IsRegisterButtonEnabled = true;
+                        IsLoadingVisible = false;
+
+                        MessageBox.Show(e.Message);
+                    }
+                });
+
+                Task openWindow = openConnection.ContinueWith(p =>
+                {
+                    if (p.Exception == null)
+                    {
+                        _WindowFactory.CreateLoginWindow().Show();
+                        RequestClose(this, null);
+                    }
+                    else
+                    {
+                        IsLoadingVisible = false;
+                        IsRegisterButtonEnabled = true;
+                    }
+
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                openConnection.Start();
+            }
+            else
+            {
+                IsLoadingVisible = false;
+                IsRegisterButtonEnabled = true;
+            }
+        
+            
+
+            /*IsRegisterButtonEnabled = false;
+            IsLoadingVisible = true;
 
             if (CanRegister())
             {
@@ -212,6 +278,7 @@ namespace Client.ViewModels
                 catch (FaultException e)
                 {
                     IsRegisterButtonEnabled = true;
+                    IsLoadingVisible = false;
 
                     MessageBox.Show(e.Message);
                 }
@@ -219,7 +286,7 @@ namespace Client.ViewModels
             else
             {
                 IsRegisterButtonEnabled = true;
-            }
+            }*/
         }
 
 
@@ -230,6 +297,7 @@ namespace Client.ViewModels
         public void RegistrationComplete(IAsyncResult result)
         {
             IsRegisterButtonEnabled = true;
+            IsLoadingVisible = false;
         }
 
 
@@ -292,8 +360,6 @@ namespace Client.ViewModels
                         else if (Email.Length > MaxEmailLength)
                             result = "Email must be less than "+MaxEmailLength+" characters long.";
 
-                        else if (_Service.UserExists(Email))
-                            result = "This email address is already in use, please choose another one.";
 
                         break;
                     }

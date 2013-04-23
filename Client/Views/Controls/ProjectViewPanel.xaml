@@ -30,5 +30,6 @@
         <TextBox Text="{Binding Project.Code, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="314,26,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="69" />
         
         <Button Command="{Binding SaveProjectCommand}" CommandParameter="{Binding Project}" Content="{Binding ButtonName}" Height="23" HorizontalAlignment="Left" Margin="308,124,0,0" Name="buttonSave" VerticalAlignment="Top" Width="75" />
+        <Button Command="{Binding CloseViewPanelCommand}" Content="Close" Height="23" HorizontalAlignment="Left" Margin="398,124,0,0" Name="button1" VerticalAlignment="Top" Width="66" />
     </Grid>
 </UserControl>

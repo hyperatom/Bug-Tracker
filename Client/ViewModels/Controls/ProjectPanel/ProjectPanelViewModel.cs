@@ -20,6 +20,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
         protected ITrackerService _Service;
 
         private ICommand _SaveProjectCommand;
+        private ICommand _CloseViewPanelCommand;
 
 
         public ProjectPanelViewModel(ITrackerService svc, IMessenger mess)
@@ -43,6 +44,19 @@ namespace Client.ViewModels.Controls.ProjectPanel
                 }
 
                 return _SaveProjectCommand;
+            }
+        }
+
+        public ICommand CloseViewPanelCommand
+        {
+            get
+            {
+                if (_CloseViewPanelCommand == null)
+                {
+                    _CloseViewPanelCommand = new RelayCommand(param => IsVisible = false);
+                }
+
+                return _CloseViewPanelCommand;
             }
         }
 
@@ -75,6 +89,16 @@ namespace Client.ViewModels.Controls.ProjectPanel
             get
             {
                 Project.IsValidating = true;
+
+                if (Project.Code != null)
+                {
+                    Project.Errors.Remove("ExistingCode");
+
+                    if (Project.Id == 0 && _Service.ProjectCodeExists(Project.Code) && !Project.Errors.ContainsKey("ExistingCode"))
+                        Project.Errors.Add("ExistingCode", "A project with this code already exists.");
+                    else if (Project.Id > 0 && Project.Code.Length == 5 && _Service.ProjectCodeExistsExcludingProject(Project.ToProjectModel()) && !Project.Errors.ContainsKey("ExistingCode"))
+                        Project.Errors.Add("ExistingCode", "A project with this code already exists.");
+                }
 
                 OnPropertyChanged("Project");
 

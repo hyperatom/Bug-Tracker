@@ -9,7 +9,6 @@ namespace Client.ViewModels.Controls.ProjectPanel
     {
         ObservableCollection<ProjectViewModel> ManagedProjects { get; set; }
         ICommand NewProjectCommand { get; }
-        ICommand ShowDeleteDialogCommand { get; }
         ICommand ViewProjectCommand { get; }
     }
 }

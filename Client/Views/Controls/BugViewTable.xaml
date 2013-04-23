@@ -9,42 +9,59 @@
              xmlns:controls="clr-namespace:Client.Views.Controls">
 
     <UserControl.Resources>
-        
-        <DataTemplate DataType="{x:Type viewmodels:BugViewPanelViewModel}">
-            <controls:BugViewPanel />
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewmodels:BugAddPanelViewModel}">
-            <controls:BugAddPanel />
-        </DataTemplate>
-        
+
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewmodels:BugViewPanelViewModel}">
+                <controls:BugViewPanel />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:BugAddPanelViewModel}">
+                <controls:BugAddPanel />
+            </DataTemplate>
+        </ResourceDictionary>
+
     </UserControl.Resources>
 
     <Grid>
-        <Label Content="{Binding ProjectTitle}" Height="58" Margin="54,28,67,0" Name="labelProjectTitle" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="737*" />
+            <ColumnDefinition Width="50*" />
+        </Grid.ColumnDefinitions>
+        <Label Content="{Binding ProjectTitle}" Height="58" Margin="54,28,12,0" Name="labelProjectTitle" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" Grid.ColumnSpan="2" />
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Top">
-            <Button Content="&lt;&lt;" Command="{Binding Path=Pager.GotoFirstPageCommand}" />
-            <Button Content="&lt;" Command="{Binding Path=Pager.GotoPreviousPageCommand}" />
-            <TextBlock Text="Page" />
-            <TextBox Text="{Binding Path=Pager.CurrentPage, ValidatesOnExceptions=True}" />
-            <TextBlock Text="{Binding Path=Pager.PageCount, StringFormat=of {0}}" />
-            <Button Content=">" Command="{Binding Path=Pager.GotoNextPageCommand}" />
-            <Button Content=">>" Command="{Binding Path=Pager.GotoLastPageCommand}" />
+        <StackPanel Margin="54,89,0,0"  HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+
+            <Button Margin="0,0,-3,0"  BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=Pager.GotoFirstPageCommand}" >
+                <Image Source="../../Resources/first_arrow.png" Width="15"  />
+            </Button>
+
+            <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=Pager.GotoPreviousPageCommand}" >
+                <Image Source="../../Resources/previous_arrow.png" Width="15"  />
+            </Button>
+            
+            <TextBlock Margin="3,0,2,0"  Text="Page" />
+            <TextBlock Text="{Binding Path=Pager.CurrentPage, ValidatesOnExceptions=True}" />
+            <TextBlock Margin="0,0,3,0"  Text="{Binding Path=Pager.PageCount, StringFormat= {} of {0}}" />
+
+            <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=Pager.GotoNextPageCommand}">
+                <Image Source="../../Resources/next_arrow.png" Width="15"  />
+            </Button>
+
+            <Button Margin="-3,0,0,0" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=Pager.GotoLastPageCommand}" >
+                <Image Source="../../Resources/last_arrow.png" Width="15"  />
+            </Button>
         </StackPanel>
 
-        <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,67,66" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding MyBugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}">
-
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                </Style>
-            </DataGrid.RowStyle>
+        <DataGrid Style="{StaticResource BugDataGrid}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,12,52" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding MyBugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}" Grid.ColumnSpan="2">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" Width="Auto" SortDirection="Ascending" />
-                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Title" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" Width="*" >
+                <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" SortDirection="Ascending" />
+                
+                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Title" Width="*" MinWidth="40">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                             <Setter Property="TextWrapping" Value="NoWrap" />
@@ -52,24 +69,33 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=Priority}" Header="Priority" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=CreatedBy.AbreviatedFullName}" Header="Created By" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=DateFound.Date, StringFormat=dd/MM/yyyy}" Header="Created On" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=LastModified.Date, StringFormat=dd/MM/yyyy}" Header="Modified" Width="*" />
-                <DataGridCheckBoxColumn Binding="{Binding Path=Fixed}" Header="Fixed" Width="*" />
-                <DataGridTextColumn Binding="{Binding Path=AssignedUser.AbreviatedFullName}" Header="Assigned To" Width="*" />
+
+                <DataGridTextColumn Binding="{Binding Path=Description}"  Width="*" MinWidth="40" Header="Description" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="TextWrapping" Value="NoWrap" />
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                
+                <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" />
+                <DataGridTextColumn Binding="{Binding Path=Priority}" Header="Priority" />
+                <DataGridTextColumn Binding="{Binding Path=CreatedBy.AbreviatedFullName}" Header="Created By" />
+                <DataGridTextColumn Binding="{Binding Path=DateFound.Date, StringFormat=dd/MM/yyyy}" Header="Created On" />
+                <DataGridTextColumn Binding="{Binding Path=LastModified.Date, StringFormat=dd/MM/yyyy}" Header="Modified"/>
+                <DataGridCheckBoxColumn Binding="{Binding Path=Fixed}" Header="Fixed" />
+                <DataGridTextColumn Binding="{Binding Path=AssignedUser.AbreviatedFullName}" Header="Assigned To" />
 
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  Height="23" HorizontalAlignment="Left" Margin="598,83,0,0" Name="textBoxSearchText" VerticalAlignment="Top" Width="120" />
-        <Label Content="Search:" HorizontalAlignment="Left" Margin="543,82,0,0" Name="label1" VerticalAlignment="Top" FontWeight="Normal" FontSize="13" />
-
-        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" />
-        <TextBlock HorizontalAlignment="Right" Margin="0,450,111,37" Name="textBlockPageSize" Text="Page Size:" />
-        <TextBox Text="{Binding PageSizeTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,448,67,37" Name="textBox1" HorizontalAlignment="Right" Width="38" />
-        <ComboBox ItemsSource="{Binding FilterList, Mode=TwoWay}"  SelectedItem="{Binding SelectedFilter}"  Height="23" HorizontalAlignment="Left" Margin="600,54,0,0" Name="comboBoxFilters" VerticalAlignment="Top" Width="120" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="543,54,0,0" Name="textBlockFilter" Text="Filter:" VerticalAlignment="Top" />
+        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  Height="23" HorizontalAlignment="Right" Margin="0,83,12,0" Name="textBoxSearchText" VerticalAlignment="Top" Width="132" Grid.ColumnSpan="2" />
+        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" Panel.ZIndex="10" Grid.ColumnSpan="2" />
+        <TextBlock HorizontalAlignment="Right" Margin="0,0,63,19" Name="textBlockPageSize" Text="Page Size:" Height="23" VerticalAlignment="Bottom" />
+        <TextBox Text="{Binding PageSizeTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,17,21" Name="textBox1" HorizontalAlignment="Right" Width="38" Height="25" VerticalAlignment="Bottom" />
+        <ComboBox ItemsSource="{Binding FilterList, Mode=TwoWay}"  SelectedItem="{Binding SelectedFilter}"  Height="23" HorizontalAlignment="Right" Margin="0,55,12,0" Name="comboBoxFilters" VerticalAlignment="Top" Width="132" Grid.ColumnSpan="2" />
+        <Image Height="18" HorizontalAlignment="Right" Margin="0,86,106,0" Name="image1" Stretch="Uniform" VerticalAlignment="Top" Width="18" Source="/Client;component/Resources/search_icon.png" />
+        <Image Height="18" HorizontalAlignment="Right" Margin="0,58,106,0" Name="image2" Stretch="Uniform" VerticalAlignment="Top" Width="18" Source="/Client;component/Resources/filter_icon.png" />
     </Grid>
 </UserControl>

@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using Client.ViewModels.Controls;
 using Client.ViewModels.Controls.ProjectPanel;
 using Client.ViewModels.Controls.Dialogs;
+using Client.Views.Controls.Notifications;
 using MediatorLib;
 
 namespace Client
@@ -52,7 +53,10 @@ namespace Client
         private IUnityContainer RegisterInstances(IUnityContainer container)
         {
             IMessenger mess = container.Resolve<IMessenger>();
+            IGrowlNotifiactions notifs = container.Resolve<IGrowlNotifiactions>();
+
             container.RegisterInstance<IMessenger>(mess);
+            container.RegisterInstance<IGrowlNotifiactions>(notifs);
 
             return container;
         }
@@ -68,7 +72,7 @@ namespace Client
         {
             // Services
             container.RegisterType<ClientBase<ITrackerService>, TrackerServiceClient>(new InjectionConstructor());
-            container.RegisterType<IRegistration, RegistrationClient>(new InjectionConstructor());
+            container.RegisterType<IRegistrationService, RegistrationServiceClient>(new InjectionConstructor());
             
             container.RegisterType<IMessenger, Messenger>();
 
@@ -95,6 +99,9 @@ namespace Client
             container.RegisterType<IJoinProjectPanelViewModel, JoinProjectPanelViewModel>();
             container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>();
             container.RegisterType<IWestSideBarViewModel, WestSideBarViewModel>();
+
+            // Notification system
+            container.RegisterType<IGrowlNotifiactions, GrowlNotifiactions>();
 
             // Factories
             container.RegisterType<IServiceFactory, ServiceFactory>();

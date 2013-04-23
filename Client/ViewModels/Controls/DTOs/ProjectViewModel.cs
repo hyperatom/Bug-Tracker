@@ -19,6 +19,7 @@ namespace Client.ViewModels
     {
 
         private Project _Project;
+        private ITrackerService _Service;
 
         private bool _IsValidating = false;
         private bool _IsSelected = false;
@@ -167,6 +168,9 @@ namespace Client.ViewModels
 
                             else if (Code.Length != CodeLength)
                                 result = "Code must be " + CodeLength + " characters long.";
+
+                            else if (_Errors.ContainsKey("ExistingCode"))
+                                result = "A project with this code already exists.";
 
                             break;
                         }

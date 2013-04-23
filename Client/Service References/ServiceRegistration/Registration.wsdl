@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Registration" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-  <wsp:Policy wsu:Id="WSHttpBinding_IRegistration_policy">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RegistrationService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IRegistrationService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -96,7 +96,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IRegistration_Register_Input_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IRegistrationService_Register_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -115,7 +115,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IRegistration_Register_output_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IRegistrationService_Register_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -134,7 +134,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IRegistration_UserExists_Input_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IRegistrationService_UserExists_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -153,7 +153,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IRegistration_UserExists_output_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IRegistrationService_UserExists_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -179,56 +179,56 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/BugTrackerRegistration/mex?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DataEntities.Entity" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IRegistration_Register_InputMessage">
+  <wsdl:message name="IRegistrationService_Register_InputMessage">
     <wsdl:part name="parameters" element="tns:Register" />
   </wsdl:message>
-  <wsdl:message name="IRegistration_Register_OutputMessage">
+  <wsdl:message name="IRegistrationService_Register_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterResponse" />
   </wsdl:message>
-  <wsdl:message name="IRegistration_UserExists_InputMessage">
+  <wsdl:message name="IRegistrationService_UserExists_InputMessage">
     <wsdl:part name="parameters" element="tns:UserExists" />
   </wsdl:message>
-  <wsdl:message name="IRegistration_UserExists_OutputMessage">
+  <wsdl:message name="IRegistrationService_UserExists_OutputMessage">
     <wsdl:part name="parameters" element="tns:UserExistsResponse" />
   </wsdl:message>
-  <wsdl:portType name="IRegistration">
+  <wsdl:portType name="IRegistrationService">
     <wsdl:operation name="Register">
-      <wsdl:input wsaw:Action="http://tempuri.org/IRegistration/Register" message="tns:IRegistration_Register_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IRegistration/RegisterResponse" message="tns:IRegistration_Register_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IRegistrationService/Register" message="tns:IRegistrationService_Register_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRegistrationService/RegisterResponse" message="tns:IRegistrationService_Register_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="UserExists">
-      <wsdl:input wsaw:Action="http://tempuri.org/IRegistration/UserExists" message="tns:IRegistration_UserExists_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IRegistration/UserExistsResponse" message="tns:IRegistration_UserExists_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IRegistrationService/UserExists" message="tns:IRegistrationService_UserExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRegistrationService/UserExistsResponse" message="tns:IRegistrationService_UserExists_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="WSHttpBinding_IRegistration" type="tns:IRegistration">
-    <wsp:PolicyReference URI="#WSHttpBinding_IRegistration_policy" />
+  <wsdl:binding name="WSHttpBinding_IRegistrationService" type="tns:IRegistrationService">
+    <wsp:PolicyReference URI="#WSHttpBinding_IRegistrationService_policy" />
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Register">
-      <soap12:operation soapAction="http://tempuri.org/IRegistration/Register" style="document" />
+      <soap12:operation soapAction="http://tempuri.org/IRegistrationService/Register" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IRegistration_Register_Input_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IRegistrationService_Register_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IRegistration_Register_output_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IRegistrationService_Register_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UserExists">
-      <soap12:operation soapAction="http://tempuri.org/IRegistration/UserExists" style="document" />
+      <soap12:operation soapAction="http://tempuri.org/IRegistrationService/UserExists" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IRegistration_UserExists_Input_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IRegistrationService_UserExists_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IRegistration_UserExists_output_policy" />
+        <wsp:PolicyReference URI="#WSHttpBinding_IRegistrationService_UserExists_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="Registration">
-    <wsdl:port name="WSHttpBinding_IRegistration" binding="tns:WSHttpBinding_IRegistration">
+  <wsdl:service name="RegistrationService">
+    <wsdl:port name="WSHttpBinding_IRegistrationService" binding="tns:WSHttpBinding_IRegistrationService">
       <soap12:address location="http://localhost:8733/Design_Time_Addresses/BugTrackerRegistration/reg" />
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:8733/Design_Time_Addresses/BugTrackerRegistration/reg</wsa10:Address>

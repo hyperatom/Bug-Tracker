@@ -18,11 +18,7 @@
                     <GridViewColumn Header="Name">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock>
-                                    <Hyperlink Command="{Binding DataContext.ViewProjectCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
-                                        <Label Content="{Binding Path=Name}" />
-                                    </Hyperlink>
-                                </TextBlock>
+                                <Label Content="{Binding Path=Name}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -37,20 +33,12 @@
 
                     <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
 
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Command="{Binding DataContext.ShowDeleteDialogCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">
-                                    X
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
                 </GridView>
             </ListView.View>
 
         </ListView>
-
+        
+        <Button Command="{Binding ViewProjectCommand}" Content="Edit" Height="23" HorizontalAlignment="Left" Margin="83,43,0,0" Name="button2" VerticalAlignment="Top" Width="63" />
+        <Button Command="{Binding DeleteProjectCommand}" Content="Delete" Height="23" HorizontalAlignment="Left" Margin="153,43,0,0" Name="button3" VerticalAlignment="Top" Width="63" />
     </Grid>
 </UserControl>

@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using Client.Helpers;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Windows;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels.Controls.ProjectPanel
 {
@@ -14,11 +16,13 @@ namespace Client.ViewModels.Controls.ProjectPanel
     {
 
         private ITrackerService _Service;
+        private IGrowlNotifiactions _Notifier;
 
         private String _Code;
         private Role _SelectedRole;
         private User _User;
         private IList<Role> _RoleList;
+        private bool _IsRequestButtonEnabled;
 
         private bool _IsValidating = false;
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
@@ -26,10 +30,10 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private ICommand _JoinProjectCommand;
 
 
-        public JoinProjectPanelViewModel(ITrackerService svc)
+        public JoinProjectPanelViewModel(ITrackerService svc, IGrowlNotifiactions notifier)
         {
             _Service = svc;
-
+            _Notifier = notifier;
             _User = svc.GetMyUser();
         }
 
@@ -64,7 +68,13 @@ namespace Client.ViewModels.Controls.ProjectPanel
 
         public String Code
         {
-            get { return _Code; }
+            get 
+            {
+                if (_Code == null)
+                    _Code = "";
+
+                return _Code;
+            }
             set { _Code = value; OnPropertyChanged("Code"); }
         }
 
@@ -83,6 +93,15 @@ namespace Client.ViewModels.Controls.ProjectPanel
         }
 
 
+        private bool IsRequestButtonEnabled
+        {
+            get 
+            { 
+                return (_Code != null && this._Code.Length == 5);
+            }
+        }
+
+
         #region Commands
 
         public ICommand JoinProjectCommand
@@ -91,7 +110,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
             {
                 if (_JoinProjectCommand == null)
                 {
-                    _JoinProjectCommand = new RelayCommand(param => RequestJoinProject());
+                    _JoinProjectCommand = new RelayCommand(param => RequestJoinProject(), p => IsRequestButtonEnabled);
                 }
 
                 return _JoinProjectCommand;
@@ -117,7 +136,21 @@ namespace Client.ViewModels.Controls.ProjectPanel
             {
                 User myUser = _Service.GetMyUser();
 
-                _Service.RequestProjectAssignment(Code, myUser, SelectedRole);
+                try
+                {
+                    _Service.RequestProjectAssignment(Code, myUser, SelectedRole);
+
+                    _Notifier.AddNotification(new Notification { 
+                        ImageUrl = Notification.ICON_NOTIFICATION,
+                        Title = "Request Sent!",
+                        Message = "Your request to join this project has been sent." });
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+                Code = "";
             }
         }
 

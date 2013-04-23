@@ -78,7 +78,7 @@ namespace Client.ViewModels
         }
 
 
-        public Client.ServiceReference.Action Action
+        public BugAction Action
         {
             get 
             {

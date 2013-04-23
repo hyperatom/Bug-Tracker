@@ -1,0 +1,812 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Client.Factories.ControlFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAGAgIACAQABAAAAAEAAABEAAAAAAIAAACAAAAAkA=</HashCode>
+      <FileName>Factories\ControlFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.Factories.ServiceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAQAAAAAAAABAA=</HashCode>
+      <FileName>Factories\ServiceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.Factories.WindowFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQAAAAgAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Factories\WindowFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.Helpers.Messenger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAEAgAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\Mediator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.Helpers.Messages" Collapsed="true">
+    <Position X="63" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEASAgACAAJAAAAGDQAABYAAgACACEAIAAAABAAAE=</HashCode>
+      <FileName>Helpers\Messages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Helpers.ObservableObject" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\ObservableObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.Helpers.PasswordHelper" Collapsed="true">
+    <Position X="52.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBABAAAAAAAAAAEAAAAAAACoABAgAAAAAAAAAICAAAg=</HashCode>
+      <FileName>Helpers\PasswordHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Helpers.RelayCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ObservableRangeCollection&lt;T&gt;" Collapsed="true">
+    <Position X="66.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAIAEACA=</HashCode>
+      <FileName>Helpers\ObservableRangeCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Helpers.Paging.CurrentPageChangedEventArgs" Collapsed="true">
+    <Position X="61.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\Paging\CurrentPageChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Helpers.Paging.PagingController" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAEgQAgBAAAAAEAAAAAAAAAACAAQABAQEgAAABI=</HashCode>
+      <FileName>Helpers\Paging\PagingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Properties.Resources" Collapsed="true">
+    <Position X="66.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Properties.Settings" Collapsed="true">
+    <Position X="61.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.Bug" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="63" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAqAAAGAAAggAAMABAACAQCgAABAABEAAAgAANAAAU=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.User" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="66.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEIiAAAAAAAAAQAABAAAhAAAAAAGAAAgAAIACAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.Project" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="54.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAACAAAggAAAAAAgAAQAgAQAAAAEAAAgAAIAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.Role" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAAAAAAAAAAAAAAAAgAQAAAAEAAAgEAIAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.BugActionLog" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAQAgAAACAAAAAAAAgAACAAAFAQAgBAIAAAQ=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.Action" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="54.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACCAAAAAAAAAAAAAAAgAAAAAAEAAAkAAIAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceReference.GetAllBugsCompletedEventArgs" Collapsed="true">
+    <Position X="52.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.DeleteBugsCompletedEventArgs" Collapsed="true">
+    <Position X="63" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetProjectsAssignedToCompletedEventArgs" Collapsed="true">
+    <Position X="63" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetAllProjectsByUserCompletedEventArgs" Collapsed="true">
+    <Position X="54.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetBugsByProjectCompletedEventArgs" Collapsed="true">
+    <Position X="63" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.SearchAllProjectBugsAttributesCompletedEventArgs" Collapsed="true">
+    <Position X="57.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.CountBugsInProjectCompletedEventArgs" Collapsed="true">
+    <Position X="59.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.SaveBugCompletedEventArgs" Collapsed="true">
+    <Position X="54.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.AddBugCompletedEventArgs" Collapsed="true">
+    <Position X="56" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetMyUserCompletedEventArgs" Collapsed="true">
+    <Position X="56" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetBugPriorityListCompletedEventArgs" Collapsed="true">
+    <Position X="59.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetUsersByProjectCompletedEventArgs" Collapsed="true">
+    <Position X="66.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetAssignedUsersByProjectCompletedEventArgs" Collapsed="true">
+    <Position X="57.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetManagerUsersByProjectCompletedEventArgs" Collapsed="true">
+    <Position X="54.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetBugStatusListCompletedEventArgs" Collapsed="true">
+    <Position X="66.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetProjectsManagedByCompletedEventArgs" Collapsed="true">
+    <Position X="64.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.AddProjectCompletedEventArgs" Collapsed="true">
+    <Position X="57.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.SaveProjectCompletedEventArgs" Collapsed="true">
+    <Position X="56" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetAllRolesCompletedEventArgs" Collapsed="true">
+    <Position X="56" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetProjectByCodeCompletedEventArgs" Collapsed="true">
+    <Position X="61.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetUsersPendingProjectJoinCompletedEventArgs" Collapsed="true">
+    <Position X="52.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.IsValidProjectCodeCompletedEventArgs" Collapsed="true">
+    <Position X="54.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetNumberOfBugsAssignedToUserInProjectCompletedEventArgs" Collapsed="true">
+    <Position X="57.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetBugsAssignedToProjectAndUserCompletedEventArgs" Collapsed="true">
+    <Position X="61.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.UserExistsCompletedEventArgs" Collapsed="true">
+    <Position X="54.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetOpenBugsInProjectCompletedEventArgs" Collapsed="true">
+    <Position X="59.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetBugsInProgressFromProjectCompletedEventArgs" Collapsed="true">
+    <Position X="64.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetClosedBugsInProjectCompletedEventArgs" Collapsed="true">
+    <Position X="52.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.GetAllBugActionLogsInProjectCompletedEventArgs" Collapsed="true">
+    <Position X="66.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceReference.TrackerServiceClient" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="63" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>P36Hf/U387///9+yr3y7//q+/v/e7/u/+f+3/TX/9f8=</HashCode>
+      <FileName>Service References\ServiceReference\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceRegistration.User" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="64.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEIiAAAAAAAAAQAABAAAhAAAAAAGAAAgAAIACAA=</HashCode>
+      <FileName>Service References\ServiceRegistration\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ServiceRegistration.UserExistsCompletedEventArgs" Collapsed="true">
+    <Position X="52.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceRegistration\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ServiceRegistration.RegistrationClient" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="61.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BhAAIAAQAABAQREAAAIAAAACAAgbAAAiCAAQACAAAAA=</HashCode>
+      <FileName>Service References\ServiceRegistration\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.AccountSettingsViewModel" Collapsed="true">
+    <Position X="34" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAEsAACEBAUAECEEAAAACRAEAAAASQAAAAAAEAAg=</HashCode>
+      <FileName>ViewModels\Controls\AccountSettingsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectManagerViewModel" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABBDAQJJBAACIEAAQAAABACAAAAAAABAAIAAAAAAAIA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectManagerViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.WestSideBarViewModel" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAIIAAAAAAAAQAQAAAAABAAAAAAQAAAAAACAAAA=</HashCode>
+      <FileName>ViewModels\Controls\WestSideBarViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.BugAddPanelViewModel" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAABAAAAAEAAA=</HashCode>
+      <FileName>ViewModels\Controls\BugPanel\BugAddPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.BugPanelViewModel" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQIgAAsIACAAEAAAQAQACEAAAAAAAARSAAAAAAAIAAA=</HashCode>
+      <FileName>ViewModels\Controls\BugPanel\BugPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.BugViewPanelViewModel" Collapsed="true">
+    <Position X="16.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAQAAAAAAAAAAAACAAAEAAAAAAAAAgAAA=</HashCode>
+      <FileName>ViewModels\Controls\BugPanel\BugViewPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.BugTableViewModel" Collapsed="true">
+    <Position X="25.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFDAAIIgmBHIgAACOTQAAACICAMgAAQAAAAUAAABSQ=</HashCode>
+      <FileName>ViewModels\Controls\BugTableViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.CommandPanelViewModel" Collapsed="true">
+    <Position X="36.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIIAAARAEAAAAWAAAAAAAAAQAAxAgAAAAAEACA=</HashCode>
+      <FileName>ViewModels\Controls\CommandPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.BugActionLogViewModel" Collapsed="true">
+    <Position X="41" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiACAACAgAAAAAAAAAAAAIAAAAICAgABAQAAEAAAAIQ=</HashCode>
+      <FileName>ViewModels\Controls\DTOs\BugActionViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.BugViewModel" Collapsed="true">
+    <Position X="45.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAqAAAEAAAgEQAECACACAUCQAAAAAAAAAAAAADAABE=</HashCode>
+      <FileName>ViewModels\Controls\DTOs\BugViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.ProjectViewModel" Collapsed="true">
+    <Position X="50" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgEQAECACgAAQAQAAAAAAAAAAAAICACBA=</HashCode>
+      <FileName>ViewModels\Controls\DTOs\ProjectViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.LoginViewModel" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAYAQIAKAABAgQAAAEAAQBIAAgQiABIwCACAAgA=</HashCode>
+      <FileName>ViewModels\Windows\LoginViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.MainWindowViewModel" Collapsed="true">
+    <Position X="18.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Bo0AAAIYBggBEohAAANDAAoEFBAACAgwAEAAAMAAgIA=</HashCode>
+      <FileName>ViewModels\Windows\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.RegistrationViewModel" Collapsed="true">
+    <Position X="23" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAAEkAACEAAUBECAEABAAAQAEBAAC2QAAAAQAQAEg=</HashCode>
+      <FileName>ViewModels\Windows\RegistrationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.Dialogs.DeleteProjectDialogViewModel" Collapsed="true">
+    <Position X="27.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAIAACAAEAQAAAAAAAwAAAAAABAAAAAAAICRAAA=</HashCode>
+      <FileName>ViewModels\Controls\Dialogs\DeleteProjectDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.DTOs.UserViewModel" Collapsed="true">
+    <Position X="43.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAEYAECQCAAAAARABAAAACAAAIAACAABA=</HashCode>
+      <FileName>ViewModels\Controls\DTOs\UserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.AssignedProjectsPanelViewModel" Collapsed="true">
+    <Position X="47.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAASMIBCAAEIAIAAAAAAAAAAAAAAAQAAgAAACAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\AssignedProjectsPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.JoinProjectPanelViewModel" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACAAAAAAAAAAYQECACgBCAAQRAAAAgQAAAAAgAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\JoinProjectPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.ManagedProjectsPanelViewModel" Collapsed="true">
+    <Position X="20.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAQIKBAAAAAAAAAgIAgiAAABBAABQACAAAACAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\ManagedProjectsPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.ProjectAddPanelViewModel" Collapsed="true">
+    <Position X="29.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\ProjectAddPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.ProjectPanelViewModel" Collapsed="true">
+    <Position X="31" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAIABCQEEAAAAAACCAAAAAAAAAAQAAAAAAAACAg=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\ProjectPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.ProjectUsersPanelViewModel" Collapsed="true">
+    <Position X="38.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIBAAAIIDIoACQIAAAEAAAAAAYoIQAEQQAACAAEICgA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\ProjectUsersPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Client.ViewModels.Controls.ProjectPanel.ProjectViewPanelViewModel" Collapsed="true">
+    <Position X="32" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\ProjectViewPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.App" Collapsed="true">
+    <Position X="59.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAABAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.LoginWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="57.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\LoginWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="59.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.RegistrationWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="63" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\RegistrationWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Client.Views.Controls.AccountSettingsPanel" Collapsed="true">
+    <Position X="52.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\AccountSettingsPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.AssignedProjectsPanel" Collapsed="true">
+    <Position X="61.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\AssignedProjectsPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.BugAddPanel" Collapsed="true">
+    <Position X="66.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\BugAddPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.BugViewPanel" Collapsed="true">
+    <Position X="52.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\BugViewPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.BugViewTable" Collapsed="true">
+    <Position X="54.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\BugViewTable.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.CommandPanel" Collapsed="true">
+    <Position X="56" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\CommandPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.JoinProjectPanel" Collapsed="true">
+    <Position X="56" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\JoinProjectPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.ManagedProjectsPanel" Collapsed="true">
+    <Position X="61.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\ManagedProjectsPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.ProjectManagerPanel" Collapsed="true">
+    <Position X="56" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\ProjectManagerPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.ProjectUsersPanel" Collapsed="true">
+    <Position X="57.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\ProjectUsersPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.ProjectViewPanel" Collapsed="true">
+    <Position X="59.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\ProjectViewPanel.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.WestSideBar" Collapsed="true">
+    <Position X="56" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\WestSideBar.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Client.Views.Controls.Dialogs.DeleteProjectDialog" Collapsed="true">
+    <Position X="64.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Controls\Dialogs\DeleteProjectDialog.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Client.Factories.IControlFactory" Collapsed="true">
+    <Position X="56" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAgIACAQABAAAAAEAAABEAAAAAAIAAACAAAAAkA=</HashCode>
+      <FileName>Factories\IControlFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.Factories.IServiceFactory" Collapsed="true">
+    <Position X="66.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Factories\IServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.Factories.IWindowFactory" Collapsed="true">
+    <Position X="54.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Factories\IWindowFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.Helpers.IMessenger" Collapsed="true">
+    <Position X="63" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\IMessenger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.IAccountSettingsViewModel" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQAACAAAAAAAAAAAAAACQAAAAAAEAAA=</HashCode>
+      <FileName>ViewModels\Controls\AccountSettingsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.IBugTableViewModel" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAEAAAACA=</HashCode>
+      <FileName>ViewModels\Controls\IBugTableViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.IContentPanel" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\IContentPanel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.IProjectManagerViewModel" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\IProjectManagerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.IWestSideBarViewModel" Collapsed="true">
+    <Position X="52.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\WestSideBarViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.ICommandPanelViewModel" Collapsed="true">
+    <Position X="54.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAAACA=</HashCode>
+      <FileName>ViewModels\Controls\ICommandPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.Dialogs.IDeleteProjectDialogViewModel" Collapsed="true">
+    <Position X="57.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAgAAAAAABAAAAAAAACQAAA=</HashCode>
+      <FileName>ViewModels\Controls\Dialogs\IDeleteProjectDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.ProjectPanel.IAssignedProjectsPanelViewModel" Collapsed="true">
+    <Position X="52.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\IAssignedProjectsPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.ProjectPanel.IJoinProjectPanelViewModel" Collapsed="true">
+    <Position X="59.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgBCAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\IJoinProjectPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.ProjectPanel.IManagedProjectsPanelViewModel" Collapsed="true">
+    <Position X="61.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAgIAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\IManagedProjectsPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ViewModels.Controls.ProjectPanel.IProjectUsersPanelViewModel" Collapsed="true">
+    <Position X="64.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABAAAAAAAIAAAIAAAEAAAAAAAAAQAEAAAACAAAAAAA=</HashCode>
+      <FileName>ViewModels\Controls\ProjectPanel\IProjectUsersPanelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.ILoginWindow" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\LoginWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.IMainWindow" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.IRegistrationWindow" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\RegistrationWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Client.Views.Windows.IWindow" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Windows\IWindow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

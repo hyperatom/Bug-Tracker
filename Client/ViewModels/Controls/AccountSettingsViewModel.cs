@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.ServiceModel;
 using System.Windows;
 using System.ComponentModel;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels.Controls
 {
@@ -38,6 +39,8 @@ namespace Client.ViewModels.Controls
         private bool _IsValidating = false;
         private bool _IsSaveEnabled = true;
 
+        private IGrowlNotifiactions _Notifier;
+
         private RelayCommand _SaveCommand;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
@@ -48,10 +51,11 @@ namespace Client.ViewModels.Controls
         /// </summary>
         /// <param name="loader">The window loader.</param>
         /// <param name="svc">The registration web service.</param>
-        public AccountSettingsViewModel(ITrackerService svc, IMessenger mess) 
+        public AccountSettingsViewModel(ITrackerService svc, IMessenger mess, IGrowlNotifiactions notifier) 
         {
             _Service = svc;
             _Messenger = mess;
+            _Notifier = notifier;
 
             User myUser = _Service.GetMyUser();
 
@@ -86,7 +90,8 @@ namespace Client.ViewModels.Controls
             set 
             { 
                 _FirstAndLastName = value.Trim();
-                SplitFullName(_FirstAndLastName); 
+                SplitFullName(_FirstAndLastName);
+                EnableSaveButton();
                 OnPropertyChanged("FirstAndLastName"); 
             }
         }
@@ -95,14 +100,14 @@ namespace Client.ViewModels.Controls
         public string Email
         {
             get { return _Email; }
-            set { _Email = value.Trim(); OnPropertyChanged("Email"); }
+            set { _Email = value.Trim(); OnPropertyChanged("Email"); EnableSaveButton(); }
         }
 
 
         public string Password
         {
             get { return _Password; }
-            set { _Password = value.Trim(); OnPropertyChanged("Password"); }
+            set { _Password = value.Trim(); OnPropertyChanged("Password"); EnableSaveButton(); }
         }
 
 
@@ -196,6 +201,9 @@ namespace Client.ViewModels.Controls
 
                     // Execute registration operation concurrently
                     _Service.SaveUserCredentials(user);
+                    _Notifier.AddNotification(new Notification { Title = "Saved!", Message = "Your account settings have been saved." });
+                    IsSaveButtonEnabled = false;
+
                 }
                 catch (FaultException e)
                 {
@@ -208,6 +216,12 @@ namespace Client.ViewModels.Controls
             {
                 IsSaveButtonEnabled = true;
             }
+        }
+
+
+        private void EnableSaveButton()
+        {
+            IsSaveButtonEnabled = true;
         }
 
 

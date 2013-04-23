@@ -11,7 +11,7 @@ namespace BugTrackerService
 {
 
     [ServiceContract]
-    public interface IRegistration
+    public interface IRegistrationService
     {
         [OperationContract]
         void Register(User user);
