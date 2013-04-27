@@ -15,6 +15,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
             : base(svc, mess)
         {
             ButtonName = "Add & Close";
+            PanelTitle = "Add Project";
         }
 
 

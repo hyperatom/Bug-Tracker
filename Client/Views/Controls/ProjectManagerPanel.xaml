@@ -39,7 +39,7 @@
         
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Margin="20,40,5,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -53,16 +53,22 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding QuickJoinPanel}" Name="QuickJoinPanel" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        
-        <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Center" />
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Center" />
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/projects_folder.png" Height="51" Width="50" />
+                <TextBlock Margin="5"  Text="Project Manager" FontSize="28" FontWeight="SemiBold" Foreground="Black" VerticalAlignment="Center" TextAlignment="Left" />
+            </StackPanel>
+            <Rectangle Margin="10,5,40,0" Height="1" Fill="#FF1885A1" HorizontalAlignment="Stretch" />
+        </StackPanel>
 
-        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" HorizontalAlignment="Right" />
+        <ContentControl Margin="10,15" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding QuickJoinPanel}" Name="QuickJoinPanel" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-        <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="2" Content="{Binding DeleteDialog}" HorizontalAlignment="Center" VerticalAlignment="Center"  Name="contentControl1" />
+        <ContentControl Margin="15,15" Grid.Row="2" Grid.Column="0" Content="{Binding ManagedProjectsPanel}" Background="AliceBlue" Name="ManagedProjectsPanel" VerticalAlignment="Top" />
+        <ContentControl Margin="5,15,0,0" Grid.Row="2" Grid.Column="1" Content="{Binding AssignedProjectsPanel}" Background="Azure" Name="AssignedProjectsPanel" VerticalAlignment="Top" />
 
-        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Height="171" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="-12,0,0,0" Grid.Row="2" />
+        <ContentControl Margin="0,40,0,0"  Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" Content="{Binding ProjectUsersPanel}" Name="ProjectUsersPanel" HorizontalAlignment="Right" />
+
+        <ContentControl Content="{Binding SouthViewPanel}" Name="SouthViewPane" Grid.ColumnSpan="2" Grid.RowSpan="4" VerticalAlignment="Bottom" />
     </Grid>
     
 </UserControl>

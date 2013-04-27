@@ -33,6 +33,8 @@ namespace Client
 
             viewModel.RequestClose += delegate { this.Close(); };
 
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             InitializeComponent();
         }
 

@@ -7,44 +7,55 @@
              d:DesignHeight="295" d:DesignWidth="569">
     
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\MetroButton.xaml" />
+                <ResourceDictionary Source="..\..\Resources\TextBoxControlTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
-        
-        
-        <TextBlock Height="31" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Assigned To" VerticalAlignment="Top" FontSize="20" FontWeight="Normal" />
+    <Grid>
 
-        <ListView SelectedItem="{Binding SelectedProject}" ItemsSource="{Binding AssignedProjects}" Margin="0,76,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+        <TextBlock Height="43" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Assigned To" VerticalAlignment="Top" FontSize="20" FontWeight="Normal" />
+
+        <ListView SelectedItem="{Binding SelectedProject}" ItemsSource="{Binding AssignedProjects}" Margin="0,100,0,5" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Top" HorizontalAlignment="Left">
 
             <ListView.View>
                 <GridView>
 
-                    <GridViewColumn Header="Name">
+                    <GridViewColumn Header="Name" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Description">
+                    <GridViewColumn Header="Description" Width="100" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
+                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" Width="50" />
 
                 </GridView>
             </ListView.View>
 
         </ListView>
 
-        <Button Command="{Binding LeaveProjectCommand}" Content="Leave" Height="23" HorizontalAlignment="Left" Margin="0,37,0,0" Name="buttonLeave" VerticalAlignment="Top" Width="66" />
-    
-        </Grid>
+        <Button Style="{StaticResource GoogleButton}" Command="{Binding LeaveProjectCommand}" Margin="0,49,0,0" Name="buttonLeave" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/gnome_application_exit.png" Height="26" Width="26" />
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Leave" FontWeight="SemiBold" />
+            </StackPanel>
+        </Button>
+
+    </Grid>
     
 </UserControl>

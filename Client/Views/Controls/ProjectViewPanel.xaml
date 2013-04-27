@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="167" d:DesignWidth="578">
+             d:DesignHeight="167" d:DesignWidth="578" Height="218" Width="746">
     
     <UserControl.Resources>
 
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\ButtonStyle.xaml" />
+                <ResourceDictionary Source="..\..\Resources\MetroButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
         <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
         
         <Style TargetType="TextBox">
@@ -17,19 +23,27 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}" Background="#FFE8A972">
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="17,27,0,0" Name="textBlock1" Text="Name:" VerticalAlignment="Top" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="17,66,0,0" Name="textBlock2" Text="Description:" VerticalAlignment="Top" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="270,28,0,0" Name="textBlock3" Text="Code:" VerticalAlignment="Top" />
+    <Border Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}" Background="AliceBlue" BorderBrush="#FF1885A1" BorderThickness="3,3,3,3" CornerRadius="3,3,0,0" Height="197" Width="474">
 
-        <TextBox Text="{Binding Project.Name, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="86,26,0,0" Name="textBoxName" VerticalAlignment="Top" Width="151" />
-        <TextBox Text="{Binding Project.Description, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="81" HorizontalAlignment="Left" Margin="86,66,0,0" Name="textBoxDesc" VerticalAlignment="Top" Width="151" />
-        <TextBox Text="{Binding Project.Code, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="314,26,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="69" />
-        
-        <Button Command="{Binding SaveProjectCommand}" CommandParameter="{Binding Project}" Content="{Binding ButtonName}" Height="23" HorizontalAlignment="Left" Margin="308,124,0,0" Name="buttonSave" VerticalAlignment="Top" Width="75" />
-        <Button Command="{Binding CloseViewPanelCommand}" Content="Close" Height="23" HorizontalAlignment="Left" Margin="398,124,0,0" Name="button1" VerticalAlignment="Top" Width="66" />
-    </Grid>
+        <StackPanel Orientation="Vertical">
+
+            <TextBlock Margin="-2,-2,-2,0" Padding="0,0,0,3" Foreground="White" Background="#FF1885A1" HorizontalAlignment="Stretch" TextAlignment="Center" Text="{Binding PanelTitle}" />
+
+            <Grid>
+                <TextBlock FontSize="13" Height="23" HorizontalAlignment="Left" Margin="17,27,0,0" Name="textBlock1" Text="Name:" VerticalAlignment="Top" />
+                <TextBlock FontSize="13" Height="23" HorizontalAlignment="Left" Margin="17,66,0,0" Name="textBlock2" Text="Description:" VerticalAlignment="Top" />
+                <TextBlock FontSize="13" Height="23" HorizontalAlignment="Left" Margin="275,63,0,0" Name="textBlock3" Text="Code:" VerticalAlignment="Top" />
+
+                <TextBox Text="{Binding Project.Name, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="23" HorizontalAlignment="Left" Margin="106,27,0,0" Name="textBoxName" VerticalAlignment="Top" Width="151" />
+                <TextBox Text="{Binding Project.Description, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="93" HorizontalAlignment="Left" Margin="106,66,0,0" Name="textBoxDesc" VerticalAlignment="Top" Width="151" TextWrapping="Wrap"  />
+                <TextBox Text="{Binding Project.Code, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="365,62,0,0" Name="textBoxCode" VerticalAlignment="Top" HorizontalAlignment="Left" Width="69" />
+
+                <Button Style="{StaticResource GoogleButton}" Command="{Binding SaveProjectCommand}" CommandParameter="{Binding Project}" Content="{Binding ButtonName}" Height="23" HorizontalAlignment="Left" Margin="276,136,0,0" Name="buttonSave" VerticalAlignment="Top" Width="75" />
+                <Button Style="{StaticResource GoogleButton}" Command="{Binding CloseViewPanelCommand}" Content="Close" Height="23" HorizontalAlignment="Left" Margin="372,136,0,0" Name="button1" VerticalAlignment="Top" Width="66" />
+            </Grid>
+        </StackPanel>
+    </Border>
 </UserControl>

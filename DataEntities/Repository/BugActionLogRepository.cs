@@ -23,6 +23,7 @@ namespace DataEntities.Repository
             using (var ctx = new WcfEntityContext())
             {
                 log.Action = ctx.Actions.Where(p => p.Id == log.Action.Id).SingleOrDefault();
+                log.Project = ctx.Projects.Where(p => log.Project.Id == p.Id).SingleOrDefault();
 
                 ctx.BugActionLogs.AddObject(log);
 

@@ -133,7 +133,7 @@ namespace Client.ViewModels.Controls
             {
                 if (_SaveCommand == null)
                 {
-                    _SaveCommand = new RelayCommand(param => this.SaveCredentials());
+                    _SaveCommand = new RelayCommand(param => this.SaveCredentials(), p => IsSaveButtonEnabled);
                 }
 
                 return _SaveCommand;

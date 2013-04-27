@@ -46,10 +46,16 @@ namespace Client
 
             this.LocationChanged += new EventHandler(OnWindowMoved);
             this.Closing += new CancelEventHandler(OnWindowClose);
+            this.SizeChanged += new SizeChangedEventHandler(OnWindowResized);
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
 
-            _Notifications.AddNotification(new Notification { Title = "Mesage #1", ImageUrl = Notification.ICON_NOTIFICATION, Message = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." });
+
+        public void OnWindowResized(object sender, SizeChangedEventArgs e)
+        {
+            Console.WriteLine("Height: " + e.NewSize.Height);
+            Console.WriteLine("Width: " + e.NewSize.Width);
         }
 
 

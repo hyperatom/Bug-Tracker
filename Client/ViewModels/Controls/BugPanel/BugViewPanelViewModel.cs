@@ -72,12 +72,15 @@ namespace Client.ViewModels
 
         private void UpdateBugView(BugViewModel bug)
         {
-            EditedBug = bug.Clone();
+            if (bug != null)
+            {
+                EditedBug = bug.Clone();
 
-            if (EditedBug.AssignedUser != null)
-                AssignedUser = UsersInActiveProject.Where(p => p.Id == EditedBug.AssignedUser.Id).SingleOrDefault();
-            else
-                AssignedUser = UsersInActiveProject.Where(p => p.Id == 0).SingleOrDefault();
+                if (EditedBug.AssignedUser != null)
+                    AssignedUser = UsersInActiveProject.Where(p => p.Id == EditedBug.AssignedUser.Id).SingleOrDefault();
+                else
+                    AssignedUser = UsersInActiveProject.Where(p => p.Id == 0).SingleOrDefault();
+            }
         }
 
 

@@ -4,41 +4,70 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="228">
+             d:DesignHeight="153" d:DesignWidth="273">
+    
+    <UserControl.Resources>
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\MetroButton.xaml" />
+                <ResourceDictionary Source="..\..\Resources\TextBoxControlTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid>
 
-        <TextBlock Height="35" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="208" />
+        <TextBlock Height="42" HorizontalAlignment="Left" Name="textBlock1" Text="Projects I'm Managing" VerticalAlignment="Top" FontSize="20" Width="272" FontWeight="Normal" />
 
-        <Button Command="{Binding NewProjectCommand}"  Content="Add" HorizontalAlignment="Left" Margin="0,43,0,0" Name="button1" Width="63" Height="23" VerticalAlignment="Top" />
-        
-        <ListView ItemsSource="{Binding ManagedProjects}" SelectionMode="Single" SelectedItem="{Binding SelectedProject}" Margin="0,83,0,0" Background="Transparent" BorderBrush="Transparent" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+        <ListView ItemsSource="{Binding ManagedProjects}" SelectionMode="Single" SelectedItem="{Binding SelectedProject}" Margin="0,100,0,5" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" Width="273">
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name">
+                    <GridViewColumn Header="Name" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Path=Name}" />
+                                <TextBlock Text="{Binding Path=Name}" TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Description">
+                    <GridViewColumn Header="Description" Width="100" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" />
+                    <GridViewColumn Header="Code" Width="50" DisplayMemberBinding="{Binding Code}"/>
 
                 </GridView>
             </ListView.View>
 
         </ListView>
+
+        <Button Style="{StaticResource GoogleButton}" Command="{Binding NewProjectCommand}" HorizontalAlignment="Left" Margin="0,49,0,0" Name="button1" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/add_bug.png" Height="26" Width="26" />
+                <TextBlock  Margin="3" Text="Add" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+
+        <Button Style="{StaticResource GoogleButton}" Command="{Binding ViewProjectCommand}" HorizontalAlignment="Left" Margin="70,49,0,0" Name="button2" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/edit_bug.png" Height="26" Width="26" />
+                <TextBlock Margin="3" Text="Edit" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+
+        <Button Style="{StaticResource GoogleButton}" Command="{Binding DeleteProjectCommand}" HorizontalAlignment="Left" Margin="140,49,0,0" Name="button3" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/delete_bug.png" Height="26" Width="26" />
+                <TextBlock  Margin="3" Text="Delete" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Button>
         
-        <Button Command="{Binding ViewProjectCommand}" Content="Edit" Height="23" HorizontalAlignment="Left" Margin="83,43,0,0" Name="button2" VerticalAlignment="Top" Width="63" />
-        <Button Command="{Binding DeleteProjectCommand}" Content="Delete" Height="23" HorizontalAlignment="Left" Margin="153,43,0,0" Name="button3" VerticalAlignment="Top" Width="63" />
     </Grid>
 </UserControl>

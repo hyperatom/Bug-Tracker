@@ -39,7 +39,7 @@ namespace Client.ViewModels.Controls
             {
                 if (_ActivityList == null && _ActiveProject.Id != 0)
                 {
-                    var activities = _Service.GetAllBugActionLogsInProject(_ActiveProject.ToProjectModel()).Take(15).ToList();
+                    var activities = _Service.GetAllBugActionLogsInProject(_ActiveProject.ToProjectModel()).ToList();
 
                     _ActivityList = new ObservableRangeCollection<BugActionLogViewModel>();
 

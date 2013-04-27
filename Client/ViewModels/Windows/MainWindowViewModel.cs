@@ -277,11 +277,18 @@ namespace Client.ViewModels
         private void ListenForMessages()
         {
             _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ProjectComboBox.Add(p));
-            _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => UpdateProjectInComboBox(p));
+            _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => ProjectSaved(p));
             _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => ProjectDeletedAction(p));
 
             _Messenger.Register<BugViewModel>(Messages.SelectedBugSaved, delegate { OnPropertyChanged("AssignedBugsButtonText"); });
             _Messenger.Register<BugViewModel>(Messages.SelectedBugDeleted, delegate { OnPropertyChanged("AssignedBugsButtonText"); });
+        }
+
+
+        private void ProjectSaved(ProjectViewModel project)
+        {
+            if (project.Id == SelectedActiveProject.Id)
+                UpdateProjectInComboBox(project);
         }
 
 

@@ -4,29 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="123" d:DesignWidth="470">
+             d:DesignHeight="149" d:DesignWidth="461" FontSize="12">
     
-    <UserControl.Resources>        
-        <Style TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+    <UserControl.Resources>
+
+        <ResourceDictionary x:Key="resDict">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\..\Resources\MetroButton.xaml" />
+                <ResourceDictionary Source="..\..\Resources\TextBoxControlTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBox">
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+
     </UserControl.Resources>
     
     <Grid>
-        <Label Content="Request to join a new project by specifying a project code and role you wish to take." Height="28" HorizontalAlignment="Left" Margin="0,39,0,0" Name="label4" VerticalAlignment="Top" />
+        <Label Content="Request to join a new project by specifying a project code and role you wish to take." Height="28" HorizontalAlignment="Left" Margin="0,51,0,0" Name="label4" VerticalAlignment="Top" />
         
-        <Label Content="Quick Join" Height="39" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" FontSize="20" Width="111" />
-        <Label Content="Code:" Height="28" HorizontalAlignment="Left" Margin="0,77,0,0" Name="label2" VerticalAlignment="Top" />
-        <Label Content="Role:" Height="28" HorizontalAlignment="Left" Margin="131,77,0,0" Name="label3" VerticalAlignment="Top" />
+        <Label Content="Quick Join" Height="48" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" FontSize="23" Width="200" FontWeight="Normal" />
+        <Label Content="Code:" Height="28" HorizontalAlignment="Left" Margin="0,97,0,0" Name="label2" VerticalAlignment="Top" FontSize="13" />
+        <Label Content="Role:" Height="28" HorizontalAlignment="Left" Margin="136,97,0,0" Name="label3" VerticalAlignment="Top" FontSize="13" />
 
-        <TextBox Text="{Binding Code, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="46,80,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="71" />
-        <ComboBox ItemsSource="{Binding RoleList}" SelectedItem="{Binding SelectedRole}" DisplayMemberPath="RoleName" Height="23" HorizontalAlignment="Left" Margin="173,80,0,0" Name="comboBoxRoles" VerticalAlignment="Top" Width="112" />
+        <TextBox VerticalContentAlignment="Center" Template="{StaticResource TextBoxBaseControlTemplate}" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, Mode=TwoWay}" Height="24" HorizontalAlignment="Left" Margin="54,98,0,0" Name="textBoxCode" VerticalAlignment="Top" Width="61" />
+        <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding RoleList}" SelectedItem="{Binding SelectedRole}" DisplayMemberPath="RoleName" Height="26" HorizontalAlignment="Left" Margin="180,97,0,0" Name="comboBoxRoles" VerticalAlignment="Top" Width="128" />
         
-        <Button Command="{Binding JoinProjectCommand}" Content="Join" Height="23" HorizontalAlignment="Left" Margin="320,80,0,0" Name="buttonJoin" VerticalAlignment="Top" Width="47" />
+        <Button Style="{StaticResource GoogleButton}" Command="{Binding JoinProjectCommand}" Content="Join" Height="26" HorizontalAlignment="Left" Margin="344,97,0,0" Name="buttonJoin" VerticalAlignment="Top" Width="54" />
     
     </Grid>
 </UserControl>

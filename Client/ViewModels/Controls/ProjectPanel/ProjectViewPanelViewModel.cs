@@ -14,7 +14,9 @@ namespace Client.ViewModels.Controls.ProjectPanel
             : base(svc, mess)
         {
             Project = selectedProj.Clone();
+
             ButtonName = "Save & Close";
+            PanelTitle = "Edit Project";
         }
 
 

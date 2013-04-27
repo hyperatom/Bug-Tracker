@@ -14,6 +14,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private ProjectViewModel _Project;
 
         private String _ButtonName;
+        private String _PanelTitle;
+
         private bool _IsVisible = true;
 
         protected IMessenger _Messenger;
@@ -29,6 +31,13 @@ namespace Client.ViewModels.Controls.ProjectPanel
             _Service = svc;
 
             Project = new ProjectViewModel();
+        }
+
+
+        public String PanelTitle
+        {
+            get { return _PanelTitle; }
+            set { _PanelTitle = value; OnPropertyChanged("PanelTitle"); }
         }
 
 
