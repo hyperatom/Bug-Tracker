@@ -68,10 +68,10 @@ namespace Client.ViewModels
 
             _IsLoadingVisible = false;
 
-            Username = GetStoredUsername();
-            Password = GetStoredPassword();
+            //Username = GetStoredUsername();
+           // Password = GetStoredPassword();
 
-            InitialiseRememberMeCheckBox();
+            //InitialiseRememberMeCheckBox();
         }
 
 
@@ -223,14 +223,14 @@ namespace Client.ViewModels
         /// <param name="loginParameter">Custom object to store login parameters.</param>
         public void Login()
         {
-            if (IsRememberMeChecked)
+            /*if (IsRememberMeChecked)
             {
                 StoreUserCredentials();
             }
             else
             {
                 FlushUserCredentials();
-            }
+            }*/
 
             // Tell the service container to create a new service with these credentials
             ClientBase<ITrackerService> svc = _ServiceFactory.CreateService(Username, Password);
@@ -241,8 +241,10 @@ namespace Client.ViewModels
 
                 try
                 {
+                    MessageBox.Show("opening");
                     // Test if we can open the communication channel
                     svc.Open();
+                    MessageBox.Show("Opened!");
                 }
                 // Display message if invalid credentials.
                 catch (MessageSecurityException)
@@ -261,11 +263,13 @@ namespace Client.ViewModels
             {
                 if (p.Exception == null)
                 {
+                    MessageBox.Show("showing main window");
                     _WindowFactory.CreateMainWindow().Show();
                     RequestClose(this, null);
                 }
                 else
                 {
+                    MessageBox.Show(p.Exception.Message);
                     IsLoadingVisible = false;
                 }
 

@@ -4,6 +4,8 @@ C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntiti
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\System.Data.dll
+C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\System.Data.Entity.dll
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 C:\Users\Adam\Documents\Visual Studio 2010\Projects\BugTrackerService\DataEntities\bin\Debug\Microsoft.Practices.Unity.xml

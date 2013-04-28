@@ -44,6 +44,9 @@ namespace Client.Factories
 
             ClientCredentials clientCredentials = new ClientCredentials();
 
+            _Service.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode =
+                System.ServiceModel.Security.X509CertificateValidationMode.None;
+
             clientCredentials.UserName.UserName = username;
             clientCredentials.UserName.Password = password;
 
