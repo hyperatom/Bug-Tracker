@@ -25,15 +25,20 @@ namespace Client.ViewModels
         private string _FirstAndLastName;
         private string _Email;
         private string _Password;
+
         private bool _IsValidating = false;
         private bool _IsRegisterEnabled = true;
         private bool _IsLoadingVisible = false;
+        private bool _IsRegistrationFormVisible = true;
 
         private RelayCommand _RegisterCommand;
         private RelayCommand _CancelCommand;
 
+        private IControlFactory _ControlFactory;
         private IWindowFactory _WindowFactory;
         private IRegistrationService _Service;
+
+        private IRegistrationSuccessPanelViewModel _RegistrationSuccessPanel;
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
@@ -43,7 +48,7 @@ namespace Client.ViewModels
         /// </summary>
         /// <param name="loader">The window loader.</param>
         /// <param name="svc">The registration web service.</param>
-        public RegistrationViewModel(IRegistrationService svc, IWindowFactory winfactory) 
+        public RegistrationViewModel(IRegistrationService svc, IWindowFactory winfactory, IControlFactory ctrlfactory) 
         {
             if (svc == null)
                 throw new ArgumentNullException("Registration service cannot be null");
@@ -53,10 +58,28 @@ namespace Client.ViewModels
 
             _Service = svc;
             _WindowFactory = winfactory;
+            _ControlFactory = ctrlfactory;
         }
 
 
         public EventHandler RequestClose { get; set; }
+
+
+        public IRegistrationSuccessPanelViewModel RegistrationSuccessPanel
+        {
+            get 
+            { 
+                return _RegistrationSuccessPanel;
+            }
+            set { _RegistrationSuccessPanel = value; OnPropertyChanged("RegistrationSuccessPanel"); }
+        }
+
+
+        public bool IsRegistrationFormVisible
+        {
+            get { return _IsRegistrationFormVisible; }
+            set { _IsRegistrationFormVisible = value; OnPropertyChanged("IsRegistrationFormVisible"); }
+        }
 
 
         public bool IsLoadingVisible
@@ -236,8 +259,8 @@ namespace Client.ViewModels
                 {
                     if (p.Exception == null)
                     {
-                        _WindowFactory.CreateLoginWindow().Show();
-                        RequestClose(this, null);
+                        RegistrationSuccessPanel = _ControlFactory.CreateRegistrationSuccessPanel(_Email, this);
+                        IsRegistrationFormVisible = false;
                     }
                     else
                     {
@@ -254,39 +277,6 @@ namespace Client.ViewModels
                 IsLoadingVisible = false;
                 IsRegisterButtonEnabled = true;
             }
-        
-            
-
-            /*IsRegisterButtonEnabled = false;
-            IsLoadingVisible = true;
-
-            if (CanRegister())
-            {
-                try
-                {
-                    User user = new User
-                    {
-                        FirstName = this.FirstName,
-                        Surname = this.LastName,
-                        Password = this.Password,
-                        Username = this.Email,
-                    };
-
-                    // Execute registration operation concurrently
-                    _Service.BeginRegister(user, RegistrationComplete, _Service);
-                }
-                catch (FaultException e)
-                {
-                    IsRegisterButtonEnabled = true;
-                    IsLoadingVisible = false;
-
-                    MessageBox.Show(e.Message);
-                }
-            }
-            else
-            {
-                IsRegisterButtonEnabled = true;
-            }*/
         }
 
 

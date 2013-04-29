@@ -121,6 +121,7 @@ namespace Client.ViewModels.Controls
 
             _Messenger.Register<ProjectViewModel>(Messages.ShowProjectDeleteDialog, 
                 p => ShowDeleteProjectDialog((ProjectViewModel)p));
+            
         }
 
 

@@ -5,6 +5,8 @@ using Client.ServiceReference;
 using Client.Views.Controls;
 using Client.ViewModels.Controls.ProjectPanel;
 using Client.ViewModels.Controls.Dialogs;
+using Client.ViewModels.Windows;
+using System;
 
 namespace Client.Factories
 {
@@ -119,6 +121,19 @@ namespace Client.Factories
                 return _Container.Resolve<IWestSideBarViewModel>();
 
             return _Container.Resolve<IWestSideBarViewModel>(new ParameterOverride("activeProj", project));
+        }
+
+
+        public IRegistrationSuccessPanelViewModel CreateRegistrationSuccessPanel(String username, IRegistrationViewModel window)
+        {
+            ParameterOverrides parameters = new ParameterOverrides() 
+            { 
+                { "username",  username },
+                { "regwindow", window     }
+            };
+
+
+            return _Container.Resolve<IRegistrationSuccessPanelViewModel>(parameters);
         }
     }
 }

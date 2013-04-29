@@ -17,6 +17,8 @@ namespace Client.ViewModels.Controls.DTOs
         private bool _IsSelected = false;
         private bool _IsValidating = false;
 
+        private String _RequestedProjectRole;
+
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
 
 
@@ -109,6 +111,19 @@ namespace Client.ViewModels.Controls.DTOs
         {
             get { return _User.Password; }
             set { _User.Password = value; OnPropertyChanged("Password"); }
+        }
+
+
+        public String RequestedProjectRole
+        {
+            get
+            {
+                return _RequestedProjectRole;
+            }
+            set
+            {
+                _RequestedProjectRole = value; OnPropertyChanged("RequestedProjectRole");
+            }
         }
 
 

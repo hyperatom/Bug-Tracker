@@ -24,6 +24,8 @@ namespace Client
     public partial class RegistrationWindow : Window, IRegistrationWindow
     {
 
+        private bool _IsShuttingDown = true;
+
         public RegistrationWindow(IRegistrationViewModel viewModel)
         {
             if (viewModel == null)
@@ -31,11 +33,19 @@ namespace Client
 
             this.DataContext = viewModel;
 
-            viewModel.RequestClose += delegate { this.Close(); };
+            viewModel.RequestClose += delegate { _IsShuttingDown = false; this.Close(); };
+            this.Closed += OnClosed;
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             InitializeComponent();
+        }
+
+
+        public void OnClosed(object sender, System.EventArgs e)
+        {
+            if (_IsShuttingDown)
+                Application.Current.Shutdown();
         }
 
     }

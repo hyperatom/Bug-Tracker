@@ -53,12 +53,8 @@ namespace BugTrackerService
         public IList<Project> GetProjectsAssignedTo(User user)
         {
             ProjectRoleRepository projRoleRepo = new ProjectRoleRepository();
-            RoleRepository roleRepo = new RoleRepository();
 
-            int projManager = roleRepo.GetAll().Where(p => p.RoleName == "Project Manager")
-                .Select(p => p.Id).SingleOrDefault();
-
-            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id && p.RoleId != projManager)
+            return projRoleRepo.GetAll().Where(p => p.User.Id == user.Id)
                 .Select(c => c.Project).Distinct().ToList();
         }
 
@@ -269,15 +265,17 @@ namespace BugTrackerService
 
 
         [PrincipalPermission(SecurityAction.Demand, Role = "Project Manager")]
-        public void AcceptUserOnProject(User user, Project project)
+        public void AcceptUserOnProject(User user, Project project, String rolename)
         {
             UserProjectSignupRepository signUpRepo = new UserProjectSignupRepository();
+
+            Role acceptedRole = new RoleRepository().GetAll().Where(p => p.RoleName == rolename).SingleOrDefault();
 
             UserProjectSignup request = signUpRepo.GetAll()
                 .Where(p => p.UserId == user.Id && p.ProjectId == project.Id).SingleOrDefault();
 
             new ProjectRoleRepository().Create
-                (new ProjectRole { UserId = request.UserId, ProjectId = request.ProjectId, RoleId = request.RoleId });
+                (new ProjectRole { UserId = request.UserId, ProjectId = request.ProjectId, RoleId = acceptedRole.Id });
 
             signUpRepo.Delete(request);
         }
@@ -411,6 +409,13 @@ namespace BugTrackerService
         public bool ProjectCodeExistsExcludingProject(Project proj)
         {
             return (new ProjectRepository().GetAll().Where(p => p.Id != proj.Id && p.Code == proj.Code).SingleOrDefault() != null);
+        }
+
+
+        public string GetUsersRequestedRoleForProject(User user, Project project)
+        {
+            return new UserProjectSignupRepository().GetAll()
+                .Where(p => p.ProjectId == project.Id && user.Id == p.UserId).Select(p => p.Role.RoleName).SingleOrDefault();
         }
     }
 }

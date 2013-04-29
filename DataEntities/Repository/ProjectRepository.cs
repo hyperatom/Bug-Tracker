@@ -51,8 +51,10 @@ namespace DataEntities.Repository
         {
             using (var ctx = new WcfEntityContext())
             {
-                ctx.AttachTo("Projects", project);
-                ctx.Projects.DeleteObject(project);
+                var proj = Context.Projects.Where(p => p.Id == project.Id).SingleOrDefault();
+
+                ctx.AttachTo("Projects", proj);
+                ctx.Projects.DeleteObject(proj);
 
                 ctx.SaveChanges();
             }

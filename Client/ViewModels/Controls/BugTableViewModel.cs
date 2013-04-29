@@ -14,6 +14,7 @@ using System.Windows;
 using System.Reflection;
 using System.Windows.Input;
 using Client.Properties;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels
 {
@@ -46,6 +47,7 @@ namespace Client.ViewModels
         private IMessenger      _Messenger;
         private ITrackerService _Service;
         private IControlFactory _ControlFactory;
+        private IGrowlNotifiactions _Notifier;
 
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace Client.ViewModels
         /// <param name="comm">The mediator for communicatin with other view models.</param>
         /// <param name="svc">The bug tracker web service.</param>
         /// <param name="activeProj">The currently active project</param>
-        public BugTableViewModel(IMessenger comm, ITrackerService svc, 
+        public BugTableViewModel(IMessenger comm, ITrackerService svc, IGrowlNotifiactions notifier,
                                  IControlFactory ctrlfactory, ProjectViewModel activeProj)
         {
             _Messenger = comm;
@@ -67,6 +69,8 @@ namespace Client.ViewModels
                 _ActiveProject = activeProj;
                 ProjectTitle = activeProj.Name;
             }
+
+            _Notifier = notifier;
 
             _SearchText = "";
 
@@ -355,6 +359,13 @@ namespace Client.ViewModels
                         data = data.Where(p => p.Status == "Closed").ToList();
 
                     break;
+
+                case "In Progress":
+
+                    if (data.Count > 0)
+                        data = data.Where(p => p.Status == "In Progress").ToList();
+
+                    break;
             }
             
            
@@ -458,6 +469,11 @@ namespace Client.ViewModels
                 _Service.DeleteBug(bug.ToBugModel());
                 // Notify listeners of delete operation
                 _Messenger.NotifyColleagues(Messages.SelectedBugDeleted, bug);
+
+                _Notifier.AddNotification(new Notification { 
+                    ImageUrl = Notification.ICON_DELETE,
+                    Title = "Bug Deleted",
+                    Message = "The bug " + bug.Name + " has been deleted." });
             }
         }
 

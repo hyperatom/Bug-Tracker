@@ -101,6 +101,14 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private void ListenForMessages()
         {
             _Messenger.Register<ProjectViewModel>(Messages.ManagedProjectSelected, p => SelectedProject = null);
+            _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => AssignedProjects.Add(p));
+            _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => RemoveProjectFromList(p));
+        }
+
+
+        private void RemoveProjectFromList(ProjectViewModel project)
+        {
+            AssignedProjects.Remove(AssignedProjects.Where(p => p.Id == project.Id).SingleOrDefault());
         }
 
 

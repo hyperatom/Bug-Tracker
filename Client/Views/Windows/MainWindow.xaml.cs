@@ -31,6 +31,8 @@ namespace Client
 
         private const int NOTIFICATION_OFFSET_TOP = 25;
 
+        private bool _IsShuttingDown = true;
+
         public MainWindow(IMainWindowViewModel viewModel, IGrowlNotifiactions notify)
         {
             if (viewModel == null)
@@ -40,12 +42,13 @@ namespace Client
 
             this.DataContext = viewModel;
 
-            viewModel.RequestClose += delegate { this.Close(); };
+            viewModel.RequestClose += delegate { _IsShuttingDown = false; this.Close(); };
 
             InitializeComponent();
 
             this.LocationChanged += new EventHandler(OnWindowMoved);
             this.Closing += new CancelEventHandler(OnWindowClose);
+            this.Closed += OnClosed;
             this.SizeChanged += new SizeChangedEventHandler(OnWindowResized);
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -63,6 +66,13 @@ namespace Client
         {
             ((GrowlNotifiactions)_Notifications).Top = this.Top + NOTIFICATION_OFFSET_TOP;
             ((GrowlNotifiactions)_Notifications).Left = this.Left;
+        }
+
+
+        public void OnClosed(object sender, System.EventArgs e)
+        {
+            if (_IsShuttingDown)
+                Application.Current.Shutdown();
         }
 
 

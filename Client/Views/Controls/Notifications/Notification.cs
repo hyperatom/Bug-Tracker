@@ -8,6 +8,10 @@ namespace Client.Views.Controls.Notifications
     {
 
         public static String ICON_NOTIFICATION = "pack://application:,,,/Resources/notification-icon.png";
+        public static String ICON_EDIT = "pack://application:,,,/Resources/edit_bug.png";
+        public static String ICON_ADD = "pack://application:,,,/Resources/add_bug.png";
+        public static String ICON_DELETE = "pack://application:,,,/Resources/delete_bug.png";
+        public static String ICON_TICK = "pack://application:,,,/Resources/tick.png";
 
 
         private string message;

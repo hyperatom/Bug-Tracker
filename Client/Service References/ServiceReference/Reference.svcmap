@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7c267eb1-dd85-4955-b232-aedf3d652185" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7e542dec-4d24-430e-93e1-40ffdf81e1e8" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
-    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
     <ExcludedTypes />
     <ImportXmlTypes>false</ImportXmlTypes>
@@ -23,11 +23,11 @@
     <MetadataSource Address="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="mex1.xsd" MetadataType="Schema" ID="f7aec0a4-169f-4a56-9739-bf3b9f233e42" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd0" />
-    <MetadataFile FileName="mex.xsd" MetadataType="Schema" ID="ff5b5f20-d76b-4ab1-b1c4-0910e406474e" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd1" />
-    <MetadataFile FileName="mex2.xsd" MetadataType="Schema" ID="5146e1f2-87ed-474c-bcc5-7fbfdf2d3100" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd2" />
-    <MetadataFile FileName="mex3.xsd" MetadataType="Schema" ID="3195ad3e-1561-42cf-a275-d9382200f3cf" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd3" />
-    <MetadataFile FileName="TrackerService.wsdl" MetadataType="Wsdl" ID="846fe03f-e54b-449a-ac26-e407500539d5" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex" />
+    <MetadataFile FileName="mex.xsd" MetadataType="Schema" ID="442a30d6-124b-4d87-9fc7-71d6c9d5e822" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd0" />
+    <MetadataFile FileName="mex1.xsd" MetadataType="Schema" ID="290a96da-3228-42e2-ada0-751dfecf5f56" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd1" />
+    <MetadataFile FileName="mex2.xsd" MetadataType="Schema" ID="3522dd92-10f6-4ab3-bdaa-acd3b7f10152" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd2" />
+    <MetadataFile FileName="mex3.xsd" MetadataType="Schema" ID="559ecfef-bc7d-4309-943a-ee9b7bd84a28" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex?xsd=xsd3" />
+    <MetadataFile FileName="TrackerService.wsdl" MetadataType="Wsdl" ID="69740cdf-8c64-4ea8-87db-1ba71b162361" SourceId="1" SourceUrl="http://localhost:8732/Design_Time_Addresses/BugTrackerService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

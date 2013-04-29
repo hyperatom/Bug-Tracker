@@ -129,18 +129,8 @@ namespace Client.ServiceRegistration {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistrationService/Register", ReplyAction="http://tempuri.org/IRegistrationService/RegisterResponse")]
         void Register(Client.ServiceRegistration.User user);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistrationService/Register", ReplyAction="http://tempuri.org/IRegistrationService/RegisterResponse")]
-        System.IAsyncResult BeginRegister(Client.ServiceRegistration.User user, System.AsyncCallback callback, object asyncState);
-        
-        void EndRegister(System.IAsyncResult result);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRegistrationService/UserExists", ReplyAction="http://tempuri.org/IRegistrationService/UserExistsResponse")]
         bool UserExists(string username);
-        
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IRegistrationService/UserExists", ReplyAction="http://tempuri.org/IRegistrationService/UserExistsResponse")]
-        System.IAsyncResult BeginUserExists(string username, System.AsyncCallback callback, object asyncState);
-        
-        bool EndUserExists(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -149,38 +139,7 @@ namespace Client.ServiceRegistration {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserExistsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        public UserExistsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        public bool Result {
-            get {
-                base.RaiseExceptionIfNecessary();
-                return ((bool)(this.results[0]));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class RegistrationServiceClient : System.ServiceModel.ClientBase<Client.ServiceRegistration.IRegistrationService>, Client.ServiceRegistration.IRegistrationService {
-        
-        private BeginOperationDelegate onBeginRegisterDelegate;
-        
-        private EndOperationDelegate onEndRegisterDelegate;
-        
-        private System.Threading.SendOrPostCallback onRegisterCompletedDelegate;
-        
-        private BeginOperationDelegate onBeginUserExistsDelegate;
-        
-        private EndOperationDelegate onEndUserExistsDelegate;
-        
-        private System.Threading.SendOrPostCallback onUserExistsCompletedDelegate;
         
         public RegistrationServiceClient() {
         }
@@ -201,107 +160,12 @@ namespace Client.ServiceRegistration {
                 base(binding, remoteAddress) {
         }
         
-        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> RegisterCompleted;
-        
-        public event System.EventHandler<UserExistsCompletedEventArgs> UserExistsCompleted;
-        
         public void Register(Client.ServiceRegistration.User user) {
             base.Channel.Register(user);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginRegister(Client.ServiceRegistration.User user, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginRegister(user, callback, asyncState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public void EndRegister(System.IAsyncResult result) {
-            base.Channel.EndRegister(result);
-        }
-        
-        private System.IAsyncResult OnBeginRegister(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            Client.ServiceRegistration.User user = ((Client.ServiceRegistration.User)(inValues[0]));
-            return this.BeginRegister(user, callback, asyncState);
-        }
-        
-        private object[] OnEndRegister(System.IAsyncResult result) {
-            this.EndRegister(result);
-            return null;
-        }
-        
-        private void OnRegisterCompleted(object state) {
-            if ((this.RegisterCompleted != null)) {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.RegisterCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
-            }
-        }
-        
-        public void RegisterAsync(Client.ServiceRegistration.User user) {
-            this.RegisterAsync(user, null);
-        }
-        
-        public void RegisterAsync(Client.ServiceRegistration.User user, object userState) {
-            if ((this.onBeginRegisterDelegate == null)) {
-                this.onBeginRegisterDelegate = new BeginOperationDelegate(this.OnBeginRegister);
-            }
-            if ((this.onEndRegisterDelegate == null)) {
-                this.onEndRegisterDelegate = new EndOperationDelegate(this.OnEndRegister);
-            }
-            if ((this.onRegisterCompletedDelegate == null)) {
-                this.onRegisterCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnRegisterCompleted);
-            }
-            base.InvokeAsync(this.onBeginRegisterDelegate, new object[] {
-                        user}, this.onEndRegisterDelegate, this.onRegisterCompletedDelegate, userState);
-        }
-        
         public bool UserExists(string username) {
             return base.Channel.UserExists(username);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginUserExists(string username, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginUserExists(username, callback, asyncState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public bool EndUserExists(System.IAsyncResult result) {
-            return base.Channel.EndUserExists(result);
-        }
-        
-        private System.IAsyncResult OnBeginUserExists(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string username = ((string)(inValues[0]));
-            return this.BeginUserExists(username, callback, asyncState);
-        }
-        
-        private object[] OnEndUserExists(System.IAsyncResult result) {
-            bool retVal = this.EndUserExists(result);
-            return new object[] {
-                    retVal};
-        }
-        
-        private void OnUserExistsCompleted(object state) {
-            if ((this.UserExistsCompleted != null)) {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.UserExistsCompleted(this, new UserExistsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-        
-        public void UserExistsAsync(string username) {
-            this.UserExistsAsync(username, null);
-        }
-        
-        public void UserExistsAsync(string username, object userState) {
-            if ((this.onBeginUserExistsDelegate == null)) {
-                this.onBeginUserExistsDelegate = new BeginOperationDelegate(this.OnBeginUserExists);
-            }
-            if ((this.onEndUserExistsDelegate == null)) {
-                this.onEndUserExistsDelegate = new EndOperationDelegate(this.OnEndUserExists);
-            }
-            if ((this.onUserExistsCompletedDelegate == null)) {
-                this.onUserExistsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnUserExistsCompleted);
-            }
-            base.InvokeAsync(this.onBeginUserExistsDelegate, new object[] {
-                        username}, this.onEndUserExistsDelegate, this.onUserExistsCompletedDelegate, userState);
         }
     }
 }

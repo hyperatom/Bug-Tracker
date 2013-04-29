@@ -4,6 +4,7 @@ using Client.ViewModels.Controls;
 using Client.ServiceReference;
 using Client.ViewModels.Controls.ProjectPanel;
 using Client.ViewModels.Controls.Dialogs;
+using Client.ViewModels.Windows;
 
 namespace Client.Factories
 {
@@ -23,5 +24,6 @@ namespace Client.Factories
         IJoinProjectPanelViewModel CreateJoinProjectPanel();
         IAccountSettingsViewModel CreateAccountSettingsPanel();
         IWestSideBarViewModel CreateWestSideBar(ProjectViewModel proj);
+        IRegistrationSuccessPanelViewModel CreateRegistrationSuccessPanel(String username, IRegistrationViewModel window);
     }
 }

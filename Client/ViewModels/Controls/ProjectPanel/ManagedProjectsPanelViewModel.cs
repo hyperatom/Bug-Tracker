@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using Client.ViewModels.Controls.Dialogs;
 using System.Windows.Input;
 using System.Windows;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels.Controls.ProjectPanel
 {
@@ -21,22 +22,25 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private User _CurrentUser;
 
         private ICommand _NewProjectCommand;
-        private ICommand _ShowDeleteDialogCommand;
         private ICommand _ViewProjectCommand;
         private ICommand _DeleteProjectCommand;
+
+        private IGrowlNotifiactions _Notifier;
 
         private ProjectViewModel _SelectedProject;
 
         private ObservableCollection<ProjectViewModel> _ManagedProjects;
 
 
-        public ManagedProjectsPanelViewModel(ITrackerService svc, IMessenger mess, 
-                                             IControlFactory ctrlFactory, User currentUser)
+        public ManagedProjectsPanelViewModel(ITrackerService svc, IMessenger mess,
+                                             IControlFactory ctrlFactory, User currentUser, IGrowlNotifiactions notifier)
         {
             _Service = svc;
             _Messenger = mess;
             _Factory = ctrlFactory;
             _CurrentUser = currentUser;
+
+            _Notifier = notifier;
 
             ListenForMessages();
         }
@@ -129,6 +133,16 @@ namespace Client.ViewModels.Controls.ProjectPanel
             _Messenger.Register<ProjectViewModel>(Messages.SavedProject, p => SaveProjectToList(p));
             _Messenger.Register<ProjectViewModel>(Messages.AddedProject, p => ManagedProjects.Add(p));
             _Messenger.Register<ProjectViewModel>(Messages.AssignedProjectSelected, p => SelectedProject = null);
+            _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => RemoveProjectLeft(p));
+        }
+
+
+        private void RemoveProjectLeft(ProjectViewModel proj)
+        {
+            ProjectViewModel project = ManagedProjects.Where(p => p.Id == proj.Id).SingleOrDefault();
+
+            if (project != null)
+                ManagedProjects.Remove(project);
         }
 
 
@@ -168,6 +182,14 @@ namespace Client.ViewModels.Controls.ProjectPanel
             {
                 _Service.DeleteProject(project.ToProjectModel());
                 ManagedProjects.Remove(project);
+
+                _Notifier.AddNotification(new Notification
+                {
+                    ImageUrl = Notification.ICON_DELETE,
+                    Title = "Project Deleted",
+                    Message = "The project " + project.Name + " has been deleted."
+                });
+
 
                 _Messenger.NotifyColleagues(Messages.DeletedProject, project);
             }

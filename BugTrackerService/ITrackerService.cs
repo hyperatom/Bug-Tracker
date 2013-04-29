@@ -90,7 +90,7 @@ namespace BugTrackerService
         IList<User> GetUsersPendingProjectJoin(Project project);
 
         [OperationContract]
-        void AcceptUserOnProject(User user, Project project);
+        void AcceptUserOnProject(User user, Project project, String rolename);
 
         [OperationContract]
         void RejectUserFromProject(User user, Project project);
@@ -127,5 +127,8 @@ namespace BugTrackerService
 
         [OperationContract]
         IList<BugActionLog> GetAllBugActionLogsInProject(Project project);
+
+        [OperationContract]
+        String GetUsersRequestedRoleForProject(User user, Project project);
     }
 }

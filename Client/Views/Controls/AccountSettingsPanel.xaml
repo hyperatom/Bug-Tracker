@@ -29,18 +29,23 @@
 
     <Grid Margin="15">
 
-        <Label Content="My Account" Name="labelAccountTitle" FontSize="32" Margin="157,35,0,0" FontWeight="Normal" Height="57" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190" />
+        <StackPanel Orientation="Vertical" Margin="27,12,6,0" Height="62" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/user_male.png" Height="45" Width="45" Margin="5,0,0,0" />
+                <TextBlock Margin="10,0,0,0"  Text="My Account" FontSize="28" FontWeight="SemiBold" Foreground="Black" VerticalAlignment="Center" TextAlignment="Left" />
+            </StackPanel>
+            <Rectangle Margin="10,8,40,0" Height="1" Fill="#FF1885A1" HorizontalAlignment="Stretch" />
+        </StackPanel>
 
-        <Label VerticalAlignment="Top" Content="First &amp; Last Name:" Name="labelFirstAndLastNames" Margin="31,129,0,0" FontSize="13" HorizontalAlignment="Left" Width="126" />
-        <Label VerticalAlignment="Top" Content="Email:"  Name="labelEmail" Margin="31,177,0,0" FontSize="13" HorizontalAlignment="Left" Width="57" />
-        <Label VerticalAlignment="Top" Content="Password:" Name="labelPassword" Margin="31,227,0,0" FontSize="13" HorizontalAlignment="Left" Width="71" />
+        <Label VerticalAlignment="Top" Content="First &amp; Last Name:" Name="labelFirstAndLastNames" Margin="37,103,0,0" FontSize="13" HorizontalAlignment="Left" Width="126" />
+        <Label VerticalAlignment="Top" Content="Email:"  Name="labelEmail" Margin="37,151,0,0" FontSize="13" HorizontalAlignment="Left" Width="57" />
+        <Label VerticalAlignment="Top" Content="Password:" Name="labelPassword" Margin="37,201,0,0" FontSize="13" HorizontalAlignment="Left" Width="71" />
 
-        <TextBox Name="textBoxFirstAndLastNames" Height="23" Text="{Binding FirstAndLastName, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="167,135,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
-        <TextBox Name="textBoxEmail" Height="23" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Margin="167,182,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
+        <TextBox Name="textBoxFirstAndLastNames" Height="23" Text="{Binding FirstAndLastName, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="173,109,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
+        <TextBox Name="textBoxEmail" Height="23" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Margin="173,156,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
 
-        <PasswordBox Height="23" Name="passwordBox" helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Margin="167,232,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
+        <PasswordBox Height="23" Name="passwordBox" helpers:PasswordHelper.BindPassword="True" helpers:PasswordHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Margin="173,206,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="202" />
 
-        <Button Style="{StaticResource GoogleButton}" HorizontalAlignment="Left" Content="Save" Width="74" Name="buttonSave"  Command="{Binding Path=SaveCommand}" IsEnabled="{Binding IsSaveButtonEnabled}" Margin="36,290,0,0" Height="27" VerticalAlignment="Top" />
-        <Image Height="75" HorizontalAlignment="Left" Margin="30,20,0,0" Name="image1" Stretch="Uniform" VerticalAlignment="Top" Width="79" Source="/Client;component/Resources/user_male.png" />
+        <Button Style="{StaticResource GoogleButton}" HorizontalAlignment="Left" Content="Save" Width="74" Name="buttonSave"  Command="{Binding Path=SaveCommand}" IsEnabled="{Binding IsSaveButtonEnabled}" Margin="42,264,0,0" Height="27" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

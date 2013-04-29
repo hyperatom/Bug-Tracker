@@ -17,7 +17,7 @@
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
+    <Install>false</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
@@ -25,10 +25,16 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <MapFileExtensions>false</MapFileExtensions>
+    <TargetCulture>en-GB</TargetCulture>
+    <ProductName>LadyBug</ProductName>
+    <PublisherName>Adam Barrell</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -87,9 +93,25 @@
     </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Ladybug.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>881EDBBF69DA7A968B95100F39D3CF0C155299C0</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Client_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.0\lib\net40\AutoMapper.dll</HintPath>
@@ -140,6 +162,16 @@
     <Compile Include="Helpers\Paging\PagingController.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Mediator.cs" />
+    <Compile Include="Service References\ServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceRegistration\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Controls\AccountSettingsViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugAddPanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BugPanel\BugPanelViewModel.cs" />
@@ -169,6 +201,7 @@
     <Compile Include="ViewModels\Controls\WestSideBarViewModel.cs" />
     <Compile Include="ViewModels\IWindow.cs" />
     <Compile Include="ViewModels\Windows\IRegistrationViewModel.cs" />
+    <Compile Include="ViewModels\Windows\RegistrationSuccessPanelViewModel.cs" />
     <Compile Include="Views\Controls\AccountSettingsPanel.xaml.cs">
       <DependentUpon>AccountSettingsPanel.xaml</DependentUpon>
     </Compile>
@@ -212,6 +245,9 @@
     <Compile Include="Views\Controls\ProjectViewPanel.xaml.cs">
       <DependentUpon>ProjectViewPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\RegistrationSuccess.xaml.cs">
+      <DependentUpon>RegistrationSuccess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\WestSideBar.xaml.cs">
       <DependentUpon>WestSideBar.xaml</DependentUpon>
     </Compile>
@@ -222,16 +258,6 @@
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Views\Windows\RegistrationWindow.xaml.cs">
       <DependentUpon>RegistrationWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\ServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\ServiceRegistration\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Controls\DTOs\BugViewModel.cs" />
     <Compile Include="ViewModels\Windows\LoginViewModel.cs" />
@@ -319,6 +345,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\RegistrationSuccess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\WestSideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,8 +395,13 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="app.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Client_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -414,38 +449,10 @@
     <None Include="Service References\ServiceRegistration\mex2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceRegistration\Registration.wsdl" />
+    <None Include="Service References\ServiceRegistration\RegistrationService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference\" />
-    <WCFMetadataStorage Include="Service References\ServiceRegistration\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceRegistration\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceRegistration\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceRegistration\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -477,23 +484,55 @@
     <Resource Include="Resources\edit_bug.png" />
     <Resource Include="Resources\facebook-button.png" />
     <Resource Include="Resources\filter_icon.png" />
+    <Resource Include="Resources\first_arrow.png" />
     <Resource Include="Resources\gnome_application_exit.png" />
     <Resource Include="Resources\Ladybug.ico" />
     <Resource Include="Resources\Ladybug.png" />
+    <Resource Include="Resources\last_arrow.png" />
     <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\microsoft-windows-8-logo.png" />
     <Resource Include="Resources\mybugs.png" />
+    <Resource Include="Resources\next_arrow.png" />
     <Resource Include="Resources\notification-icon.png" />
+    <Resource Include="Resources\previous_arrow.png" />
     <Resource Include="Resources\projects_folder.png" />
     <Resource Include="Resources\Radiation_warning_symbol.png" />
     <Resource Include="Resources\search_icon.png" />
     <Resource Include="Resources\user_male.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\first_arrow.png" />
-    <Resource Include="Resources\last_arrow.png" />
-    <Resource Include="Resources\next_arrow.png" />
-    <Resource Include="Resources\previous_arrow.png" />
+    <WCFMetadataStorage Include="Service References\ServiceReference\" />
+    <WCFMetadataStorage Include="Service References\ServiceRegistration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceRegistration\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceRegistration\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceRegistration\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ladybug.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

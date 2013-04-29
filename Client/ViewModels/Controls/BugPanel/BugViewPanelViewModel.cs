@@ -9,6 +9,7 @@ using Client.Helpers;
 using Client.ServiceReference;
 using Client.ViewModels;
 using Client.ViewModels.Controls.DTOs;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels
 {
@@ -20,6 +21,8 @@ namespace Client.ViewModels
     {
 
         private RelayCommand _SaveBugCommand;
+
+        private IGrowlNotifiactions _Notifier;
         
 
         /// <summary>
@@ -31,11 +34,13 @@ namespace Client.ViewModels
         /// <param name="svc">The bug tracker web service.</param>
         /// <param name="activeProj">The currently active project.</param>
         /// <param name="selectedBug">The currently selected bug</param>
-        public BugViewPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj, BugViewModel selectedBug)
+        public BugViewPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj, BugViewModel selectedBug, IGrowlNotifiactions notifier)
             : base(comm, svc, activeProj) 
         {
             if (selectedBug == null)
                 throw new ArgumentNullException("The selected bug cannot be null.");
+
+            _Notifier = notifier;
 
             UpdateBugView(selectedBug);
 
@@ -99,6 +104,11 @@ namespace Client.ViewModels
                     _Messenger.NotifyColleagues(Messages.SelectedBugSaved, new BugViewModel(savedBug));
 
                     EditedBug = new BugViewModel(savedBug);
+
+                    _Notifier.AddNotification(new Notification { 
+                        ImageUrl = Notification.ICON_EDIT,
+                        Title = "Bug Saved",
+                        Message = "The bug " + savedBug.Name + " has been saved." });
 
                     IsVisible = false;
                 }

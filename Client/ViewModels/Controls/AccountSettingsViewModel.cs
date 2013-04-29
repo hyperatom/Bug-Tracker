@@ -21,9 +21,6 @@ namespace Client.ViewModels.Controls
         string FirstAndLastName { get; set; }
         string Email { get; set; }
         string Password { get; set; }
-        string this[string Field] { get; }
-        string Error { get; }
-        Dictionary<string, string> Errors { get; set; }
     }
 
     public class AccountSettingsViewModel : ObservableObject, IAccountSettingsViewModel
@@ -201,7 +198,7 @@ namespace Client.ViewModels.Controls
 
                     // Execute registration operation concurrently
                     _Service.SaveUserCredentials(user);
-                    _Notifier.AddNotification(new Notification { Title = "Saved!", Message = "Your account settings have been saved." });
+                    _Notifier.AddNotification(new Notification { ImageUrl = Notification.ICON_TICK, Title = "Saved!", Message = "Your account settings have been saved." });
                     IsSaveButtonEnabled = false;
 
                 }

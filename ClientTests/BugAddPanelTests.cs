@@ -9,6 +9,7 @@ using Client.Helpers;
 using Client.ServiceReference;
 using System.Runtime.Serialization;
 using Microsoft.Practices.Unity;
+using Client.Views.Controls.Notifications;
 
 namespace ClientTests
 {
@@ -52,11 +53,13 @@ namespace ClientTests
             serviceMock.Setup<List<User>>(p => p.GetUsersByProject(_MockActiveProject.ToProjectModel())).Returns(_MockProjectUsersList);
             serviceMock.Setup<User>(p => p.GetMyUser()).Returns(_AssignedUserMock);
 
+            var _MockNotifier = new Mock<IGrowlNotifiactions>();
+
             _ServiceMock = serviceMock.Object;
 
             _ActiveProjectStub = new ProjectViewModel(new Project { Id = 5, Description = "Stub Project", Name = "Stub Title" });
             
-            _AddPanel = new BugAddPanelViewModel(_Messenger, _ServiceMock, _MockActiveProject);
+            _AddPanel = new BugAddPanelViewModel(_Messenger, _ServiceMock, _MockActiveProject, _MockNotifier.Object);
         }
 
 

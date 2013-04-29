@@ -10,6 +10,7 @@ using System.Windows;
 using Microsoft.Practices.Unity;
 using Client.ViewModels;
 using Client.ViewModels.Controls.DTOs;
+using Client.Views.Controls.Notifications;
 
 namespace Client.ViewModels
 {
@@ -22,6 +23,8 @@ namespace Client.ViewModels
 
         private RelayCommand _AddBugCommand;
 
+        private IGrowlNotifiactions _Notifier;
+
         
         /// <summary>
         /// Initialises the panel object.
@@ -29,10 +32,12 @@ namespace Client.ViewModels
         /// <param name="comm">Messenger object to communicate with other view models.</param>
         /// <param name="svc">The bug tracker web service.</param>
         /// <param name="activeProj">The currently active project.</param>
-        public BugAddPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj) 
+        public BugAddPanelViewModel(IMessenger comm, ITrackerService svc, ProjectViewModel activeProj, IGrowlNotifiactions notifier) 
             : base(comm, svc, activeProj) 
         {
             InitialiseBugViewModel();
+
+            _Notifier = notifier;
         }
 
 
@@ -85,6 +90,11 @@ namespace Client.ViewModels
 
                     // Convert bug view model to bug model service can accept
                     Bug savedBug = _Service.AddBug(bug.ToBugModel());
+
+                    _Notifier.AddNotification(new Notification { 
+                        ImageUrl = Notification.ICON_ADD,
+                        Title = "Added Bug",
+                        Message = "The bug " + bug.Name + " has been added to the project" });
 
                     // Notify listeners that bug has been saved
                     _Messenger.NotifyColleagues(Messages.AddPanelSavedBug, new BugViewModel(savedBug));

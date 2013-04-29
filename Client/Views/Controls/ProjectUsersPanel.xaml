@@ -9,126 +9,146 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisiblity" />
     </UserControl.Resources>
-    
-    <StackPanel Width="200" Background="Beige">
-        
-        <Label Margin="0,0,0,5" Content="Pending Requests" />
 
-        <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding PendingUsersList}" Name="listBoxPendingUsers" Background="#1C1900AF">
+    <StackPanel Width="200" Margin="0,10,0,0" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisiblity}}">
 
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Grid Background="BlanchedAlmond" Margin="-5,0,-5,0">
+        <Border Margin="0,0,0,10" BorderBrush="#FF1885A1" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4" HorizontalAlignment="Stretch" Background="AliceBlue" VerticalAlignment="Center">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="135" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,5" Padding="0,0,0,3" Foreground="White" Text="Pending Requests" Background="#FF1885A1" HorizontalAlignment="Stretch" TextAlignment="Center" />
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
 
-                        <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+                <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding PendingUsersList}" Name="listBoxPendingUsers">
 
-                        <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3,0,3,3">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="135" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+
+                                <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.IsPendingUserButtonsVisible, Converter={StaticResource BoolToVisiblity}}"
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.AcceptUserCommand}" CommandParameter="{Binding}" BorderBrush="Transparent" Background="Transparent">
-                            
-                            <Image Source="../../Resources/add_bug.png" Height="15" Width="15" />
-                            
-                        </Button>
 
-                        <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                                    <Image Source="../../Resources/add_bug.png" Height="15" Width="15" />
+
+                                </Button>
+
+                                <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.IsPendingUserButtonsVisible, Converter={StaticResource BoolToVisiblity}}"
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right"
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.RejectUserCommand}" CommandParameter="{Binding}" BorderBrush="Transparent" Background="Transparent">
-                            
-                            <Image Source="../../Resources/delete_bug.png" Height="15" Width="15" />
 
-                        </Button>
+                                    <Image Source="../../Resources/delete_bug.png" Height="15" Width="15" />
 
-                    </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
+                                </Button>
 
-        </ListBox>
+                                <ComboBox Width="120" Margin="0,3,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
+                            Path=DataContext.ProjectRoleList}" SelectedItem="{Binding RequestedProjectRole}" />
 
-        <Label Margin="0,0,0,5" Content="Project Managers" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-        <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding ProjectManagersList}" Name="listBoxProjectManagers" Background="#1C1900AF">
+                </ItemsControl>
+            </StackPanel>
+        </Border>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="Aqua">
+        <Border Margin="0,0,0,10" BorderBrush="#FF1885A1" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4" HorizontalAlignment="Stretch" Background="AliceBlue" VerticalAlignment="Center">
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="160" />
-                        </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,5" Padding="0,0,0,3" Foreground="White" Text="Project Managers" Background="#FF1885A1" HorizontalAlignment="Stretch" TextAlignment="Center" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                <ItemsControl ItemsSource="{Binding ProjectManagersList}" Name="listBoxProjectManagers">
 
-                        <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3,0,3,3">
 
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
 
-        </ListBox>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-        <Label Margin="0,0,0,5" Content="Assigned Users" />
+                                <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
 
-        <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding AssignedUsersList}" Name="listBoxAssignedUsers" Background="#1C1900AF">
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Grid Background="Aqua">
-                    
-                    <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="160" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
 
-                        <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
+        <Border BorderBrush="#FF1885A1" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4" HorizontalAlignment="Stretch" Background="AliceBlue" VerticalAlignment="Center">
 
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
-                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,5" Padding="0,0,0,3" Foreground="White" Text="Assigned Users" Background="#FF1885A1" HorizontalAlignment="Stretch" TextAlignment="Center" />
 
-                        <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding AssignedUsersList}" Name="listBoxAssignedUsers">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3,0,3,3">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="155" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.RowSpan="2" Source="../../Resources/user_male.png" Height="20" Width="20" />
+
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AbreviatedFullName}" TextTrimming="CharacterEllipsis" FontWeight="Bold"  />
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username}" TextTrimming="CharacterEllipsis" />
+
+                                <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.IsAssignedUserButtonsVisible, Converter={StaticResource BoolToVisiblity}}"
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"
-                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}},
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}},
                             Path=DataContext.RemoveUserCommand}" CommandParameter="{Binding}">
 
-                            <Image Source="../../Resources/delete_bug.png" Height="10" Width="10" />
+                                    <Image Source="../../Resources/delete_bug.png" Height="10" Width="10" />
 
-                        </Button>
+                                </Button>
 
-                    </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
+                            </Grid>
+                        </DataTemplate>
+                        </ItemsControl.ItemTemplate>
 
-    </ListBox>
+                        </ItemsControl>
+            </StackPanel>
+        </Border>
 
     </StackPanel>
 

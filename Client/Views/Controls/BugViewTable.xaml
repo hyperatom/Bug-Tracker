@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="510" d:DesignWidth="787"
+             d:DesignHeight="561" d:DesignWidth="787"
              xmlns:viewmodels="clr-namespace:Client.ViewModels"
              xmlns:controls="clr-namespace:Client.Views.Controls">
 
@@ -31,9 +31,17 @@
             <ColumnDefinition Width="737*" />
             <ColumnDefinition Width="50*" />
         </Grid.ColumnDefinitions>
-        <Label Content="{Binding ProjectTitle}" Height="58" Margin="54,28,146,0" Name="labelProjectTitle" VerticalAlignment="Top" FontSize="28" FontWeight="SemiBold" Foreground="#FF1885A1" />
+       
 
-        <StackPanel Margin="54,89,0,0"  HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
+        <StackPanel Orientation="Vertical" Margin="46,22,138,0" Height="62" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Client;component/Resources/mybugs.png" Height="51" Width="50" Margin="5,0,0,0" />
+                <TextBlock Margin="10,0,0,0"  Text="{Binding ProjectTitle}" FontSize="28" FontWeight="SemiBold" Foreground="Black" VerticalAlignment="Center" TextAlignment="Left" />
+            </StackPanel>
+            <Rectangle Margin="10,5,40,0" Height="1" Fill="#FF1885A1" HorizontalAlignment="Stretch" />
+        </StackPanel>
+
+        <StackPanel Margin="54,117,0,0"  HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top">
 
             <Button Margin="0,0,-3,0"  BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=Pager.GotoFirstPageCommand}" >
                 <Image Source="../../Resources/first_arrow.png" Width="15"  />
@@ -56,7 +64,7 @@
             </Button>
         </StackPanel>
 
-        <DataGrid Style="{StaticResource BugDataGrid}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,112,12,52" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding MyBugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}" Grid.ColumnSpan="2">
+        <DataGrid Style="{StaticResource BugDataGrid}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Margin="54,146,12,52" Name="dataGrid1" VerticalAlignment="Stretch" ItemsSource="{Binding MyBugList}" GridLinesVisibility="Horizontal" IsReadOnly="True" RowHeaderWidth="0" SelectedItem="{Binding Path=SelectedBug, Mode=TwoWay}" DataContext="{Binding}" Grid.ColumnSpan="2">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Id}" Header="Id" SortDirection="Ascending" />
@@ -98,8 +106,8 @@
             <TextBox Text="{Binding PageSizeTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="textBox1" Width="30" Height="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
         </StackPanel>
             
-        <StackPanel Orientation="Vertical" Margin="0,47,14,404" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="169">
-            <StackPanel Margin="0,0,0,8" Orientation="Horizontal" Grid.ColumnSpan="2" Width="156">
+        <StackPanel Orientation="Vertical" Margin="0,91,6,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="169" Height="57" VerticalAlignment="Top">
+            <StackPanel Margin="0,0,0,5" Orientation="Horizontal" Grid.ColumnSpan="2" Width="156">
                 <Image Height="18" Margin="0,0,5,0" Name="image2" Width="18" Source="/Client;component/Resources/filter_icon.png" />
                 <ComboBox ItemsSource="{Binding FilterList, Mode=TwoWay}"  SelectedItem="{Binding SelectedFilter}"  Height="23" Name="comboBoxFilters" Width="132" />
             </StackPanel>

@@ -1,9 +1,11 @@
 ﻿<Window x:Class="Client.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Bug Tracker | Login" Height="334" Width="675"
+        Title="Lady Bug | Login" Height="334" Width="675"
         xmlns:local="clr-namespace:Client"
         xmlns:helpers="clr-namespace:Client.Helpers"
+        xmlns:viewmodels="clr-namespace:Client.ViewModels.Windows"
+        xmlns:controls="clr-namespace:Client.Views.Controls"
         ResizeMode="NoResize">
 
     <Window.Resources>
@@ -35,6 +37,8 @@
         </EventTrigger>
         
     </Window.Triggers>
+
+
 
     <Grid>
 

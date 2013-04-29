@@ -39,7 +39,7 @@
         
     </UserControl.Resources>
     
-    <Grid Margin="20,40,5,0">
+    <Grid Margin="40,20,5,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

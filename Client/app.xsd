@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="configSections">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="sectionGroup">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="section">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                        <xs:attribute name="allowExeDefinition" type="xs:string" use="required" />
+                        <xs:attribute name="requirePermission" type="xs:boolean" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="system.serviceModel">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="bindings">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="wsHttpBinding">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="binding">
+                            <xs:complexType>
+                              <xs:sequence minOccurs="0">
+                                <xs:element name="reliableSession">
+                                  <xs:complexType>
+                                    <xs:attribute name="inactivityTimeout" type="xs:time" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="security">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="message">
+                                        <xs:complexType>
+                                          <xs:attribute name="clientCredentialType" type="xs:string" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                              <xs:attribute name="sendTimeout" type="xs:time" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="client">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="endpoint">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="identity">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element minOccurs="0" name="userPrincipalName">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="certificate">
+                                  <xs:complexType>
+                                    <xs:attribute name="encodedValue" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="address" type="xs:string" use="required" />
+                        <xs:attribute name="binding" type="xs:string" use="required" />
+                        <xs:attribute name="bindingConfiguration" type="xs:string" use="required" />
+                        <xs:attribute name="contract" type="xs:string" use="required" />
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="userSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Client.Properties.Settings">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="setting">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="value" type="xs:unsignedByte" />
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="serializeAs" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

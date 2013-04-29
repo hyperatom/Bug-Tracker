@@ -11,33 +11,37 @@
     </UserControl.Resources>
 
     <StackPanel Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="stackPanel">
-        <ListBox Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding ActivityList}" x:Name="listBoxActivities">
+        <ItemsControl Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding ActivityList}" x:Name="listBoxActivities">
 
-            <ListBox.ItemTemplate>
+            <ItemsControl.ItemTemplate>
 
                 <DataTemplate>
-                    
-                    <Grid Margin="0,0,3,0" Background="Transparent" Name="ActivityGrid" MaxWidth="185" >
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <Border Margin="-5,0,0,10" HorizontalAlignment="Left" Padding="8,2,2,2" Background="AliceBlue" MaxWidth="185"  BorderBrush="#FF1885A1" CornerRadius="3,3,3,3" BorderThickness="1,1,1,1" VerticalAlignment="Center" >
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid Background="Transparent" Name="ActivityGrid" >
 
-                        <Image Height="15" Width="15" Source="{Binding ActionIcon}" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Image Height="15" Width="15" Source="{Binding ActionIcon}" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+
+                            <TextBlock MaxHeight="50" Margin="10,0,0,5" Grid.Row="0" Grid.Column="1" Text="{Binding ActionMessage}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  />
+
+                        </Grid>
                         
-                        <TextBlock MaxHeight="50" Margin="10,0,0,5" Grid.Row="0" Grid.Column="1" Text="{Binding ActionMessage}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  />
- 
-                    </Grid>
+                    </Border>
                 </DataTemplate>
                 
-            </ListBox.ItemTemplate>
+            </ItemsControl.ItemTemplate>
 
-        </ListBox>
+        </ItemsControl>
     </StackPanel>
     
         

@@ -19,7 +19,6 @@ namespace Client.ViewModels
     {
 
         private Project _Project;
-        private ITrackerService _Service;
 
         private bool _IsValidating = false;
         private bool _IsSelected = false;
@@ -110,7 +109,7 @@ namespace Client.ViewModels
         public String Code
         {
             get { return _Project.Code; }
-            set { _Project.Code = value; OnPropertyChanged("Code"); }
+            set { _Project.Code = value.ToUpperInvariant(); OnPropertyChanged("Code"); }
         }
 
 

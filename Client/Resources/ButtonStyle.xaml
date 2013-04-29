@@ -131,7 +131,7 @@
                                             </TransformGroup>
                                         </RadialGradientBrush.RelativeTransform>
                                         <GradientStop Color="#00000000" Offset="1"/>
-                                        <GradientStop Color="#FF303030" Offset="0.3"/>
+                                        <GradientStop Color="LightGray"  Offset="0.3"/>
                                     </RadialGradientBrush>
                                 </Setter.Value>
                             </Setter>

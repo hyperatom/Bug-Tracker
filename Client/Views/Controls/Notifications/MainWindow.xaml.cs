@@ -9,8 +9,6 @@ namespace Client.Views.Controls.Notifications
     /// </summary>
     public partial class MainWindow
     {
-        private double topOffset = 200;
-        private double leftOffset = 380;
         readonly GrowlNotifiactions growlNotifications = new GrowlNotifiactions();
         
         public MainWindow()

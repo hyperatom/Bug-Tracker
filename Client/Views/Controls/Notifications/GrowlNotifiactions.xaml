@@ -29,7 +29,7 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.RowSpan="2" Source="{Binding Path=ImageUrl}" Margin="4" Width="80"></Image>
+                        <Image Grid.RowSpan="2" Source="{Binding Path=ImageUrl}" Margin="4" Width="40"></Image>
                         <TextBlock Grid.Column="1" Text="{Binding Path=Title}"  TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display" Foreground="White" 
                                    FontFamily="Arial" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"  Margin="2,4,4,2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
                         <Button x:Name="CloseButton" Grid.Column="1" Width="16" Height="16" HorizontalAlignment="Right" Margin="0,0,12,0" Style="{StaticResource CloseButton}" />
@@ -42,8 +42,8 @@
                 <EventTrigger RoutedEvent="Window.Loaded" SourceName="NotificationWindow">
                     <BeginStoryboard x:Name="FadeInStoryBoard">
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" From="0.01" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:2"/>
-                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:2" BeginTime="0:0:6"/>
+                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" From="0.01" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.4"/>
+                            <DoubleAnimation Storyboard.TargetName="NotificationWindow" From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.4" BeginTime="0:0:3"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>

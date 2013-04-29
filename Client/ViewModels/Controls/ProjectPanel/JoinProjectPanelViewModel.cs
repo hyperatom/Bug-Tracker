@@ -22,7 +22,6 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private Role _SelectedRole;
         private User _User;
         private IList<Role> _RoleList;
-        private bool _IsRequestButtonEnabled;
 
         private bool _IsValidating = false;
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
@@ -75,7 +74,7 @@ namespace Client.ViewModels.Controls.ProjectPanel
 
                 return _Code;
             }
-            set { _Code = value; OnPropertyChanged("Code"); }
+            set { _Code = value.ToUpperInvariant(); OnPropertyChanged("Code"); }
         }
 
 

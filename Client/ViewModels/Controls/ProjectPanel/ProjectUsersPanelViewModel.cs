@@ -22,6 +22,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
         private ObservableCollection<UserViewModel> _AssignedUsersList;
         private ObservableCollection<UserViewModel> _PendingUsersList;
 
+        private bool _IsVisible = false;
+
         private ICommand _RemoveUserCommand;
         private ICommand _AcceptUserCommand;
         private ICommand _RejectUserCommand;
@@ -40,6 +42,13 @@ namespace Client.ViewModels.Controls.ProjectPanel
         }
 
 
+        public bool IsVisible
+        {
+            get { return _IsVisible; }
+            set { _IsVisible = value; OnPropertyChanged("IsVisible"); }
+        }
+
+
         public bool IsAssignedUserButtonsVisible
         {
             get { return _IsDeleteButtonVisible; }
@@ -51,6 +60,17 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             get { return _IsPendingUserButtonsVisible; }
             set { _IsPendingUserButtonsVisible = value; OnPropertyChanged("IsPendingUserButtonsVisible"); }
+        }
+
+
+        public ObservableCollection<String> ProjectRoleList
+        {
+            get 
+            {
+                return new ObservableCollection<String>() {
+                    "Project Manager", "Developer"
+                };
+            }
         }
 
 
@@ -145,12 +165,13 @@ namespace Client.ViewModels.Controls.ProjectPanel
         {
             _Messenger.Register<ProjectViewModel>(Messages.ManagedProjectSelected, p => PopulateUserLists(p));
             _Messenger.Register<ProjectViewModel>(Messages.AssignedProjectSelected, p => PopulateUserLists(p));
+            _Messenger.Register<ProjectViewModel>(Messages.DeletedProject, p => IsVisible = false);
         }
 
 
         private void AcceptUserOnProject(UserViewModel user)
         {
-            _Service.AcceptUserOnProject(user.ToUserModel(), _Project.ToProjectModel());
+            _Service.AcceptUserOnProject(user.ToUserModel(), _Project.ToProjectModel(), user.RequestedProjectRole);
 
             PopulateUserLists(_Project);
         }
@@ -174,8 +195,19 @@ namespace Client.ViewModels.Controls.ProjectPanel
 
         private void PopulatePendingList(ProjectViewModel project)
         {
-            _Service.GetUsersPendingProjectJoin(project.ToProjectModel())
-                .ForEach(p => PendingUsersList.Add(new UserViewModel(p)));
+            List<User> users = _Service.GetUsersPendingProjectJoin(project.ToProjectModel()).ToList();
+
+            foreach (User user in users)
+            {
+                String role = ProjectRoleList.Where(p => p.Equals(_Service.GetUsersRequestedRoleForProject(user, project.ToProjectModel()))).SingleOrDefault();
+
+                UserViewModel userVm = new UserViewModel(user);
+
+                if (role != null)
+                    userVm.RequestedProjectRole = role;
+
+                PendingUsersList.Add(userVm);
+            }
         }
 
 
@@ -229,6 +261,8 @@ namespace Client.ViewModels.Controls.ProjectPanel
 
         private void PopulateUserLists(ProjectViewModel project)
         {
+            IsVisible = true;
+
             _Project = project;
 
             ClearUserLists();

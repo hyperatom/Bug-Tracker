@@ -99,6 +99,8 @@ namespace Client
             container.RegisterType<IJoinProjectPanelViewModel, JoinProjectPanelViewModel>();
             container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>();
             container.RegisterType<IWestSideBarViewModel, WestSideBarViewModel>();
+            container.RegisterType<IRegistrationSuccessPanelViewModel, RegistrationSuccessPanelViewModel>();
+
 
             // Notification system
             container.RegisterType<IGrowlNotifiactions, GrowlNotifiactions>();

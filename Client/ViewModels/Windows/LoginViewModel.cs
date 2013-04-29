@@ -40,6 +40,7 @@ namespace Client.ViewModels
 
         private bool _IsRememberMeChecked;
         private bool _IsLoadingVisible;
+
         private bool _CanLogin;
         private string _username;
         private string _password;
@@ -68,10 +69,10 @@ namespace Client.ViewModels
 
             _IsLoadingVisible = false;
 
-            //Username = GetStoredUsername();
-           // Password = GetStoredPassword();
+            Username = GetStoredUsername();
+            Password = GetStoredPassword();
 
-            //InitialiseRememberMeCheckBox();
+            InitialiseRememberMeCheckBox();
         }
 
 
@@ -223,28 +224,29 @@ namespace Client.ViewModels
         /// <param name="loginParameter">Custom object to store login parameters.</param>
         public void Login()
         {
-            /*if (IsRememberMeChecked)
+            if (IsRememberMeChecked)
             {
                 StoreUserCredentials();
             }
             else
             {
                 FlushUserCredentials();
-            }*/
+            }
 
             // Tell the service container to create a new service with these credentials
             ClientBase<ITrackerService> svc = _ServiceFactory.CreateService(Username, Password);
 
+            svc.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode =
+                System.ServiceModel.Security.X509CertificateValidationMode.None;
+
             IsLoadingVisible = true;
-        
+
             Task openConnection = new Task(() => {
 
                 try
                 {
-                    MessageBox.Show("opening");
                     // Test if we can open the communication channel
                     svc.Open();
-                    MessageBox.Show("Opened!");
                 }
                 // Display message if invalid credentials.
                 catch (MessageSecurityException)
@@ -252,10 +254,10 @@ namespace Client.ViewModels
                     IsLoadingVisible = false;
                     MessageBox.Show("Invalid username or password!");
                 }
-                catch (FaultException fault)
+                catch (FaultException)
                 {
                     IsLoadingVisible = false;
-                    MessageBox.Show(fault.Message);
+                    MessageBox.Show("Could not connect to web service.");
                 }
             });
 
@@ -263,13 +265,12 @@ namespace Client.ViewModels
             {
                 if (p.Exception == null)
                 {
-                    MessageBox.Show("showing main window");
                     _WindowFactory.CreateMainWindow().Show();
                     RequestClose(this, null);
                 }
                 else
                 {
-                    MessageBox.Show(p.Exception.Message);
+                    MessageBox.Show("Could not connect to web service.");
                     IsLoadingVisible = false;
                 }
 
@@ -345,27 +346,33 @@ namespace Client.ViewModels
         /// <returns>A string representing the username.</returns>
         private string GetStoredUsername()
         {
+            StreamReader srReader = GetStreamReader();
+
             try
             {
-                string username = "";
-
-                StreamReader srReader = GetStreamReader();
+                string username = srReader.ReadLine();
 
                 //Open the isolated storage
-                if (srReader == null)
+                if (srReader == null || username == null)
+                {
+                    srReader.Close();
                     return "";
+                }
                 else
-                    username = srReader.ReadLine().ToString();
-
-                srReader.Close();
-
-                return username;
+                {
+                    srReader.Close();
+                    return username;
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
 
                 return "";
+            }
+            finally
+            {
+                srReader.Close();
             }
 
         }
@@ -392,32 +399,34 @@ namespace Client.ViewModels
         /// <returns>A string representing the user's password.</returns>
         private string GetStoredPassword()
         {
+            StreamReader srReader = GetStreamReader();
+
+            srReader.ReadLine();
+            string password = srReader.ReadLine();
+
             try
             {
-                string password = "";
-
-                StreamReader srReader = GetStreamReader();
-
                 //Open the isolated storage
-                if (srReader == null)
+                if (srReader == null || password == null)
                 {
+                    srReader.Close();
                     return "";
                 }
                 else
                 {
-                    srReader.ReadLine();
-                    password = srReader.ReadLine().ToString();
+                    srReader.Close();
+                    return password;
                 }
-                
-                srReader.Close();
-
-                return password;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
 
                 return "";
+            }
+            finally
+            {
+                srReader.Close();
             }
         }
 

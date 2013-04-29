@@ -15,6 +15,8 @@ namespace Client
     public partial class LoginWindow : Window, ILoginWindow
     {
 
+        private bool _IsShuttingDown = true;
+
         public LoginWindow(ILoginViewModel viewModel)
         {
             if (viewModel == null)
@@ -22,11 +24,19 @@ namespace Client
 
             this.DataContext = viewModel;
 
-            viewModel.RequestClose += delegate { this.Close(); };
+            viewModel.RequestClose += delegate { _IsShuttingDown = false; this.Close(); };
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.Closing += OnClosed;
 
             InitializeComponent();
+        }
+
+
+        public void OnClosed(object sender, System.EventArgs e)
+        {
+            if (_IsShuttingDown)
+                Application.Current.Shutdown();
         }
 
     }
